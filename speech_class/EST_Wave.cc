@@ -51,7 +51,7 @@
 
 #include "waveP.h"
 
-const EST_String DEF_FILE_TYPE = "nist";
+const EST_String DEF_FILE_TYPE = "riff";
 const EST_String DEF_SAMPLE_TYPE = "short";
 
 const int EST_Wave::default_sample_rate=16000;
@@ -225,6 +225,8 @@ EST_read_status EST_Wave::load(EST_TokenStream &ts,
 	    set_file_type(EST_WaveFile::map.value(t));
 	    break;
 	}
+	else if (stat == read_error)
+	    break;
     }
     
     return stat;

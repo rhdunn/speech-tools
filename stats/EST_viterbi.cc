@@ -56,7 +56,7 @@ EST_VTPoint::~EST_VTPoint()
 	for (i=0; i<num_states; i++)
 	    if (st_paths[i] != 0)
 		delete st_paths[i];
-	delete st_paths;
+	delete [] st_paths;
     }
     if (cands != 0) delete cands;
     if (next != 0) delete next;

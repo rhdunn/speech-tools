@@ -111,18 +111,19 @@ class EST_Features {
 
     /** Look up feature name, which may be simple feature or path.
      */
-    const EST_Val &f(const EST_String &path) { return val_path(path); }
+    const EST_Val &f(const EST_String &path) const
+       { return val_path(path); }
 
     /** Look up feature name, which may be simple feature or path,
 	returning <parameter>def</paramater> if not found
      */
-    const EST_Val &f(const EST_String &path,const EST_Val &def) 
+    const EST_Val &f(const EST_String &path, const EST_Val &def) const
        { return val_path(path,def); }
     //@}
 
     /**@name Access functions which return types. 
        These functions cast
-       their EST_Val return value to a requested type, eithe float,
+       their EST_Val return value to a requested type, either float,
        int, string or features (A). In all cases the name can be a
        simple feature or a path, in which case their name is a dot
        separated string of concatenated attributes

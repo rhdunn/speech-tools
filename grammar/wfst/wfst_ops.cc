@@ -42,6 +42,10 @@
 #include <stdlib.h>
 #include "EST_WFST.h"
 #include "wfst_aux.h"
+#include "EST_String.h"
+#include "EST_TList.h"
+#include "EST_TKVL.h"
+#include "EST_THash.h"
 
 Declare_TList_T(EST_WFST_MultiState *,EST_WFST_MultiStateP)
 
@@ -116,21 +120,6 @@ void EST_WFST_MultiState::add(int i)
     append(i);
 }
 
-// Current indexing a multistate to a single number is done with
-// a StringTrie index.  It'll probably be worth optimising this
-// later.
-
-// Will remove this later
-typedef struct {
-    int name;
-} EST_WFST_MSindex;
-
-static void pi_delete(void *n)
-{
-    EST_WFST_MSindex *t = (EST_WFST_MSindex *)n;
-    delete t;
-}
-
 int multistate_index(EST_WFST_MultiStateIndex &index,
 		     EST_WFST_MultiState *ms,int proposed) 
 {
@@ -140,21 +129,36 @@ int multistate_index(EST_WFST_MultiStateIndex &index,
     // I'll have to make this more efficient in future.
     EST_String istring("");
     EST_Litem *p;
+    int ns,found;
 
     for (p=ms->head(); p != 0; p = next(p))
 	istring += itoString((*ms)(p)) + " ";
 
-    EST_WFST_MSindex *msi;
-
-    if ((msi = (EST_WFST_MSindex *)index.lookup(istring)) == 0)
+    ns = index.val(istring,found);
+    if (found)
+	return ns;
+    else
     {
-	EST_WFST_MSindex *nr = new EST_WFST_MSindex;
-	nr->name = proposed;
-	index.add(istring,(void *)nr);
-	msi = nr;
+        index.add_item(istring,proposed);
+	return proposed;
     }
+}
 
-    return msi->name;
+static int pair_check(EST_THash<int,int> &pairs_done, int i, int o, int odim)
+{
+    int p;
+    int found;
+
+    p = (i*odim)+o;  // unique number representing i/o pair
+
+    pairs_done.val(p,found);
+    if (!found)
+    {   // first time seeing this pair
+	pairs_done.add_item(p,1);
+	return 0;
+    }
+    return 1;
+
 }
 
 void EST_WFST::determinize(const EST_WFST &ndwfst)
@@ -163,9 +167,10 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
     EST_WFST_MultiState *start_state,*nms,*current;
     int ns;
     Agenda multistate_agenda;
-    EST_WFST_MultiStateIndex index;
+    EST_WFST_MultiStateIndex index(100);
     int i,o, new_name;
     int c=0;
+    EST_Litem *sp, *tp;
 
     clear();
     p_in_symbols.copy(ndwfst.p_in_symbols);
@@ -183,6 +188,7 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
 
     while (multistate_agenda.length() > 0)
     {
+	EST_THash<int,int> pairs_done(100);
 	current = multistate_agenda.first();
 	multistate_agenda.remove(multistate_agenda.head());
 	if ((c % 100) == 99)
@@ -190,10 +196,20 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
 		<< multistate_agenda.length() << endl;
 	c++;
 
-	for (i=0; i < p_in_symbols.length(); i++)
-	{   // start at 2 to skip any and epsilon characters -- hmm bad
-	    for (o=0; o < p_out_symbols.length(); o++)
+	for (sp=current->head(); sp != 0; sp=next(sp))
+	{
+	    const EST_WFST_State *s = ndwfst.state((*current)(sp));
+	    for (tp=s->transitions.head(); tp != 0; tp = next(tp))
 	    {
+		i = s->transitions(tp)->in_symbol();
+		o = s->transitions(tp)->out_symbol();
+		// Need to check if i/o has already been proposed
+		if (pair_check(pairs_done,i,o,p_out_symbols.length()) == 1)
+		    continue;  // already prosed those
+//	for (i=0; i < p_in_symbols.length(); i++)
+//	{   // start at 2 to skip any and epsilon characters -- hmm bad
+//	    for (o=0; o < p_out_symbols.length(); o++)
+//	    {
 		if ((i==o) && (i==0)) 
 		    continue;  // don't deal here with epsilon transitions
 		nms = apply_multistate(ndwfst,current,i,o);
@@ -229,7 +245,6 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
 	// Probably want some progress summary
     }
 
-    index.clear(pi_delete);
 }
 
 EST_WFST_MultiState *EST_WFST::apply_multistate(const EST_WFST &wfst,
@@ -325,7 +340,7 @@ void EST_WFST::add_epsilon_reachable(EST_WFST_MultiState *ms) const
 	    {
 		// Add to end of ii if not already there
 		int nstate = s->transitions(i)->state();
-		if (!is_a_member(ii,nstate))
+		if (!is_a_member(ii,nstate));
 		{
 		    ii.append(nstate);
 		    ms->add(nstate); // gets added in order
@@ -345,7 +360,7 @@ void EST_WFST::intersection(wfst_list &wl)
     EST_WFST_MultiState *nms,*current;
     int ns;
     Agenda multistate_agenda;
-    EST_WFST_MultiStateIndex index;
+    EST_WFST_MultiStateIndex index(100);
     int i,o, new_name, n;
     EST_Litem *p,*q;
     int c=0;
@@ -424,7 +439,6 @@ void EST_WFST::intersection(wfst_list &wl)
 	// Probably want some progress summary
     }
 
-    index.clear(pi_delete);
 }
 
 static enum wfst_state_type intersect_state_type(wfst_list &wl,
@@ -800,7 +814,7 @@ void EST_WFST::compose(const EST_WFST &a,const EST_WFST &b)
     EST_WFST_MultiState *start_state = new EST_WFST_MultiState(wfst_ms_list);
     EST_WFST_MultiState *nms,*current;
     Agenda multistate_agenda;
-    EST_WFST_MultiStateIndex index;
+    EST_WFST_MultiStateIndex index(100);
     wfst_list wl;
     EST_WFST t;
     int i,new_name;
@@ -876,7 +890,6 @@ void EST_WFST::compose(const EST_WFST &a,const EST_WFST &b)
 	// Probably want some progress summary
     }
 
-    index.clear(pi_delete);
 }
 
 /***********************************************************************/

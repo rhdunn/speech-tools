@@ -1,8 +1,8 @@
 /*************************************************************************/
 /*                                                                       */
-/*                Centre for Speech Technology Research                  */
-/*                     University of Edinburgh, UK                       */
-/*                      Copyright (c) 1996,1997                          */
+/*                  Language Technologies Institute                      */
+/*                     Carnegie Mellon University                        */
+/*                         Copyright (c) 1999                            */
 /*                        All Rights Reserved.                           */
 /*                                                                       */
 /*  Permission is hereby granted, free of charge, to use and distribute  */
@@ -19,10 +19,10 @@
 /*      derived from this software without specific prior written        */
 /*      permission.                                                      */
 /*                                                                       */
-/*  THE UNIVERSITY OF EDINBURGH AND THE CONTRIBUTORS TO THIS WORK        */
+/*  CARNEGIE MELLON UNIVERSITY AND THE CONTRIBUTORS TO THIS WORK         */
 /*  DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING      */
 /*  ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT   */
-/*  SHALL THE UNIVERSITY OF EDINBURGH NOR THE CONTRIBUTORS BE LIABLE     */
+/*  SHALL CARNEGIE MELLON UNIVERSITY NOR THE CONTRIBUTORS BE LIABLE      */
 /*  FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    */
 /*  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN   */
 /*  AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,          */
@@ -31,9 +31,9 @@
 /*                                                                       */
 /*************************************************************************/
 /*                     Author :  Alan W Black                            */
-/*                     Date   :  December 1997                           */
+/*                     Date   :  October 1999                            */
 /*-----------------------------------------------------------------------*/
-/*  Run a WFST on some data, either as a recognizer or as a transducer   */
+/*  A training method for spliting states in a WFST from data            */
 /*                                                                       */
 /*=======================================================================*/
 #include <stdlib.h>
@@ -45,10 +45,13 @@
 #include "EST_simplestats.h"
 #include "EST_WFST.h"
 
-static int wfst_run_main(int argc, char **argv);
+LISP load_string_data(EST_WFST &wfst,EST_String &filename);
+void wfst_train(EST_WFST &wfst, LISP data);
 
-/** @name <command>wfst_run</command> <emphasis>Run a weighted finite-state transducer</emphasis>
-    @id wfst-run-manual
+static int wfst_train_main(int argc, char **argv);
+
+/** @name <command>wfst_train</command> <emphasis>Train a weighted finite-state transducer</emphasis>
+    @id wfst-train-manual
   * @toc
  */
 
@@ -62,9 +65,8 @@ static int wfst_run_main(int argc, char **argv);
 //@synopsis
 
 /**
-This program runs a WFST on some given data.  It works in either
-recognize mode where both inputs and output are specified, but also
-in transduction mode where an input is transduced to the output.
+This takes an existing WFST and data and splits states in an entropy
+reduce way to produced a new WFST that better models the given data.
 
  */
 
@@ -82,41 +84,29 @@ in transduction mode where an input is transduced to the output.
 int main(int argc, char **argv)
 {
 
-    wfst_run_main(argc,argv);
+    wfst_train_main(argc,argv);
 
     exit(0);
     return 0;
 }
 
-static int wfst_run_main(int argc, char **argv)
+static int wfst_train_main(int argc, char **argv)
 {
-    // recognize/transduce
+    // Train a WFST from data building new states
     EST_Option al;
     EST_StrList files;
-    EST_Litem *f;
     EST_String wfstfile;
     FILE *ofd;
-    int r;
-    EST_SuffStats R;
-    float sumlogp=0,isumlogp;
-    float count=0,icount;
 
     parse_command_line
 	(argc, argv,
 	 EST_String("[WFSTFILE] [input file0] ... [-o output file]\n")+
-	 "Summary: Recognize/transduce using a WFST on data\n"+
-	 "-wfst <ifile>    The WFST to use\n"+
-	 "-transduce       Transduce input to output (default)\n"+
-	 "-recog           Recognize input consists of pairs\n"+
-	 "-cumulate_into <ofile>\n"+
-	 "                 Cumulate transitions to give new weights\n"+
-	 "                 save new WFST into ofile\n"+
-	 "-itype <string>  char or token\n"+
-	 "-quiet           No extraneous messages\n"+
-	 "-perplexity      Calculate perplexity on given data set\n"+
+	 "Summary: Train a WFST on data\n"+
+	 "-wfst <ifile>    The WFST to start from\n"+
+	 "-data <ifile>    Sentences in the language recognised by WFST\n"+
+	 "-o <ofile>       Output file for trained WFST\n"+
 	 "-heap <int> {210000}\n"+
-	 "                    Set size of Lisp heap, needed for large wfsts\n"+
-	 "-o <ofile>       Output file for transduced forms\n",
+	 "                    Set size of Lisp heap, needed for large rulesets\n",
 	 files, al);
     
     if (al.present("-o"))
@@ -134,94 +124,24 @@ static int wfst_run_main(int argc, char **argv)
 	EST_error("no WFST specified");
     
     siod_init(al.ival("-heap"));
+    siod_est_init();
 
     EST_WFST wfst;
-    EST_TokenStream ts;
+    LISP data;
 
     if (wfst.load(wfstfile) != format_ok)
 	EST_error("failed to read WFST from \"%s\"",
 			  (const char *)wfstfile);
 
-    if (al.present("-cumulate_into"))
-	wfst.start_cumulate();
+    data = load_string_data(wfst,al.val("-data"));
 
-    for (f=files.head(); f != 0; f=next(f))
-    {
-	if (files(f) == "-")
-	    ts.open(stdin,FALSE);
-	else
-	    if (ts.open(files(f)) != 0)
-		EST_error("failed to read WFST data file from \"%s\"",
-			  (const char *)files(f));
-	    
-	// Not the best way to input things but will do the the present
-	while(!ts.eof())
-	{
-	    EST_StrList ostrs,istrs;
-	    do
-		istrs.append(ts.get());
-	    while((!ts.eof()) && (!ts.eoln()));
-
-	    if (al.present("-recog"))
-	    {
-		if (al.present("-perplexity"))
-		{
-		    r = recognize_for_perplexity(wfst,istrs,
-						 al.present("-quiet"),
-						 icount,
-						 isumlogp);
-		    if (r)
-		    {
-			count += icount;
-			sumlogp += isumlogp;
-		    }
-		}
-		else
-		    r = recognize(wfst,istrs,al.present("-quiet"));
-	    }
-	    else
-	    {
-		r = transduce(wfst,istrs,ostrs);
-		if (r)
-		{
-		    cout << ostrs;
-		    cout << endl;
-		}
-	    }
-	    R += r;
-
-	    if (!al.present("-quiet"))
-	    {
-		if (r)
-		    cout << "OK." << endl;
-		else
-		    cout << "failed." << endl;
-	    }
-	}
-	ts.close();
-    }
-
-    if (al.present("-cumulate_into"))
-    {
-	wfst.stop_cumulate();
-	if (wfst.save(al.val("-cumulate_into")) != write_ok)
-	    EST_error("failed to write cumulated WFST to \"%s\"",
-		      (const char *)al.val("-cumulate_into"));
-    }
+    wfst_train(wfst,data);
     
-    printf("total %d OK %f%% failed %f%%\n",
-	   (int)R.samples(),R.mean()*100,(1-R.mean())*100);
-    if (al.present("-perplexity"))
-    {
-	printf("perplexity is %f\n", pow(2.0,(-1 * (sumlogp/count))));
-    }
+    if (wfst.save(al.val("-o")) != write_ok)
+	EST_error("failed to write trained WFST to \"%s\"",
+		      (const char *)al.val("-o"));
 
-    if (ofd != stdout)
-	fclose(ofd);
-
-    if (R.mean() == 1)     // true is *all* files were recognized
-	return 0;
-    else
-	return -1;
+    return 0;
+    
 }
 

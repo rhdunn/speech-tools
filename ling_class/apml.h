@@ -1,4 +1,3 @@
-
  /************************************************************************/
  /*                                                                      */
  /*                Centre for Speech Technology Research                 */
@@ -31,61 +30,27 @@
  /*  THIS SOFTWARE.                                                      */
  /*                                                                      */
  /*************************************************************************/
- /*                                                                       */
- /*                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             */
- /*                   Date: Tue Sep4th 1997                               */
- /* --------------------------------------------------------------------  */
- /* Defines of things which may not be here on all unixes.                */
- /*                                                                       */
- /*************************************************************************/
 
-#if !defined(__EST_SOCKET_UNIX_H__)
-#define __EST_SOCKET_UNIX_H__ 1
 
-#include <errno.h>
+/**@name apml.h
+  * 
+  * Privare header interfacing apml file format.
+  * 
+  * 
+  * Rob Clark July 2002
+  */
+//@{
+#ifndef __APML_H__
+#define __APML_H__
 
-/* Solaris defines this, linux doesnt */
-#if defined(sun) && !defined(SVR4)
-typedef int ssize_t;
-#endif
+#include <stdio.h>
+#include "ling_class/EST_Utterance.h"
 
-#if defined(older_solaris)
-/* older versions of Solaris don't have this */
-typedef int socklen_t;
-#endif
+EST_read_status apml_read(FILE *file, 
+			  const EST_String &name,
+			  EST_Utterance &u,
+			  int &max_id);
 
-#if defined(__FreeBSD__) &&  __FreeBSD__ < 4
-typedef int socklen_t;
-#endif
 
-#if defined(__APPLE__)
-typedef int socklen_t;
-#endif
-
-#if defined(__CYGWIN__)
-typedef int socklen_t;
-#endif
-
-#if defined(__osf__)
-typedef int socklen_t;
-#endif
-
-#if defined(_AIX)
-#include <sys/select.h>
-#endif
-
-#define NOT_A_SOCKET(FD) ((FD) <0)
-#define socket_error() errno
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-int socket_initialise(void);
-
-#if defined(__cplusplus)
-}
-#endif
-
-#endif
-
+#endif // __APML_H__
+//@}

@@ -45,6 +45,7 @@
 #include "EST_TVector.h"
 #include "EST_TList.h"
 #include "EST_simplestats.h"  /* For EST_SuffStats class */
+#include "EST_Track.h"
 #include "siod.h"
 #define wagon_error(WMESS) (cerr << WMESS << endl,exit(-1))
 
@@ -204,6 +205,7 @@ extern Discretes wgn_discretes;
 extern WDataSet wgn_dataset;
 extern WDataSet wgn_test_dataset;
 extern EST_FMatrix wgn_DistMatrix;
+extern EST_Track *wgn_UnitTracks;
 
 void wgn_load_datadescription(EST_String fname,LISP ignores);
 void wgn_load_dataset(WDataSet &ds,EST_String fname);

@@ -2,7 +2,7 @@ INSTALLATION
 
 Release notes
 
-This documentation covers version 1.2.2 of the Edinburgh Speech Tools
+This documentation covers version 1.2.3 of the Edinburgh Speech Tools
 Library. While previous versions of the speech tools were primarily
 released solely to support the Festival Speech Synthesis System, the
 Edinburgh Speech Tools Library now contains sufficiently useful tools
@@ -30,9 +30,9 @@ which is available for all of the platforms we are aiming at.
 
 A C++ compiler
 
-The system was developed primarily with GNU C++ (various versiosn from
+The system was developed primarily with GNU C++ (various versions from
 version 2.7.2), but we also have compiled it successfully with a
-number of other versions of gcc, Sun CC and Visual C++.
+number of other versions of gcc, and Visual C++.
 
 Hopefully we have now sanitized the code sufficiently to to make it
 possible for ports to other C++ compilers without too much
@@ -67,17 +67,11 @@ following systems, except where specified we include support for both
 shared and static versions of the libraries:
 
 Sun Sparc Solaris 2.5.1/2.6/2.7
-      GCC 2.7.2, GCC 2.8.1, SunCC 4.1, egcs 1.1.1, egcs 1.1.2, gcc-2.95.1
+      GCC 2.7.2, GCC 2.8.1, gcc-2.95.1, gcc-3.2
 
-Intel Solaris 2.5.1
-      GCC 2.7.2
-
-FreeBSD for Intel 3.x, 4.x
-      GCC 2.95.x, GCC 3.0
-
-Linux (2.0.30) for Intel (RedHat 4.[012]/5.[012]/6.[01],.7[01])
+Linux (2.0.30) for Intel (RedHat 4.[012]/5.[012]/6.[01],7.[01],8.0)
       GCC 2.7.2, GCC 2.7.2/egcs-1.0.2, egcs-1.1.2, GCC 2.95.[123],
-      GCC "2.96", GCC 3.0
+      GCC "2.96", GCC 3.0, GCC 3.0.1, GCC 3.2, GCC 3.2.1
 
 Windows NT 4.0, Windows95, Windows 98
       GCC with egcs (from Cygwin b20.1), Visual C++ 6.0.
@@ -278,8 +272,8 @@ Requirements:
 MS Windows 2000
 Visual C++ 6.0 + service pack 1
 cygwin 1.1
-speech_tools-1.2.2
-festival-1.4.2
+speech_tools-1.2.3
+festival-1.4.3
 
 Download and install cygwin.
 Optionally download emacs so you have a decent editor :)
@@ -291,7 +285,8 @@ Using cygwins bash shell:
   cd C:/festival
 
 Using cygwin's tar command unpack:
-  tar xvfz speech_tools-1.2.2.tar.gz festival-1.4.2.tar.gz
+  tar xvfz speech_tools-1.2.3.tar.gz 
+  tar xvfz festival-1.4.3.tar.gz
   tar xvfz festlex... festvox...
 (where festlex... and festvox... are the voice and lexicon files you
 need.  Do not use winzip to unpack the voices it corrupts them!)
@@ -302,7 +297,7 @@ Create Vsual C++ make files: (this may be slow...)
   cp config/vc_config_make_rules-dist config/vc_config_make_rules
 
   cd ../festival
-  make CVMakefile
+  make VCMakefile
   cp config/vc_config_make_rules-dist config/vc_config_make_rules
 
 Finally make festival init_modules code. (If you add new modules you

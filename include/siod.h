@@ -159,6 +159,9 @@ void pprint_to_fd(FILE *fd,LISP exp);
 LISP lread(void);
 LISP lreadtk(long j);
 LISP lreadf(FILE *f);
+#ifdef WIN32
+LISP lreadwinsock(void);
+#endif
 void set_read_hooks(char *all_set,char *end_set,
 		    LISP (*fcn1)(int, struct gen_readio *),
 		    LISP (*fcn2)(char *,long, int *));

@@ -422,8 +422,8 @@ enum EST_write_status save_wave_est(FILE *fp, const short *data, int offset,
 /*=======================================================================*/
 #define WAVE_FORMAT_PCM    0x0001
 #define WAVE_FORMAT_ADPCM  0x0002
-#define WAVE_FORMAT_MULAW  0x0006
-#define WAVE_FORMAT_ALAW   0x0007
+#define WAVE_FORMAT_ALAW   0x0006
+#define WAVE_FORMAT_MULAW  0x0007
 
 enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 				    *num_samples, int *num_channels, int

@@ -42,6 +42,7 @@
 #include <iostream.h>
 #include <fstream.h>
 #include "EST_String.h"
+#include "EST_Token.h"
 #include "EST_THash.h"
 
 #define LINE_LENGTH 1000
@@ -53,35 +54,37 @@ EST_Regex RX_Word("[A-Z]?[a-z]+\\('[a-z]+\\)?");
 int
 main(int argc, const char *argv[])
 {
-  char buffer[LINE_LENGTH], c;
   EST_TStringHash<int> places(10);
-  int line_no = 0;
-  ifstream file(argv[1]);
+  int line_no = 1;
+  EST_TokenStream file;
 
   if (argc != 2)
     return 1;
 
+  file.open(argv[1]);
+  file.set_WhiteSpaceChars("");
+  file.set_SingleCharSymbols("\n");
+  file.set_PunctuationSymbols("");
+  file.set_PrePunctuationSymbols("");
+
 while(! file.eof())
   {
-    file.get(buffer, LINE_LENGTH);
+    EST_String line;
+
+    line = file.get();
 
     if (file.eof())
       break;
 
-    file.get(c);
-    if (c != '\n')
-      break;
-
-
-    EST_String line(buffer);
-    line_no++;
+    if (line == "\n")
+	line_no++;
 
     int p=0, len;
 
     while((p = line.search(RX_Word, len, p)) >= 0)
       {
 	EST_String word(line.at(p, len));
-	
+
 	places.add_item(word, line_no);
 	p += len;
       }

@@ -37,7 +37,11 @@ LISP siod_send_lisp_to_client(LISP x)
 	fwrite((const char *)m,sizeof(char),m.length(),fd);
 	fwrite("\n",1,1,fd);
 	fclose(fd);
+#ifdef WIN32
+	send(siod_server_socket,"LP\n",3,0);
+#else
 	write(siod_server_socket,"LP\n",3);
+#endif
 	socket_send_file(siod_server_socket,tmpfile);
 	unlink(tmpfile);
     }
@@ -51,7 +55,11 @@ void sock_acknowledge_error()
     // Thanks to mcb for pointing out this omission
     
     if (siod_server_socket != -1)
+#ifdef WIN32
+	send(siod_server_socket,"ER\n",3,0);
+#else
 	write(siod_server_socket,"ER\n",3);
+#endif
 
 }
     
@@ -59,8 +67,11 @@ static void acknowledge_sock_print(LISP x)
 {   // simple return "OK" -- used in server socket mode
 
     siod_send_lisp_to_client(x);
-
+#ifdef WIN32
+    send(siod_server_socket,"OK\n",3,0);
+#else
     write(siod_server_socket,"OK\n",3);
+#endif
 }
 
 static void ignore_puts(char *x)
@@ -73,12 +84,24 @@ long repl_from_socket(int fd)
     /* Read from given fd as stdin */
     struct repl_hooks hd;
 
+#ifdef WIN32
+    if (!SetStdHandle(STD_INPUT_HANDLE,(HANDLE)fd))
+    {
+	GetLastError();
+	cerr << "repl_from_socket: couldn't set stdin to socket\n";
+    }
+#else
     dup2(fd,0);                     // make socket into stdin
     // dup2(fd,1);                     // make socket into stdout
+#endif
     hd.repl_puts = ignore_puts;
     hd.repl_print = acknowledge_sock_print;
     hd.repl_eval = NULL;
+#ifdef WIN32
+    hd.repl_read = lreadwinsock;
+#else
     hd.repl_read = NULL;
+#endif
     siod_interactive = FALSE;
     siod_server_socket = fd;
 

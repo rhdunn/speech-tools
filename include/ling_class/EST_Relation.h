@@ -168,9 +168,9 @@ class EST_Relation
 			 );
 
     /** Load relation from already open tokenstream */
-    EST_read_status EST_Relation::load(const EST_String &filename,
-				   EST_TokenStream &ts,
-				   const EST_String &type);
+    EST_read_status load(const EST_String &filename,
+			 EST_TokenStream &ts,
+			 const EST_String &type);
 
     /** Save relation to file */
     EST_write_status save(const EST_String &filename, 

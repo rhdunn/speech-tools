@@ -39,6 +39,9 @@
 #include "EST.h"
 #include "EST_audio.h"
 #include "EST_cmd_line_options.h"
+#ifdef WIN32
+#include "Mmsystem.h"
+#endif
 
 int record_voxware_wave(EST_Wave &inwave, EST_Option &al);
 
@@ -109,6 +112,7 @@ int main (int argc, char *argv[])
     if (al.present("-o"))
 	out_file = al.val("-o");
 
+#ifndef WIN32
     if (record_wave(wave,al) != 0)
     {
 	return -1;
@@ -116,6 +120,32 @@ int main (int argc, char *argv[])
 
     write_wave(wave, out_file, al);
     return 0;
+#else
+	char command_buffer[100];
+	MCIERROR audio_error;
+	EST_String save_command("save mysound ");
+
+	if (!al.present("-o"))
+	{
+		cerr << "na_record: for Win32 version, must specify an output file with the -o flag" << endl;
+		return -1;
+	}
+	save_command += al.val("-o");
+
+	audio_error = mciSendString("open new type waveaudio alias mysound buffer 6",NULL,0,NULL);
+
+	sprintf(command_buffer,"set mysound time format ms bitspersample 16 samplespersec %d",
+		al.val("-f"));
+	audio_error = mciSendString(command_buffer,NULL, 0 ,NULL);
+
+	sprintf(command_buffer,"record mysound from 0 to %d wait",(int)(1000*al.fval("-time")));
+	audio_error = mciSendString(command_buffer,NULL,0,NULL);
+	audio_error = mciSendString(save_command,NULL,0,NULL);
+	audio_error = mciSendString("close mysound",NULL,0,NULL);
+
+	return 0;
+#endif
+
 }
 
 

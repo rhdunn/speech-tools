@@ -47,7 +47,7 @@
   * the server process.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Server.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_Server.h,v 1.3 2002/12/26 15:48:53 awb Exp $
   */
 
 class EST_Server {
@@ -124,7 +124,7 @@ private:
   Mode p_mode;
 
   void zero(void);
-  void EST_Server::init(ostream *trace);
+  void init(ostream *trace);
 
   void initClient(const EST_ServiceTable::Entry &e, ostream *trace);
   void initClient(EST_String name, EST_String type, ostream *trace);

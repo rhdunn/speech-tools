@@ -106,7 +106,7 @@ EST_Regex RXdouble("-?\\(\\([0-9]+\\.[0-9]*\\)\\|\\([0-9]+\\)\\|\\(\\.[0-9]+\\)\
 // use this to free compiled regex since the regexp package uses malloc
 // and walloc might end up doing something clever.
 
-extern "C" void free(void *p);
+/* extern "C" void free(void *p); */
 
 #if NSUBEXP != EST_Regex_max_subexpressions
 #   error "EST_Regex_max_subexpressions must be equal to  NSUBEXP" 

@@ -240,3 +240,84 @@ int recognize(const EST_WFST &wfst,const EST_IList &in,
     else 
 	return FALSE;
 }
+
+int recognize_for_perplexity(const EST_WFST &wfst,
+			     const EST_StrList &in,
+			     int quiet,
+			     float &count,
+			     float &sumlogp)
+{
+    // Map names to internal ints before recognition
+    EST_Litem *p;
+    EST_IList in_i,out_i;
+    int i,o;
+    int r;
+    
+    for (p=in.head(); p != 0; p=next(p))
+    {
+	if (in(p).contains("/"))
+	{
+	    i = wfst.in_symbol(in(p).before("/"));
+	    o = wfst.out_symbol(in(p).after("/"));
+	}
+	else
+	{
+	    i = wfst.in_symbol(in(p));
+	    o = wfst.out_symbol(in(p));
+	}
+	in_i.append(i);
+	out_i.append(o);
+    }
+    
+    r = recognize_for_perplexity(wfst,in_i,out_i,quiet,count,sumlogp);
+    
+    return r;
+}
+
+int recognize_for_perplexity(const EST_WFST &wfst,
+			     const EST_IList &in, 
+			     const EST_IList &out, 
+			     int quiet,
+			     float &count,
+			     float &sumlogp)
+{
+    int state = wfst.start_state();
+    EST_Litem *p,*q;
+    int nstate;
+    float prob;
+    count = 0;
+    sumlogp = 0;
+    
+    for (p=in.head(),q=out.head();
+	 ((p != 0) && (q != 0));
+	 p=next(p),q=next(q))
+    {
+	nstate = wfst.transition(state,in(p),out(q),prob);
+	count++;
+	if (prob > 0)
+	    sumlogp += log(prob);
+	else
+	    sumlogp += -100;  // bad hack
+	if (!quiet)
+	    printf("state %d %s/%s -> %d\n",state,
+		   (const char *)wfst.in_symbol(in(p)),
+		   (const char *)wfst.out_symbol(out(q)),
+		   nstate);
+	state = nstate;
+	if (state == WFST_ERROR_STATE)
+	    return FALSE;
+    }
+    
+    if (p != q)
+    {  
+	cerr << "wfst recognize: in/out tapes of different lengths"
+	    << endl;
+	return FALSE;
+    }
+    
+    if (wfst.final(state))
+	return TRUE;
+    else 
+	return FALSE;
+}
+

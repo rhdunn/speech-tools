@@ -115,10 +115,12 @@ static int sb_set_sample_rate(int sbdevice, int samp_rate)
     int fmt;
     int sfmts;
     int stereo=0;
+    int channels=1;
 
     ioctl(sbdevice,SNDCTL_DSP_RESET,0);
     ioctl(sbdevice,SNDCTL_DSP_SPEED,&samp_rate);
     ioctl(sbdevice,SNDCTL_DSP_STEREO,&stereo);
+    ioctl(sbdevice,SNDCTL_DSP_CHANNELS,&channels);
     ioctl(sbdevice,SNDCTL_DSP_GETFMTS,&sfmts);
 
     if (sfmts == AFMT_U8)
@@ -303,7 +305,7 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
     }
     else if (actual_fmt == AFMT_U8)
     {
-	inwave.resize(sample_rate*al.ival("-time"));
+	inwave.resize((int)(sample_rate*al.fval("-time")));
 	inwave.set_sample_rate(sample_rate);
 	num_samples = inwave.num_samples();
 	waveform = inwave.values().memory();

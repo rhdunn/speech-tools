@@ -136,6 +136,8 @@ static int wagon_main(int argc, char **argv)
 	 "-o <ofile>        File to save output tree in\n"+
 	 "-distmatrix <ifile>\n"+
 	 "                  A distance matrix for clustering\n"+
+	 "-unittracks <ifile>\n"+
+         "                  dir with unit tracks in it\n"+
 	 "-quiet            No questions printed during building\n"+
 	 "-verbose          Lost of information printing during build\n"+
 	 "-predictee <string>\n"+
@@ -241,6 +243,18 @@ static int wagon_main(int argc, char **argv)
     {
 	cerr << "wagon: distance matrix is smaller than number of training elements\n";
 	exit(-1);
+    }
+    else if (al.present("-unittracks"))
+    {
+	// This wont do when the list is pruned
+	int i;
+	wgn_UnitTracks = new EST_Track[wgn_dataset.length()];
+	for (i=0; i<wgn_dataset.length(); i++)
+	{
+	    char num[1024];
+	    sprintf(num,"%d",i);
+	    wgn_UnitTracks[i].load((al.val("-unittracks"))+"/"+num+".unit");
+	}
     }
 
     if (al.present("-test"))

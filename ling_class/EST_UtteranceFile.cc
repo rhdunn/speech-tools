@@ -406,6 +406,44 @@ EST_write_status EST_UtteranceFile::save_xlabel(ostream &outf,
 #if defined(INCLUDE_XML_FORMATS)
 
 #include "genxml.h"
+#include "apml.h"
+
+// APML support
+EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
+						EST_Utterance &u, 
+						int &max_id)
+{
+  FILE *stream;
+
+  if ((stream=ts.filedescriptor())==NULL)
+    return read_error;
+
+  long pos=ftell(stream);
+
+  {
+  char buf[80];
+
+  fgets(buf, 80, stream);
+
+  if (strncmp(buf, "<?xml", 5) != 0)
+    return read_format_error;
+
+  fgets(buf, 80, stream);
+
+  if (strncmp(buf, "<!DOCTYPE apml", 14) != 0)
+    return read_format_error;
+  }
+
+  fseek(stream, pos, 0);
+
+  EST_read_status stat = apml_read(stream, ts.filename(),u, max_id);
+
+  if (stat != read_ok)
+    fseek(stream, pos, 0);
+
+  return stat;
+}
+
 
 // GenXML support
 
@@ -591,6 +629,8 @@ Start_TNamedEnumI_T(EST_UtteranceFileType, EST_UtteranceFile::Info, EST_Utteranc
   { uff_est,		{ "est", "est_ascii"}, 
     { TRUE, EST_UtteranceFile::load_est_ascii,  EST_UtteranceFile::save_est_ascii, "Standard EST Utterance File" } },
 #if defined(INCLUDE_XML_FORMATS)
+  { uff_apml,		{ "apml", "xml"}, 
+    { TRUE, EST_UtteranceFile::load_apml,  NULL, "Utterance in APML" } },
   { uff_genxml,		{ "genxml", "xml"}, 
     { TRUE, EST_UtteranceFile::load_genxml,  EST_UtteranceFile::save_genxml, "Utterance in XML, Any DTD" } },
 #endif

@@ -52,7 +52,6 @@ static LISP prod_join(LISP n, LISP p);
 static int production_index(LISP state,
 			    EST_WFST_MultiStateIndex &index,
 			    int proposed);
-static void pi_delete(void *n);
 
 void rgcompile(LISP rg, EST_WFST &all_wfst)
 {
@@ -136,7 +135,7 @@ void EST_WFST::build_from_rg(LISP inalpha, LISP outalpha,
     int ns, current_state;
     const char *current_sym;
     LISP agenda = NIL;
-    EST_WFST_MultiStateIndex index;
+    EST_WFST_MultiStateIndex index(100);
     (void)max_depth;
     int c=0;
 
@@ -224,18 +223,6 @@ void EST_WFST::build_from_rg(LISP inalpha, LISP outalpha,
 	    }
 	}
     }
-
-    index.clear(pi_delete);
-}
-
-typedef struct {
-    int name;
-} EST_WFST_MSindex;
-
-static void pi_delete(void *n)
-{
-    EST_WFST_MSindex *t = (EST_WFST_MSindex *)n;
-    delete t;
 }
 
 static int production_index(LISP state,
@@ -252,17 +239,20 @@ static int production_index(LISP state,
     for (p=state; p != NIL; p = cdr(p))
 	istring += EST_String(get_c_string(car(p))) + " ";
 
-    EST_WFST_MSindex *msi;
+    int ns,found;
 
-    if ((msi = (EST_WFST_MSindex *)index.lookup(istring)) == 0)
+    for (p=state; p != NIL; p = cdr(p))
+	istring += EST_String(get_c_string(car(p))) + " ";
+
+    ns = index.val(istring,found);
+    if (found)
+	return ns;
+    else
     {
-	EST_WFST_MSindex *nr = new EST_WFST_MSindex;
-	nr->name = proposed;
-	index.add(istring,(void *)nr);
-	msi = nr;
+        index.add_item(istring,proposed);
+	return proposed;
     }
 
-    return msi->name;
 }
 
 static LISP prod_join(LISP n, LISP p)

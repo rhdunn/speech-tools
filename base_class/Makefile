@@ -49,13 +49,14 @@ T = EST_TList.cc EST_TSortable.cc EST_TKVL.cc \
 	EST_TMatrix.cc EST_TSimpleMatrix.cc \
 	EST_TVector.cc EST_TSimpleVector.cc \
 	EST_THash.cc EST_Tvectlist.cc \
-	EST_TTimeIndex.cc EST_TDeque.cc
+	EST_TTimeIndex.cc EST_TDeque.cc \
+        EST_TBuffer.cc EST_TNamedEnum.cc
 
 TSRCS =  EST_Featured.cc EST_Features.cc
 
 CPPSRCS = EST_UList.cc EST_Option.cc EST_StringTrie.cc EST_Token.cc \
-	EST_TNamedEnum.cc vec_mat_aux.cc EST_Pathname_unix.cc THash_aux.cc \
-	EST_TBuffer.cc EST_FMatrix.cc EST_Complex.cc EST_Val.cc \
+	vec_mat_aux.cc EST_Pathname_unix.cc THash_aux.cc \
+	EST_FMatrix.cc EST_Complex.cc EST_Val.cc \
 	EST_matrix_support.cc rateconv.cc \
         EST_IMatrix.cc EST_SMatrix.cc \
         EST_DMatrix.cc vec_mat_aux_d.cc EST_FeatureData.cc\

@@ -94,6 +94,7 @@ INCLUDE_MODULES += NATIVE_AUDIO
 ## It may not work under all systems, so may be optionally omitted.
 INCLUDE_MODULES += EDITLINE
 
+TERMCAPLIB = @TERMCAPLIB@
 # speech recognition
 #INCLUDE_MODULES += ASR
 

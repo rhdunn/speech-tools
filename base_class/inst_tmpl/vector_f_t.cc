@@ -53,4 +53,27 @@ Declare_TSimpleVector(float)
 Instantiate_TVector(float)
 Instantiate_TSimpleVector(float)
 
+EST_write_status save(const EST_String &filename, const EST_TVector<float> &a)
+{
+    int i;
+    ostream *outf;
+    EST_String s;
+    if (filename == "-")
+	outf = &cout;
+    else
+	outf = new ofstream(filename);
+    
+    if (!(*outf)) return misc_write_error;
+
+    for (i = 0; i < a.n(); ++i)
+    {
+      *outf << a(i) << "\t";
+    }
+    *outf << endl;
+    
+    if (outf != &cout)
+	delete outf;
+    return write_ok;
+}
+
 #endif

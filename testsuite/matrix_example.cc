@@ -56,6 +56,9 @@
 #include "EST_TMatrix.h"
 #include "EST_String.h"
 
+EST_write_status save(const EST_String &filename, const EST_TVector<float> &a);
+EST_write_status save(const EST_String &filename, const EST_TMatrix<float> &a);
+
 //@} code
 
 static inline int max(int a, int b) { return a>b?a:b; }
@@ -101,7 +104,7 @@ int main(void)
     */
   //@{ code
   cout << "Initial Matrix\n";
-  m.save("-");
+  save("-",m);
   cout << "\n";
   //@} code
 
@@ -114,7 +117,7 @@ int main(void)
   //@} code
 
   cout << "Resized Matrix\n";
-  m.save("-");
+  save("-",m);
   cout << "\n";
 
   // Fill it with something easy to recognise.
@@ -124,7 +127,7 @@ int main(void)
 
   // Write to standard output in an ascii format.
   cout << "Full Matrix\n";
-  m.save("-");
+  save("-",m);
   cout << "\n";
 
   //@}
@@ -168,7 +171,7 @@ int main(void)
   //@}
 
   cout << "Updated Matrix (column 5 replaced with 100s from buffer)\n";
-  m.save("-");
+  save("-",m);
   cout << "\n";
 
   /**@name Sub-Matrices and Sub-Vectors
@@ -200,15 +203,15 @@ int main(void)
   //@} code
 
   cout <<"Row 10 extracted as sub vector\n";
-  row.save("-");
+  save("-",row);
   cout << "\n";
 
   cout <<"Column 3 extracted as sub vector\n";
-  column.save("-");
+  save("-",column);
   cout << "\n";
 
   cout <<"Rectangle extracted as sub vector\n";
-  rectangle.save("-");
+  save("-",rectangle);
   cout << "\n";
 
   /**  If we update the sub-vector, the main matrix changes.
@@ -253,7 +256,7 @@ int main(void)
   //@}
 
   cout << "Updated Matrix (row 10 becomes squares, column 3 becomes cubes, center becomes negative)\n";
-  m.save("-");
+  save("-",m);
   cout << "\n";
 
   exit(0);

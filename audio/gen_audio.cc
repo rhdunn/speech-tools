@@ -138,7 +138,7 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 static int play_socket_wave(EST_Wave &inwave, EST_Option &al)
 {
     // Send inwave down the given fd (a socket)
-    int fd;
+    SOCKET_FD fd;
     EST_String otype;
     EST_String tmpfile = make_tmp_filename();
 

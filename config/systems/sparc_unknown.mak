@@ -1,4 +1,4 @@
-#########################################################-*-mode:Makefile-*-
+ ###########################################################################
  ##                                                                       ##
  ##                Centre for Speech Technology Research                  ##
  ##                     University of Edinburgh, UK                       ##
@@ -31,110 +31,11 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Wed Oct  1 1997                               ##
+ ##                 Author: Alan W Black (awb@cstr.ed.ac.uk)              ##
  ## --------------------------------------------------------------------  ##
- ## Things specific to the Speech Tools.                                  ##
+ ## Settings for SunOS 5.8                                                ##
  ##                                                                       ##
  ###########################################################################
 
-
-PROJECT_NAME = Edinburgh Speech Tools Library
-PROJECT_PREFIX = EST
-PROJECT_VERSION = 1.2.3
-PROJECT_DATE = Jan 2003
-PROJECT_STATE = release
-
-# Speech tools knows where speech_tools is. Probably.
-
-EST=$(TOP)
-
-# Where the main RCS tree is, probably only used within CSTR
-
-CENTRAL_DIR = $(LOCAL_REPOSITORY)/speech_tools
-
-# Place to find the optional modules for this project.
-
-MODULE_DIRECTORY = $(TOP)
-
-# List of all known modules
-
-DISTRIBUTED_MODULES = \
-	NAS_AUDIO ESD_AUDIO NATIVE_AUDIO MPLAYER_AUDIO \
-	EDITLINE \
-	SIOD WAGON SCFG WFST OLS \
-	JAVA JAVA_CPP JAVA_MEDIA \
-	TCL RXP
-
-DEVELOPMENT_MODULES = \
-	ASR 
-
-UTILITY_MODULES = \
-	EFENCE DMALLOC DEBUGGING
-
-ALL_REAL_MODULES = \
-	$(DISTRIBUTED_MODULES) \
-	$(DEVELOPMENT_MODULES)
-
-ALL_MODULES = \
-	$(ALL_REAL_MODULES) \
-	$(UTILITY_MODULES)
-
-# Place where programs are compiled
-
-PROJECT_MAIN_DIR=$(TOP)/main
-PROJECT_SCRIPTS_DIR=$(TOP)/scripts
-PROJECT_LIB_DIR = $(TOP)/lib
-
-
-# Libraries defined in this project
-
-PROJECT_LIBRARIES = estools estbase eststring 
-
-PROJECT_LIBRARIES_JAVA = estjava
-
-PROJECT_LIBRARY_DIR = lib
-PROJECT_LIBRARY_DIR_estools = $(TOP)/lib
-PROJECT_LIBRARY_DIR_estbase = $(TOP)/lib
-PROJECT_LIBRARY_DIR_eststring = $(TOP)/lib
-PROJECT_LIBRARY_DIR_estjava = $(TOP)/lib
-
-PROJECT_LIBRARY_USES_estbase = eststring
-
-PROJECT_LIBRARY_USES_estjava = estbase eststring
-
-PROJECT_LIBRARY_VERSION_estools = $(PROJECT_VERSION).1
-PROJECT_LIBRARY_VERSION_estbase = $(PROJECT_VERSION).1
-PROJECT_LIBRARY_VERSION_eststring = 1.2
-PROJECT_LIBRARY_VERSION_estjava = $(PROJECT_VERSION).1
-
-PROJECT_LIBRARY_NEEDS_SYSLIBS_estjava=1
-
-PROJECT_DEFAULT_LIBRARY = estools
-
-PROJECT_SHARED_LIBRARIES = eststring estbase
-PROJECT_ALL_LIBRARIES = eststring estbase estools
-
-JAVA_CLASS_LIBRARY = $(LOCAL_JAVA_CLASS_LIBRARY)
-
-JAVA_CLASSPATH=$(LOCAL_JAVA_CLASSPATH):$(SYSTEM_JAVA_CLASSPATH)
-
-PROJECT_JAVA_ROOT=$(LOCAL_JAVA_ROOT)
-
-# Libraries used from other projects
-
-REQUIRED_LIBRARIES = 
-
-# Includes for this and related projects
-
-PROJECT_INCLUDES = -I$(TOP)/include
-
-PROJECT_TEMPLATE_DIRS = include audio utils \
-        base_class base_class/string base_class/templ_inst \
-        ling_class speech_class sigpr stats grammar
-PROJECT_TEMPLATE_DBS  = $(TOP)
-
-# Places to look for documentation
-
-DOCXX_DIRS = $(TOP)/include $(TOP)/testsuite
+include $(EST)/config/systems/sparc_SunOS5.mak
 

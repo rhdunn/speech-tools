@@ -1,13 +1,13 @@
 		EDINBURGH SPEECH TOOLS LIBRARY
-                 VERSION 1.2.1 November 1999
+                 VERSION 1.2.3 January 2003
 
-Principal authors: Paul Taylor, Alan W Black, Richard Caley and Simon King
+Principal authors: Alan W Black, Paul Taylor, Richard Caley and Simon King
 
 Centre for Speech Technology
 University of Edinburgh 
 80 South Bridge
 Edinburgh EH1 1HN, UK
-http://www.cstr.ed.ac.uk/projects/speech_tools.html
+http://www.cstr.ed.ac.uk/projects/speech_tools
 
 Although this is a considered stable release, there are still a number
 of known parts are missing or incomplete.
@@ -24,10 +24,10 @@ basic signal processing software.
 ========================================================================
 
 
-            Edinburgh Speech Tools Library version 1.2.1
+            Edinburgh Speech Tools Library version 1.2.3
               Centre for Speech Technology Research                
                    University of Edinburgh, UK                     
-                    Copyright (c) 1994-1999
+                    Copyright (c) 1994-2003
                       All Rights Reserved.                         
                                                                    
 Permission is hereby granted, free of charge, to use and distribute  
@@ -92,6 +92,9 @@ However none have any commercial restrictions, and no files fall under
 the GPL.  Specifically files that have different licences are as
 follows:
 
+grammar/wfst/wfst_train.cc
+        Copyright Carnegie Mellon University (under the same
+        open licences as much of the rest of the code.
 siod/ 
 include/siod*.h
 lib/siod/siod.scm
@@ -144,6 +147,7 @@ Simmule Turner and Rich Salz: for editline
 Henry Spencer: for regex code
 The Regents of the University of California: some string comparison code
 Richard Tobin: RXP, XML parser.
+Arthur Toth: Windows server code
 
 INSTALLATION
 ************

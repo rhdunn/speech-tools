@@ -32,25 +32,29 @@
  ###########################################################################
  ##                                                                       ##
  ##                 Author: Alan W Black (awb@cs.cmu.edu)                 ##
- ##                   Date: Thu Sept 2 1999                               ##
+ ##                   Date: Sun Aug 25 2002                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for GCC-2.95.1                                               ##
+ ## Settings for GCC-3.1                                                  ##
  ##                                                                       ##
  ###########################################################################
 
 include $(EST)/config/compilers/gcc_defaults.mak
 
-COMPILER_DESC=FSF gcc2.95.1
+COMPILER_DESC=gcc-3.1
 
-ifndef GCC295
-    GCC295 = gcc
+ifndef GCC31
+    GCC31 = gcc
 endif
 
-CC= $(GCC295)
-CXX = $(GCC295)
+CC= $(GCC31)
+CXX = $(GCC31)
 
-CXXFLAGS  +=  -fguiding-decls
+WARN_CXXFLAGS  +=  -Wno-non-template-friend
 
 STATIC_LINKFLAGS = -Dstatic
 
 COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++
+
+
+
+

@@ -48,7 +48,7 @@
 /**@name Hash Tables
   *
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_THash.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_THash.h,v 1.3 2002/12/26 15:48:53 awb Exp $
   */
 //@{
 
@@ -277,11 +277,16 @@ public:
 template<class V>
 class EST_TStringHash : public EST_THash<EST_String, V> {
 public:
+
   /// Create a string hash table of <parameter>size</parameter> buckets.
   EST_TStringHash(int size) : EST_THash<EST_String, V>(size, StringHash) {};
 
   /// An entry returned by the iterator is a key value pair.
   typedef EST_Hash_Pair<EST_String, V> Entry;
+
+/*    struct IPointer_s{  unsigned int b; Entry *p; };
+      typedef struct IPointer_s IPointer; */
+
 
   /// Give the iterator a sensible name.
   typedef EST_TStructIterator< EST_THash<EST_String, V>, IPointer, EST_Hash_Pair<EST_String, V> > Entries;
@@ -290,6 +295,9 @@ public:
   //@}
 
   typedef EST_String KeyEntry;
+
+/*  struct IPointer_k_s {  unsigned int b; EST_Hash_Pair<EST_String, V> *p; };
+    typedef struct IPointer_k_s IPointer_k; */
 
   /// Give the iterator a sensible name.
   typedef EST_TIterator< EST_THash<EST_String, V>, IPointer_k, EST_String > KeyEntries;

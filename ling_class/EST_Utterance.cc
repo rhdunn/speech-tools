@@ -128,7 +128,7 @@ static EST_Item *item_id(EST_Item *p, const EST_String &n)
     return 0;
 }
 
-EST_Item *EST_Utterance::id(const EST_String &n)
+EST_Item *EST_Utterance::id(const EST_String &n) const
 {
     EST_Item *s, *t;
     EST_Features::Entries p;
@@ -157,7 +157,7 @@ void EST_Utterance::remove_relation(const EST_String &n)
 	relations.remove(n);
 }
 
-EST_Relation *EST_Utterance::relation(const char *name,int err)
+EST_Relation *EST_Utterance::relation(const char *name,int err) const
 {
     if (err)
 	return ::relation(relations.f(name));
