@@ -250,10 +250,22 @@ public:
         */
     void copy_row(int r, T *buf, int offset=0, int num=-1) const;
 
+    /** Copy row <parameter>r</parameter> of matrix to
+        <parameter>buf</parameter>. <parameter>buf</parameter> should be
+        pre-malloced to the correct size.  */
+    
+    void copy_row(int r, EST_TVector<T> &t, int offset=0, int num=-1) const;
+
     /** Copy column {\tt c} of matrix to {\tt buf}. {\tt buf}
         should be pre-malloced to the correct size.
         */
     void copy_column(int c, T *buf, int offset=0, int num=-1) const;
+
+    /** Copy column <parameter>c</parameter> of matrix to
+        <parameter>buf</parameter>. <parameter>buf</parameter> should
+        be pre-malloced to the correct size.  */
+
+    void copy_column(int c,  EST_TVector<T> &t, int offset=0, int num=-1)const;
 
     /** Copy buf into row {\tt n} of matrix. 
         */

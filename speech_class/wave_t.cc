@@ -39,15 +39,19 @@
 
 
 #include "EST_TList.h"
+#include "EST_TVector.h"
 #include "EST_Wave.h"
 
 Declare_TList(EST_Wave)
+Declare_TVector(EST_Wave)
 
 #if defined(INSTANTIATE_TEMPLATES)
 
 #include "../base_class/EST_TList.cc"
+#include "../base_class/EST_TVector.cc"
 
 Instantiate_TList(EST_Wave)
+Instantiate_TVector(EST_Wave)
 
 #endif
 

@@ -212,7 +212,7 @@ void EST_TMatrix<T>::just_resize(int new_rows,
 {
     T *new_m;
 
-    if (num_rows() != new_rows || num_columns() != new_cols)
+    if (num_rows() != new_rows || num_columns() != new_cols || p_memory == NULL )
       {
 	if (p_sub_matrix)
 	  EST_error("Attempt to resize Sub-Matrix");
@@ -392,6 +392,26 @@ void EST_TMatrix<T>::copy_row(int r, T *buf,
 }
 
 template<class T>
+void EST_TMatrix<T>::copy_row(int r, EST_TVector<T> &buf,
+                              int offset, int num) const
+{
+    int to = num >= 0 ? offset + num : num_columns();
+
+    if (!EST_matrix_bounds_check(r, 0, num_rows(), num_columns(), FALSE))
+      if (num_rows()>0)
+        r=0;
+      else
+        return;
+
+
+    buf.resize(to - offset);
+
+    for (int j = offset; j < to; j++)
+      buf[j - offset] = fast_a_m(r, j);
+}
+
+
+template<class T>
 void EST_TMatrix<T>::copy_column(int c, T *buf, 
 						   int offset, int num) const
 {
@@ -488,6 +508,9 @@ void EST_TMatrix<T>::row(EST_TVector<T> &rv, int r, int start_c, int len)
   rv.p_num_columns = len;
   rv.p_offset = p_offset + start_c*p_column_step + r*p_row_step;
   rv.p_memory = p_memory - p_offset + rv.p_offset;
+//  cout << "mrow: mem: " << rv.p_memory << " (" << (int)rv.p_memory << ")\n";
+//  cout << "mrow: ofset: " << rv.p_offset << " (" << (int)rv.p_offset << ")\n";
+
   rv.p_column_step=p_column_step;
 }
 
@@ -507,6 +530,9 @@ void EST_TMatrix<T>::column(EST_TVector<T> &cv, int c, int start_r, int len)
   cv.p_num_columns = len;
   cv.p_offset = p_offset + c*p_column_step + start_r*p_row_step;
   cv.p_memory = p_memory -p_offset + cv.p_offset;
+//  cout << "mcol: mem: " << cv.p_memory << " (" << (int)cv.p_memory << ")\n";
+//  cout << "mcol: offset: " << cv.p_offset << " (" << (int)cv.p_offset << ")\n";
+
   cv.p_column_step=p_row_step;
 }
 

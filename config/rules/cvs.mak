@@ -52,7 +52,7 @@ endif
 
 update:
 	@ echo "Updating in directory $(DIRNAME) ..."
-	$(CVS) update
+	$(CVS) update -d
 
 # check in writable files
 

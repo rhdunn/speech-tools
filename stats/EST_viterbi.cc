@@ -262,26 +262,25 @@ void EST_Viterbi_Decoder::search(void)
 		    }
 	    }
 
-	    if(big_is_good)
-		score_cutoff = best_score - overall_path_pruning_envelope_width;
-	    else
-		score_cutoff = best_score + overall_path_pruning_envelope_width;
-	    
-	    if(do_pruning && trace)
+	    if (do_pruning)
 	    {
-		cerr << "Considered " << cands_considered << " of ";
-		cerr << cand_count*cand_count << " candidate paths" << endl;
-		cerr << "FRAME: best score " << best_score;
-		cerr << "  score cutoff " << score_cutoff << endl;
-		cerr << "       best candidate score " << best_candidate_score;
-		cerr << "  candidate cutoff " << candidate_cutoff << endl;
-	    }
+		if(big_is_good)
+		    score_cutoff = 
+			best_score - overall_path_pruning_envelope_width;
+		else
+		    score_cutoff = 
+			best_score + overall_path_pruning_envelope_width;
+		if(trace)
+		{
+		    cerr << "Considered " << cands_considered << " of ";
+		    cerr << cand_count*cand_count << " candidate paths" << endl;
+		    cerr << "FRAME: best score " << best_score;
+		    cerr << "  score cutoff " << score_cutoff << endl;
+		    cerr << "       best candidate score " << best_candidate_score;
+		    cerr << "  candidate cutoff " << candidate_cutoff << endl;
+		}
 
-
-	    if(do_pruning)
-	    {
-		dcount=0;
-		pcount=0;
+		dcount=0; pcount=0;
 		for (i=0; i<p->next->num_states; i++)
 		    if(p->next->st_paths[i] != 0)
 		    {

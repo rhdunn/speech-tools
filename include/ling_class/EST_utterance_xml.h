@@ -38,7 +38,7 @@
 /** Export some RXP functionality for use in festival.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_utterance_xml.h,v 1.2 1999/05/30 13:52:14 awb release $
+  * @version $Id: EST_utterance_xml.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 #include "rxp/XML_Parser.h"

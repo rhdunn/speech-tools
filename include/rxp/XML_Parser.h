@@ -62,7 +62,7 @@
   * A C++ wrapper around the rxp parser.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: XML_Parser.h,v 1.10 1999/05/30 13:52:15 awb release $
+  * @version $Id: XML_Parser.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 

@@ -39,7 +39,7 @@
 /** Instantiate rules for named enum template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TNamedEnumI.h,v 1.4 1999/06/15 17:59:18 rjc release $
+  * @version $Id: EST_TNamedEnumI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 // Instantiation Macros

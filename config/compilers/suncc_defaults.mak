@@ -44,8 +44,8 @@ CXX = CC
 COMPILER_DESC=Sun CC
 COMPILER_VERSION_COMMAND=$(CXX) -V 2>&1 | sed -e '/CC: /{s///;q;}'
 
-CFLAGS =$(suncc_system_options)
-CXXFLAGS = $(suncc_system_options) -D__svr4__
+CFLAGS =$(suncc_system_options) $(CC_OTHER_FLAGS)
+CXXFLAGS = $(suncc_system_options) -D__svr4__ $(CC_OTHER_FLAGS)
 
 DEBUG_CCFLAGS  = -g
 DEBUG_CXXFLAGS =  -g

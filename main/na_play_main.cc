@@ -154,7 +154,7 @@ int main (int argc, char *argv[])
 	 "                 for protocol\n"
 	 "-scale <float>    change the gain (volume) of the signal. 1.0 is default\n"
 	 "-v               verbose. Print file names when playing\n"
-	 "-wait               verbose. Print file names when playing\n",
+	 "-wait            wait for a key to be pressed between each file\n",
 	 files, al);
 
     // by default, prase_cl_ops adds a stdout file called "-". This is

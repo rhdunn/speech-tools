@@ -37,7 +37,7 @@
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/ix86_Linux2.0.mak
+include $(EST)/config/systems/Linux.mak
 include $(EST)/config/systems/RedHatLinux.mak
 
 GCC=gcc27

@@ -44,8 +44,8 @@ CXX =gcc
 COMPILER_DESC=FSF gcc
 COMPILER_VERSION_COMMAND=$(CXX) -v 2>&1 | tail -1 | sed -e 's/^....//'
 
-CFLAGS  = $(GCC_SYSTEM_OPTIONS)
-CXXFLAGS  =  $(GCC_SYSTEM_OPTIONS) -fno-implicit-templates
+CFLAGS  = $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS)
+CXXFLAGS  =  $(GCC_SYSTEM_OPTIONS) -fno-implicit-templates $(CC_OTHER_FLAGS)
 
 DEBUG_CCFLAGS   = -g
 DEBUG_CXXFLAGS  = -g

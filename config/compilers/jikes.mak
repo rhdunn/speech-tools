@@ -32,17 +32,37 @@
  ###########################################################################
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
+ ##                   Date: Fri Feb 27th 1998                             ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 6.2 (untested)                             ##
+ ## Descriptin of Sun's JDK 1.1.*                                         ##
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/alpha_Linux2.2.mak
-include $(EST)/config/systems/alpha_RedHatLinux.mak
+include $(EST)/config/compilers/jikes_defaults.mak
 
-ifndef GCC
-    GCC=egcs
+JAVA_COMPILER_DESC=Jikes
+
+JAVA_COMPILER_VERSION_COMMAND=$(JAVAC) 2>&1 | sed -n '/^\(Version.*)\).*/{s//\1/;p;}' 
+
+ifndef SYSTEM_JAVA_CLASSPATH
+ifdef CLASSPATH
+    SYSTEM_JAVA_CLASSPATH = $(CLASSPATH)
+else
+    SYSTEM_JAVA_CLASSPATH = $(JAVA_HOME)/lib/classes.zip
 endif
-EGCS_CC=gcc
-EGCS_CXX=g++
-CFLAGS += -mieee
+endif
+
+JAVAFLAGS = -depend
+
+DEBUG_JAVAFLAGS = -g
+
+WARN_JAVAFLAGS  = -deprecation +P
+NOWARN_JAVAFLAGS  =  -nowarn
+
+VERBOSE_JAVAFLAGS = -verbose
+
+OPTIMISE_JAVAFLAGS = -O
+
+
+
+

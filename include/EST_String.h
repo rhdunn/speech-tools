@@ -71,7 +71,7 @@ extern "C" void abort(void);
   * @see string_example
   * @author Alan W Black <awb@cstr.ed.ac.uk>
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_String.h,v 1.48.4.2 1999/11/03 17:55:25 awb Exp $
+  * @version $Id: EST_String.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 class EST_String {

@@ -39,7 +39,7 @@
   * is a simple one channel wave. This can speed up access.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_SingleChannelWave.h,v 1.2 1999/05/30 13:51:47 awb release $
+  * @version $Id: EST_SingleChannelWave.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 #include "EST_Wave.h"

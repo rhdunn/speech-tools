@@ -719,8 +719,8 @@ void init_subrs_file(void)
   Get next character from FILEP.  Character is returned as a number. If\n\
   FILEP is nil, or not specified input comes from stdin.");
  init_subr_2("putc",lputc,
- "(putc CHAR FILEP)\n\
-  Put CHAR (a number) as a character to FILEP.  If FILEP is nil or not\n\
+ "(putc ECHAR FILEP)\n\
+  Put ECHAR (a number) as a character to FILEP.  If FILEP is nil or not\n\
   specified output goes to stdout.");
  init_subr_2("puts",lputs,
  "(puts STRING FILEP)\n\

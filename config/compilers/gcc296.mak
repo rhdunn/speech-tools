@@ -2,7 +2,7 @@
  ##                                                                       ##
  ##                Centre for Speech Technology Research                  ##
  ##                     University of Edinburgh, UK                       ##
- ##                         Copyright (c) 1996                            ##
+ ##                         Copyright (c) 1999                            ##
  ##                        All Rights Reserved.                           ##
  ##                                                                       ##
  ##  Permission is hereby granted, free of charge, to use and distribute  ##
@@ -31,12 +31,30 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Robert Clark (robert@cstr.ed.ac.uk)           ##
+ ##                 Author: Alan W Black (awb@cs.cmu.edu)                 ##
+ ##                   Date: Thu Sept 2 1999                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 6.1 PPC (educated guess)                   ##
+ ## Settings for GCC-2.95.1                                               ##
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/ppc_Linux2.0.mak
-include $(EST)/config/systems/RedHatLinux.mak
+include $(EST)/config/compilers/gcc_defaults.mak
+
+COMPILER_DESC=RH gcc2.96
+
+ifndef GCC296
+    GCC296 = gcc
+endif
+
+CC= $(GCC296)
+CXX = $(GCC296)
+
+WARN_CXXFLAGS  +=  -Wno-non-template-friend
+
+STATIC_LINKFLAGS = -Dstatic
+
+COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++
+
+
+
 

@@ -37,7 +37,7 @@
 /*  awb Dec 30 1998                                                         */
 /*                                                                          */
 /****************************************************************************/
-/*  $Revision: 1.4 $
+/*  $Revision: 1.2 $
 **
 **  Internal header file for editline library.
 **
@@ -76,11 +76,11 @@ typedef STATUS (*Keymap_Function)();
 #include "os9.h"
 #endif	/* defined(SYS_OS9) */
 
-#if	!defined(SIZE_T)
-#define SIZE_T	unsigned int
-#endif	/* !defined(SIZE_T) */
+#if	!defined(ESIZE_T)
+#define ESIZE_T	unsigned int
+#endif	/* !defined(ESIZE_T) */
 
-typedef unsigned char	CHAR;
+typedef unsigned char	ECHAR;
 
 #if	defined(HIDE)
 #define STATIC	static

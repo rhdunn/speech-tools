@@ -2,7 +2,7 @@ INSTALLATION
 
 Release notes
 
-This documentation covers version 1.2.1 of the Edinburgh Speech Tools
+This documentation covers version 1.2.2 of the Edinburgh Speech Tools
 Library. While previous versions of the speech tools were primarily
 released solely to support the Festival Speech Synthesis System, the
 Edinburgh Speech Tools Library now contains sufficiently useful tools
@@ -30,9 +30,9 @@ which is available for all of the platforms we are aiming at.
 
 A C++ compiler
 
-The system was developed primarily with GNU C++ version 2.7.2, but we
-also have compiled it successfully with a number of other versions of
-gcc, Sun CC and Visual C++.
+The system was developed primarily with GNU C++ (various versiosn from
+version 2.7.2), but we also have compiled it successfully with a
+number of other versions of gcc, Sun CC and Visual C++.
 
 Hopefully we have now sanitized the code sufficiently to to make it
 possible for ports to other C++ compilers without too much
@@ -69,26 +69,24 @@ shared and static versions of the libraries:
 Sun Sparc Solaris 2.5.1/2.6/2.7
       GCC 2.7.2, GCC 2.8.1, SunCC 4.1, egcs 1.1.1, egcs 1.1.2, gcc-2.95.1
 
-Sun Sparc SunOS 4.1.3
-      GCC 2.7.2 (static only)
-
 Intel Solaris 2.5.1
       GCC 2.7.2
 
-FreeBSD for Intel 2.1.7, 2.2.1, 2.2.6 (aout), 2.2.8 (aout), 3.x (elf)
-      GCC 2.7.2.1, GCC 2.95.1 (shared works only for 3.x (elf))
+FreeBSD for Intel 3.x, 4.x
+      GCC 2.95.x, GCC 3.0
 
-Linux (2.0.30) for Intel (RedHat 4.[012]/5.[012]/6.[01])
-      GCC 2.7.2, GCC 2.7.2/egcs-1.0.2, egcs-1.1.2, GCC 2.95.1
+Linux (2.0.30) for Intel (RedHat 4.[012]/5.[012]/6.[01],.7[01])
+      GCC 2.7.2, GCC 2.7.2/egcs-1.0.2, egcs-1.1.2, GCC 2.95.[123],
+      GCC "2.96", GCC 3.0
 
 Windows NT 4.0, Windows95, Windows 98
-      GCC with egcs (from Cygwin b20.1), Visual C++ 5.0. (static only)
+      GCC with egcs (from Cygwin b20.1), Visual C++ 6.0.
 
 As stated before C++ compilers are not standard and it is non-trivial
 to find the correct dialect which compiles under all.  We recommend
-the use of GCC 2.7.2 if you can use it, it is the most likely one to
+the use of GCC 2.95.3 if you can use it, it is the most likely one to
 work. Some of the compilers listed above produce a large number of
-warnings when compileing the code.
+warnings when compiling the code.
 
 Previous versions of the system have successfully compiled under SGI
 IRIX 5.3, 6.x, OSF (Alphas) and HPUX but at time of writing this we have
@@ -185,39 +183,17 @@ BUILDING IT
 
 Configuration
 
-All compile-time configuration for the system is done through the user
-definable file config/config. You must create this file before you can
-compile the library. An example is given in config/config-dist, copy
-it and change its permissions to give write access
+All compile-time configuration for the system is done through GNU 
+configure.  On most systems you can configure the system
+by
 
-          unix$ cd config
-          unix$ cp config-dist config
-          unix$ chmod +w config
+          unix$ ./configure
 
-In many cases no further changes will be required, but it might be
-worth checking the contents of this file just in case. Where possible
-the system will automatically config itself.
+This creates the file config/config which for most machines will be
+suitble.  In some circumstances the default.s generated from this
+may not be what you want and you may wish to edit this file.
 
-Type 
-          unix$ gnumake info
-
-This will create the local config files and display what it thinks
-your system is.
-
-If this is not suitable for your machine then edit your
-config/config. In most cases the default will be the best option. If
-you are unsure about what you should change you probabaly shouldn't
-change anything.
-
-As of 1.3.1 due to conflicts in copyright we have dropped GNU Readline
-support and replaced it with a differently licenced alternative which
-does not imposes the restrictions of the GPL. editline is a free
-command line editor library. We have added substantially to it,
-including support for long lines, incremental search and
-completion. However as it has not yet been testsed on many systems it
-is still optional, though is on by default.
-
-For Linux we now fully supported shared libraries and even recommend
+For Linux we now fully support shared libraries and even recommend
 them. However if you are going to do alot of development and don't
 understand the consequences of shared libraries and getting
 LD_LIBRARY_PATH correct (or what that is) we recommend you compile
@@ -238,30 +214,18 @@ Simple choices for common set ups are given near the top of this
 file. But for some sub-systems you will also need to change pathnames
 for external library support.
 
-At present read config/ReadMe for details of changing basic
-configuration.
-
-On systems (and versions of systems) we have not yet encountered you
-may need to create config/systems/<PROCESSOR>_<OS><OSVERSION>.mak
-files. Often you need only copy an existing one (other version or
-similar system) to get it to work. Typically the only real differences
-are when there are major differences in the default C++ compiler
-(e.g. RedHat 5.0 to RedHat 5.1). If you do need to add a new systems
-configuration file please let as know so we can include it in the
-standard distribution.
-
 Compilation
 
 Once you have configured config/config you can compile the system. 
 
-          unix$ gnumake
+          unix$ gmake
 
 Note this must be GNU make, which may be called make on your system,
 or gmake or gnumake. This will compile all library functions and all
 the executables. If you wish to only compile the library itself then
 use
 
-          unix$ gnumake make_library
+          unix$ gmake make_library
 
 Note that if you compile with -g (uncommenting DEBUG = 1 is
 config/config the library and the corresponding binaries will be
@@ -284,7 +248,7 @@ separate files ro make it modular.
 
 To test the system after compilation 
 
-          unix$ gnumake test
+          unix$ gmake test
 
 Installing the system
 
@@ -310,50 +274,60 @@ system provides a unix-like environment in which you can perform a
 compilation as described in the previous sections. Cygwin is probably
 the best choice if you can use that route.
 
-Visual C++ provides an environment much further from the Unix systems
-our code is developed on, this places some limits on the Visual C++
-port, especially in areas relating to networking. The remainder of
-this section describes how to compile with Visual C++.
+Requirements:
+MS Windows 2000
+Visual C++ 6.0 + service pack 1
+cygwin 1.1
+speech_tools-1.2.2
+festival-1.4.2
 
-Creating VCMakefiles
+Download and install cygwin.
+Optionally download emacs so you have a decent editor :)
+Download speech_tools and festival tar.gz files.
+Download required festival lexicons and voices.
 
-We compile using the nmake program which comes with Visual C++. This
-is a fairly standard make implementation, but is not as flexible as
-the GNU make we use for our normal builds. So, in order to compile
-with nmake new Makefiles are needed. These can be created from the
-Unix makefiles using GNU make:
+Using cygwins bash shell:
+  mkdir C:/festival
+  cd C:/festival
 
-          unix$ gnumake VCMakefile
-          Creating VCMakefile for .
-          Creating VCMakefile for include
-          Creating VCMakefile for include/unix
-          [...]
+Using cygwin's tar command unpack:
+  tar xvfz speech_tools-1.2.2.tar.gz festival-1.4.2.tar.gz
+  tar xvfz festlex... festvox...
+(where festlex... and festvox... are the voice and lexicon files you
+need.  Do not use winzip to unpack the voices it corrupts them!)
 
-Obviously you will need either a unix machine or the Cygwin system to
-do this. Sharing the compilation directory between unix and Windows
-machines, for instance using samba
+Create Vsual C++ make files: (this may be slow...)
+  cd speech_tools
+  make VCMakefile
+  cp config/vc_config_make_rules-dist config/vc_config_make_rules
 
-Configuration
+  cd ../festival
+  make CVMakefile
+  cp config/vc_config_make_rules-dist config/vc_config_make_rules
 
-As for unix compilations, the Visual C++ compilation process is
-controlled by a configuration file. In this case it is called
-vc_config_make_rules. A version is included in the distribution, as
-vc_config_make_rules-dist, copy this into place as follows:
+Finally make festival init_modules code. (If you add new modules you
+either need to edit init_modules.cc by hand or rerun this step.)
+  make -C src/modules init_modules.cc
 
-          unix$ cd config
-          unix$ cp vc_config_make_rules-dist vc_config_make_rules
-          unix$ chmod +w vc_config_make_rules
+edit config/vc_config_make_rules and change:
+  SYSTEM_LIB=c:\\festival\\lib
+to:
+  SYSTEM_LIB=c:\\festival\\festival\\lib
+(or to wherever you unpacked festival)
 
-You probably don't need to change this default configuration.
+Now switch to a windows command prompt.
+If necessary execute: VCVARS32.BAT form the VC++ directory to set up
+VC++ environment. (you may do this automatically at boot or login.)
 
-Building
+Build speech_tools and festival:
+  cd c:\festival\speech_tools
+  nmake /nologo /FVCMakefile
 
-To build the system: 
-          unix$ nmake /nologo /fVCMakefile
+  cd ..\festival
+  nmake /nologo /FVCMakefile
 
-This should build the libraries and executables, and also the test
-programs in testsuite. However there is currently no way to
-automatically test the system, Indeed some of the test programs will
-fail under Visual C++ due to differences in file nameing conventions.
+At this point you should be able to run festival by typing:
+  src\main\festival
+
 
 

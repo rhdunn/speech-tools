@@ -37,7 +37,7 @@
   * 
   * @see EST_TBuffer
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TBuffer.h,v 1.13 1999/05/30 13:51:49 awb release $
+  * @version $Id: EST_TBuffer.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 #ifndef __EST_TBUFFER_H__

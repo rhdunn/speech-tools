@@ -96,6 +96,15 @@ static LISP l_rand()
     return flocons(r);
 }
 
+static LISP l_srand(LISP seed)
+{
+    if (seed && (TYPEP(seed,tc_flonum)))
+	srand((int) FLONM(seed));
+    else
+	err("srand: not a number", seed);
+    return NIL;
+}
+
 static LISP l_exp(LISP n)
 {
     if (n && (TYPEP(n,tc_flonum)))
@@ -163,6 +172,9 @@ void init_subrs_math(void)
  "(rand)\n\
  Returns a pseudo random number between 0 and 1 using the libc rand()\n\
  function.");
+ init_subr_1("srand",l_srand,
+ "(rand SEED)\n\
+ Seeds the libc pseudo random number generator with the integer SEED.");
  init_subr_1("exp",l_exp,
  "(exp NUM)\n\
  Return e**NUM.");

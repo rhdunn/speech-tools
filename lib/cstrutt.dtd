@@ -25,7 +25,9 @@
 <!ELEMENT	relation	(item)*>
 <!ATTLIST	relation
 		name		CDATA #REQUIRED
-		relationElement	CDATA #FIXED		"name"
+		structure-type  CDATA #REQUIRED
+		estRelationTypeAttr     CDATA #FIXED    "structure-type"
+                estRelationElementAttr  CDATA #FIXED            "name"
 		>
 
 <!--	Just an arbitrary element used to structure the tree. ID
@@ -35,7 +37,7 @@
 <!ATTLIST	item	
 		href		CDATA	#IMPLIED
 		id		CDATA	#IMPLIED
-		contentAttr	CDATA	#FIXED		"contents"
+		estContentFeature     CDATA   #FIXED    "name"
 		show		(embed|replace)		"replace"
 		>
 <!ELEMENT	embeditem		(#PCDATA|item)*>

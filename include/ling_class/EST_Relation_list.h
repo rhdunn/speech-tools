@@ -106,6 +106,10 @@ previous item in <parameter>n</parameter>'s relation.  */
 
 EST_Item *add_before(const EST_Item *n, EST_Item *p=0);
 
+/** Remove the given item.
+*/
+
+void remove_item_list(EST_Relation *rel, EST_Item *n);
 
 //@}
 //@}

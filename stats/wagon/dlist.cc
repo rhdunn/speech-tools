@@ -147,7 +147,7 @@ static WDlist *dlist_score_question(WQuestion &q, WVectorList &ds)
 
     if (y.samples() > wgn_min_cluster_size)
     {
-	q.set_yes(y.samples());
+	q.set_yes((int)y.samples());
 
 	EST_DiscreteProbDistribution &pd = y.pd();
 	

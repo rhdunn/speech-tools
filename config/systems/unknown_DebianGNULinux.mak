@@ -31,12 +31,11 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Robert Clark (robert@cstr.ed.ac.uk)           ##
+ ##                 Author: David Huggins-Daines <dhd@debian.org>         ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 6.0 PPC (educated guess)                   ##
+ ## Settings for generic/unknown Debian GNU/Linux systems                 ##
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/ppc_Linux2.0.mak
-include $(EST)/config/systems/RedHatLinux.mak
-
+include $(EST)/config/systems/Linux.mak
+include $(EST)/config/systems/DebianGNULinux.mak

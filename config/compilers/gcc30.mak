@@ -2,7 +2,7 @@
  ##                                                                       ##
  ##                Centre for Speech Technology Research                  ##
  ##                     University of Edinburgh, UK                       ##
- ##                         Copyright (c) 1996                            ##
+ ##                         Copyright (c) 1999                            ##
  ##                        All Rights Reserved.                           ##
  ##                                                                       ##
  ##  Permission is hereby granted, free of charge, to use and distribute  ##
@@ -31,15 +31,30 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
+ ##                 Author: Alan W Black (awb@cs.cmu.edu)                 ##
+ ##                   Date: Mon Jun 18 2001                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux 2.0                                                ##
+ ## Settings for GCC-3.0                                                  ##
  ##                                                                       ##
  ###########################################################################
 
+include $(EST)/config/compilers/gcc_defaults.mak
 
-include $(EST)/config/systems/alpha_Linux.mak
+COMPILER_DESC=gcc-3.0
+
+ifndef GCC30
+    GCC30 = gcc
+endif
+
+CC= $(GCC30)
+CXX = $(GCC30)
+
+WARN_CXXFLAGS  +=  -Wno-non-template-friend
+
+STATIC_LINKFLAGS = -Dstatic
+
+COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++
+
 
 
 

@@ -531,3 +531,8 @@ ostream& operator << (ostream& p_values, const EST_Wave &sig)
     
     return p_values;
 }
+
+int operator != (EST_Wave a, EST_Wave b)
+   { (void)a; (void)b; return 1; }
+int operator == (EST_Wave a, EST_Wave b)
+  {  (void)a; (void)b; return 0; }

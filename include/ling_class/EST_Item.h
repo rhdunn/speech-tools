@@ -267,6 +267,24 @@ protected:
 	return v;
     }
 
+#if 0
+    const EST_Val &f(const EST_String &name, const EST_Val &def) const
+    { 
+	if (this == 0) 
+	    return def;
+        else
+        {
+	    const EST_Val *v; 
+	    for (v=&(p_contents->f.val_path(name, def));
+		 v->type() == val_type_featfunc && featfunc(*v) != NULL;
+		 v=&(featfunc(*v))((EST_Item *)(void *)this));
+	    if (v->type() == val_type_featfunc)
+		v = &def;
+	    return *v;
+	}
+    }
+#endif
+
     const EST_Val f(const EST_String &name, const EST_Val &def) const
     { 
 	if (this == 0) 
@@ -311,7 +329,12 @@ protected:
 
     // The remaining functions should not be accessed, they are should be
     // regarded as private member functions
-    
+
+    // Splice together a broken list.
+
+    static void splice(EST_Item *a, EST_Item *b)
+	{ if(a !=NULL) a->n = b; if (b != NULL) b->p=a; }
+
     // Internal traversal - nnot recommended - use relation traversal functions
     //
     EST_Item *next() const { return this == 0 ? 0 : n; }

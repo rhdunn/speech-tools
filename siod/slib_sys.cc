@@ -12,6 +12,11 @@
 #include "siod.h"
 #include "siodp.h"
 
+#ifdef unix
+#include <sys/time.h>
+#include <unistd.h>
+#endif
+
 static LISP lgetenv(LISP name)
 {
     return rintern(getenv(get_c_string(name)));
@@ -64,8 +69,35 @@ static LISP lgetpid(void)
     return flocons((float)getpid());
 }
 
+static long siod_time_base;
+
+LISP siod_time()
+{
+#ifdef unix
+    struct timeval tv;
+    struct timezone tz;
+
+    gettimeofday(&tv,&tz);
+
+    return flocons(((double)(tv.tv_sec-siod_time_base))+
+		    ((double)tv.tv_usec/1000000));
+#else
+    return flocons(0);
+#endif
+}
+
 void init_subrs_sys(void)
 {
+
+#ifdef unix
+    struct timeval tv;
+    struct timezone tz;
+
+    gettimeofday(&tv,&tz);
+
+    siod_time_base = tv.tv_sec;
+#endif
+
  init_subr_0("getpid",lgetpid,
  "(getpid)\n\
   Return process id.");
@@ -86,4 +118,9 @@ void init_subrs_sys(void)
  init_subr_1("system",lsystem,
  "(system COMMAND)\n\
   Execute COMMAND (a string) with the UNIX shell.");
+ init_subr_0("time", siod_time,
+     "(time)\n\
+  Returns number of seconds since start of epoch (if OS permits it\n\
+  countable).");
+
 }

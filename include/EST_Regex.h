@@ -49,7 +49,7 @@ class EST_Regex;
   * @see string_example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
   * @author (regular expression library by Henry Spencer, University of Toronto)
-  * @version $Id: EST_Regex.h,v 1.13 1999/05/30 13:51:45 awb release $
+  * @version $Id: EST_Regex.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 class EST_Regex : protected EST_String {

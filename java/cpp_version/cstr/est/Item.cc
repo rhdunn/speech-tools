@@ -151,6 +151,30 @@ Java_cstr_est_Item_cpp_1getF(JNIEnv *env, jobject self, jstring jname, jfloat de
   return  val;
 }
 
+JNIEXPORT void JNICALL 
+Java_cstr_est_Item_cpp_1set__Ljava_lang_String_2F(JNIEnv *env, jobject self, jstring jname, jfloat val)
+{
+  EST_Item *item = (EST_Item *) env->GetLongField(self, handle_field);
+  const char *name = env->GetStringUTFChars(jname, 0);
+
+  item->set(name, val);
+  
+  env->ReleaseStringUTFChars(jname, name);
+}
+
+JNIEXPORT void JNICALL 
+Java_cstr_est_Item_cpp_1set__Ljava_lang_String_2Ljava_lang_String_2(JNIEnv *env, jobject self, jstring jname, jstring jval)
+{
+  EST_Item *item = (EST_Item *) env->GetLongField(self, handle_field);
+  const char *name = env->GetStringUTFChars(jname, 0);
+  const char *val = env->GetStringUTFChars(jval, 0);
+
+  item->set(name, val);
+  
+  env->ReleaseStringUTFChars(jname, name);
+  env->ReleaseStringUTFChars(jval, val);
+}
+
 JNIEXPORT jfloat JNICALL 
 Java_cstr_est_Item_cpp_1getStartTime(JNIEnv *env, jobject self)
 {
@@ -237,5 +261,21 @@ Java_cstr_est_Item_cpp_1down(JNIEnv *env, jobject self)
   EST_Item *item = (EST_Item *) env->GetLongField(self, handle_field);
 
   return (long)item->down();
+}
+
+JNIEXPORT jlong JNICALL 
+Java_cstr_est_Item_cpp_1insert_1after(JNIEnv *env, jobject self)
+{
+  EST_Item *item = (EST_Item *) env->GetLongField(self, handle_field);
+
+  return (long)item->insert_after();
+}
+
+JNIEXPORT jlong JNICALL 
+Java_cstr_est_Item_cpp_1insert_1before(JNIEnv *env, jobject self)
+{
+  EST_Item *item = (EST_Item *) env->GetLongField(self, handle_field);
+
+  return (long)item->insert_before();
 }
 

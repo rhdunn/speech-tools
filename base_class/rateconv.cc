@@ -1,5 +1,5 @@
 /*
- *	$Id: rateconv.cc,v 1.3 1999/05/14 16:31:49 awb release $
+ *	$Id: rateconv.cc,v 1.2 2001/04/04 13:11:27 awb Exp $
  *
  *	RATECONV.C
  *

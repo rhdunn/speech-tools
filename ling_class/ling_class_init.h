@@ -37,7 +37,7 @@
   * Include this to force ling_class initialisation.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: ling_class_init.h,v 1.4 1999/05/30 13:52:54 awb release $
+  * @version $Id: ling_class_init.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 #ifndef __LING_CLASS_INIT_H__

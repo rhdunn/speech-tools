@@ -47,7 +47,7 @@
   * the server process.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Server.h,v 1.5 1999/06/10 09:59:50 rjc release $
+  * @version $Id: EST_Server.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 class EST_Server {

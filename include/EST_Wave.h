@@ -302,8 +302,15 @@ public:
 
   /// print waveform
   friend ostream& operator << (ostream& p_values, const EST_Wave &sig);
+
+  // integrity check *** debug
+  void integrity() const { p_values.integrity() ; }
+
 };
 
 typedef EST_TList<EST_Wave> EST_WaveList;
+
+int operator != (EST_Wave a, EST_Wave b);
+int operator == (EST_Wave a, EST_Wave b);
 
 #endif /* __Wave_H__ */

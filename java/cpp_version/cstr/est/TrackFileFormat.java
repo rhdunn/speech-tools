@@ -81,7 +81,7 @@ public class TrackFileFormat extends Enum
     }
 
   public static TrackFileFormat getValue(String s)
-	    throws BadValueException
+	    throws IllegalArgumentException
     {
       return (TrackFileFormat)getValue(s, values);
     }

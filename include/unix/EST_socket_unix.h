@@ -49,13 +49,21 @@
 typedef int ssize_t;
 #endif
 
-#if defined(__linux__)
-/* gcc-2.95.1 is fussy and requies certain arguments to follow their type */
-/* Linux wants socklen_t params but other (even if they have this defined */
-/* want int or maybe unsigned int (pretty random actually)                */
-#define SOCKLEN_CAST (socklen_t *)
-#else
-#define SOCKLEN_CAST
+#if defined(older_solaris)
+/* older versions of Solaris don't have this */
+typedef int socklen_t;
+#endif
+
+#if defined(__FreeBSD__) &&  __FreeBSD__ < 4
+typedef int socklen_t;
+#endif
+
+#if defined(__CYGWIN__)
+typedef int socklen_t;
+#endif
+
+#if defined(__osf__)
+typedef int socklen_t;
 #endif
 
 #if defined(_AIX)

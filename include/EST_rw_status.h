@@ -121,7 +121,9 @@ enum EST_write_status {
     /// The file was not written successfully
   write_fail		= make_status_int(rws_failed,	rwr_unknown,	0),
     /// The file was not written successfully
-  write_error		= make_status_int(rws_failed,	rwr_unknown,	0)
+  write_error		= make_status_int(rws_failed,	rwr_unknown,	0),
+    /// A valid file was created, but only some of the requested data is in there
+  write_partial		= make_status_int(rws_partial,	rwr_unknown,	0)
 };
 
 /** Possible outcomes of a network connection operation */

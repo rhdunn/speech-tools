@@ -77,8 +77,14 @@ public abstract class Enum
       index=values.add(this);
     }
 
+  protected void alias(String a)
+    {
+      EnumValues values = getValuesTable();
+      values.add(this, a);
+    }
+
   protected static Enum getValue(String s, EnumValues values)
-    throws BadValueException
+    throws IllegalArgumentException
     {
       return values.getValue(s);
     }

@@ -41,7 +41,7 @@
 /** Double ended queue.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TDeque.h,v 1.4 1999/06/02 15:43:30 rjc release $
+  * @version $Id: EST_TDeque.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 template <class T>

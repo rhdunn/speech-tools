@@ -40,22 +40,29 @@
 
 ;;; Aliases which are better suited to command line use.
 
+(defvar fringe_name "fringe"
+  "fringe_name
+  The name of the last name passed to \[fringe_setup\].")
+
 (defvar fringe_connection nil
   "fringe_connection
   A connection to fringe, used by the command line fringe functions.")
 
-(define (fringe_setup)
-  "(fringe_setup)
-  Connect to the default fringe."
+(define (fringe_setup &opt name)
+  "(fringe_setup &opt name)
+  Connect to fringe."
 
   (fringe_read_server_table)
+  (if (not name) (set! name fringe_name))
   (set! fringe_connection (fringe_server "fringe"))
+  (set! fringe_name name)
   )
 
-(define (fringec command)
-  "(fringec COMMAND)
+(define (fringe command)
+  "(fringe COMMAND)
   Send COMMAND to the fringe server \[fringe_connection\]
   For command line use, use (fringe_comand_string...) in scripts. "
+  (if (not fringe_connection) (fringe_setup))
   (let ((val (fringe_command_string fringe_connection command)))
     (if (or (null val) (consp val))
 	nil
@@ -68,6 +75,7 @@
   Send a command to the fringe server \[fringe_connection\].
   For command line use, use (fringe_comand...) in scripts. "
 
+  (if (not fringe_connection) (fringe_setup))
   (let ((val (fringe_command fringe_connection package operation args)))
     (if (or (null val) (consp val))
 	nil

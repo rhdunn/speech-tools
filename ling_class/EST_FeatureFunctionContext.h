@@ -40,7 +40,7 @@
   * packages.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_FeatureFunctionContext.h,v 1.4 1999/05/30 13:52:49 awb release $ */
+  * @version $Id: EST_FeatureFunctionContext.h,v 1.2 2001/04/04 13:11:27 awb Exp $ */
 
 #include "ling_class/EST_FeatureFunctionPackage.h"
 

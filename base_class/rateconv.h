@@ -37,7 +37,7 @@
   * Just declares the resampling function.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: rateconv.h,v 1.2 1999/05/30 13:50:38 awb release $
+  * @version $Id: rateconv.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 #ifndef __RATECONV_H__

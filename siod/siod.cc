@@ -365,16 +365,43 @@ LISP apply_hooks(LISP hooks,LISP arg)
 {
     //  Apply each function in hooks to arg returning value from 
     // final application (or arg itself)
-    LISP h,r=arg;
+    LISP h,r;
 
-    if (hooks == NIL)
-	r = arg;
-    else if (!CONSP(hooks))  // singleton
+    r = arg;
+    
+    if (hooks && (!CONSP(hooks)))  // singleton
 	r = leval(cons(hooks,cons(arg,NIL)),NIL);
     else
 	for (h=hooks; h != NIL; h=cdr(h))
 	    r = leval(cons(car(h),cons(arg,NIL)),NIL);
     return r;
+}
+
+LISP apply_hooks_right(LISP hooks,LISP args)
+{
+    // The above version neither quotes its arguments properly of deals
+    // with lists of arguments so here's a better one
+    //  Apply each function in hooks to arg returning value from 
+    // final application (or arg itself)
+    LISP h,r;
+
+    if (hooks == NIL)
+	r = args;
+    else if (!CONSP(hooks))  // singleton
+	r = apply(hooks,args);
+    else
+	for (r=args,h=hooks; h != NIL; h=cdr(h))
+	    r = apply(car(h),r);
+    return r;
+}
+
+LISP apply(LISP func,LISP args)
+{
+    LISP qa,a;
+
+    for (qa=NIL,a=args; a; a=cdr(a))
+	qa = cons(quote(car(a)),qa);
+    return leval(cons(func,reverse(qa)),NIL);
 }
 
 LISP stringexplode(const char *str)

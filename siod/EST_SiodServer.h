@@ -43,7 +43,7 @@ VAL_REGISTER_CLASS_DCLS(scheme,obj)
 /** Simple scheme server.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_SiodServer.h,v 1.3 1999/05/30 13:53:13 awb release $
+  * @version $Id: EST_SiodServer.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 class EST_SiodServer : public EST_Server {

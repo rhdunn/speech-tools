@@ -38,7 +38,7 @@
 /** Instantiate an iterator.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TIteratorI.h,v 1.3.4.1 1999/09/07 10:13:29 awb Exp $
+  * @version $Id: EST_TIteratorI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 #define Instantiate_TIterator_T(CONTAINER, IP, ENTRY, TAG) \

@@ -39,7 +39,7 @@
 /** Instantiate rules for list template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TListI.h,v 1.10 1999/06/10 09:59:50 rjc release $
+  * @version $Id: EST_TListI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 

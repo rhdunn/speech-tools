@@ -37,19 +37,19 @@
 /*  awb Dec 30 1998                                                         */
 /*                                                                          */
 /****************************************************************************/
-/*  $Revision: 1.1 $
+/*  $Revision: 1.2 $
 **
 **  Win32 system-dependant routines for editline library.
 */
-#include "editline.h"
 #include <windows.h>
+#include "editline.h"
 
-extern CONST CHAR el_NIL[];
+extern CONST ECHAR el_NIL[];
 
 int el_user_intr = 0;
 int el_PushBack=0;
 int el_Pushed=0;
-CONST CHAR	*el_Input = el_NIL;
+CONST ECHAR	*el_Input = el_NIL;
 
 extern void TTYflush();
 
@@ -66,7 +66,7 @@ void rl_ttyset(int Reset)
 
 unsigned int TTYget()
 {
-    CHAR	c;
+    ECHAR	c;
     int n;
 
     TTYflush();

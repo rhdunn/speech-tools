@@ -54,7 +54,6 @@ static int pos_phone(const EST_Relation &seg, float x, float shift);
 void track_to_label(const EST_Track &tr, EST_Relation &lab, float thresh)
 {
     int i;
-    EST_String str[10], tmpstr;
     EST_Item *tmp_seg;
     int p_pos = FALSE;
     int c_pos = FALSE;
@@ -96,7 +95,6 @@ void track_to_label(const EST_Track &tr, EST_Relation &lab, float thresh)
 void track_to_pm(const EST_Track &tr, int sample_rate, EST_Relation &lab)
 {
     int i;
-    EST_String str[10], tmpstr;
     EST_Item *tmp_seg;
     
     bool have_offset = tr.has_channel(channel_offset);

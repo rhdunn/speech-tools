@@ -46,6 +46,7 @@
 #define SOCKLEN_CAST (int *)
 
 typedef int ssize_t;
+typedef int socklen_t;
 #define NOT_A_SOCKET(FD) ((FD) == INVALID_SOCKET)
 #define socket_error() WSAGetLastError()
 

@@ -39,7 +39,7 @@
   * as a unit.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TBox.h,v 1.3 1999/05/30 13:51:48 awb release $
+  * @version $Id: EST_TBox.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 #include "EST_Handleable.h"
@@ -51,7 +51,7 @@ private:
   T * const p_contents;
 
   /// This never happens.
-  EST_TBox(void) {};
+  EST_TBox(void) : p_contents(NULL) {};
 
 public:
 

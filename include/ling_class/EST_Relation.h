@@ -159,13 +159,18 @@ class EST_Relation
 			 const EST_String &type="esps");
 
     /** Load relation from already open tokenstream */
-    EST_read_status load(EST_TokenStream &ts,
-			 const EST_THash<int,EST_Val> &contents);
+//    EST_read_status load(EST_TokenStream &ts,
+//			 const EST_THash<int,EST_Val> &contents);
 
     /** Load relation from already open tokenstream */
     EST_read_status load(EST_TokenStream &ts,
 			 const EST_TVector < EST_Item_Content * > &contents
 			 );
+
+    /** Load relation from already open tokenstream */
+    EST_read_status EST_Relation::load(const EST_String &filename,
+				   EST_TokenStream &ts,
+				   const EST_String &type);
 
     /** Save relation to file */
     EST_write_status save(const EST_String &filename, 
@@ -179,6 +184,10 @@ class EST_Relation
     /** Save relation from already open ostream */
     EST_write_status save(ostream &outf,EST_TKVL<void *,int> contents) const;
 
+    /** Save relation from already open ostream */
+    EST_write_status save(ostream &outf,
+			  const EST_String &type,
+			  bool evaluate_ff) const;
     /** Iteration */
     typedef EST_Relation_Iterator Iterator;
 
@@ -190,7 +199,7 @@ class EST_Relation
     EST_Item *prepend(EST_Item *si);
     EST_Item *prepend(); 
 
-    friend EST_Item;
+    friend class EST_Item;
 };
 
 VAL_REGISTER_CLASS_DCLS(relation,EST_Relation)

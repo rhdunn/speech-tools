@@ -12,7 +12,7 @@
 /* WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.       */
 /*                                                                       */
 /*************************************************************************/
-/* 	$Id: xmlparser.h,v 1.2 1998/07/24 15:12:30 awb release $    */
+/* 	$Id: xmlparser.h,v 1.2 2001/04/04 13:11:27 awb Exp $    */
 
 #ifndef XMLPARSER_H
 #define XMLPARSER_H

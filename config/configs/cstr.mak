@@ -1,3 +1,4 @@
+
  ###########################################################################
  ##                                                                       ##
  ##                Centre for Speech Technology Research                  ##
@@ -30,47 +31,9 @@
  ##  THIS SOFTWARE.                                                       ##
  ##                                                                       ##
  ###########################################################################
- ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
- ## --------------------------------------------------------------------  ##
- ## Description of directory structure etc. at CSTR.                      ##
- ##                                                                       ##
- ###########################################################################
 
-###########################################################################
-## Names of various gcc versions
-
-GCC26=gcc-2.6.3 
-GCC27=gcc
-
-###########################################################################
-## Installation directories
-
-INSTALL_PREFIX=/cstr
-
-###########################################################################
-## We have a master RCS tree below this directory
-
-LOCAL_REPOSITORY = /projects
-
-###########################################################################
-## Some of our things are installed under /cstr or /usr/local/GNU, and we
-## don't have the common /usr/X11 link on some machines, so we need to
-## reset some paths.
-
-NAS_INCLUDE = /cstr/include
-NAS_LIB     = /cstr/lib
-
-X11_INCLUDE = /usr/openwin/include
-X11_LIB     = /usr/openwin/lib
-
-DEFAULT_JAVA_HOME = /cstr/external/jdk
-DEFAULT_JMF_HOME = /cstr/external/jmf
-
-###########################################################################
-# If we have this it's a _LOT_ faster than the java version
-
-JAR=zip -0
-
-
+ifeq ($(OSTYPE),SunOS)
+    include $(EST)/config/configs/cstr_suns.mak
+else 
+    include $(EST)/config/configs/cstr_linux.mak
+endif

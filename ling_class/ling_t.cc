@@ -41,12 +41,15 @@
 #include "EST_String.h"
 #include "ling_class/EST_Relation.h"
 
+Declare_TVector(EST_Item)
 Declare_TList(EST_Relation)
 
 #if defined(INSTANTIATE_TEMPLATES)
 
+#include "../base_class/EST_TVector.cc"
 #include "../base_class/EST_TList.cc"
 
+Instantiate_TVector(EST_Item)
 Instantiate_TList(EST_Relation)
 
 #endif

@@ -157,19 +157,49 @@ Java_cstr_est_Utterance_cpp_1relation(JNIEnv *env,
 }
 
 
+JNIEXPORT jlong JNICALL 
+Java_cstr_est_Utterance_cpp_1create_1relation(JNIEnv *env, 
+					   jobject self,
+					   jstring jname)
+{
+    EST_Utterance *utterance = (EST_Utterance *)env->GetLongField(self, handle_field);
+
+    const char *name = env->GetStringUTFChars(jname, 0);
+
+    if (utterance->relation_present(name))
+	return (jlong)0l;
+
+    EST_Relation * rel = utterance->create_relation(name);
+
+
+    env->ReleaseStringUTFChars(jname, name);
+    return (jlong)rel;
+}
+
+
 JNIEXPORT jstring JNICALL 
 Java_cstr_est_Utterance_cpp_1load (JNIEnv *env, jobject self, jstring jfilename)
 {
   EST_Utterance *utterance = (EST_Utterance *) env->GetLongField(self, handle_field);
 
   const char *filename = env->GetStringUTFChars(jfilename, 0);
-  const char *res = "";
 
   EST_String fn(filename);
+  EST_read_status stat = read_ok;
 
-  EST_read_status stat = utterance->load(fn);
+  CATCH_ERRORS()
+    {
+      env->ReleaseStringUTFChars(jfilename, filename);
+      return env->NewStringUTF(EST_error_message);
+    }
+
+  stat = utterance->load(fn);
+
+  END_CATCH_ERRORS();
 
   env->ReleaseStringUTFChars(jfilename, filename);
+
+  const char *res = "";
 
   if (stat == read_format_error)
     res = "utterance format error";
@@ -188,7 +218,9 @@ Java_cstr_est_Utterance_cpp_1save (JNIEnv *env, jobject self, jstring jfilename,
   const char *format = env->GetStringUTFChars(jformat, 0);
   const char *res = "";
 
-  EST_write_status stat = utterance->save(filename,format);
+  EST_write_status stat = format[0]=='\0'
+    ? utterance->save(filename)
+    : utterance->save(filename,format);
 
   env->ReleaseStringUTFChars(jfilename, filename);
   env->ReleaseStringUTFChars(jformat, format);

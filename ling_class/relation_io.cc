@@ -108,8 +108,6 @@ EST_write_status save_esps_label(const EST_String &filename,
 				 const EST_Relation &s,
 				 bool evaluate_ff)
 {
-    EST_Item *ptr;
-    
     ostream *outf;
     if (filename == "-")
 	outf = &cout;
@@ -122,6 +120,20 @@ EST_write_status save_esps_label(const EST_String &filename,
 	    filename << "\"" << endl;
 	return write_fail;
     }
+
+    EST_write_status st=save_esps_label(outf, s, evaluate_ff);
+  
+    if (outf != &cout)
+	delete outf;
+
+    return st;
+}
+
+EST_write_status save_esps_label(ostream *outf,
+				 const EST_Relation &s,
+				 bool evaluate_ff)
+{
+    EST_Item *ptr;
     
     *outf << "separator ;\n";
     if (!s.f.present("nfields"))
@@ -167,8 +179,6 @@ EST_write_status save_esps_label(const EST_String &filename,
 	*outf << endl;
     }
     
-    if (outf != &cout)
-	delete outf;
     return write_ok;
 }
 
@@ -316,9 +326,6 @@ EST_read_status load_sample_label(EST_TokenStream &ts,
 EST_write_status save_htk_label(const EST_String &filename, 
 				const EST_Relation &a)
 {
-    EST_Item *ptr;
-    float end,start;
-    
     ostream *outf;
     if (filename == "-")
 	outf = &cout;
@@ -331,6 +338,21 @@ EST_write_status save_htk_label(const EST_String &filename,
 	    filename << "\"" << endl;
 	return write_fail;
     }
+
+    EST_write_status s = save_htk_label(outf, a);
+
+    
+    if (outf != &cout)
+	delete outf;
+    
+    return s;
+}
+
+EST_write_status save_htk_label(ostream *outf,
+				const EST_Relation &a)
+{
+    EST_Item *ptr;
+    float end,start;
     
     outf->precision(6);
 
@@ -346,9 +368,7 @@ EST_write_status save_htk_label(const EST_String &filename,
 	*outf << " " << ptr->name() << endl;
 	start = end;
     }
-    
-    if (outf != &cout)
-	delete outf;
+
     return write_ok;
 }
 

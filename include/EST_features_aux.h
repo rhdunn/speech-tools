@@ -38,7 +38,7 @@
 /** Non core feature funtionality.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_features_aux.h,v 1.5 1999/06/16 15:12:28 rjc release $
+  * @version $Id: EST_features_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 //@{

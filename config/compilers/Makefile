@@ -40,9 +40,10 @@ DIRNAME=config/compilers
 COMPILERS = gcc.mak gcc27.mak gcc28.mak gcc295.mak \
 	egcs.mak gcc27emx.mak \
         suncc.mak suncc40.mak \
-        jolt.mak jdk.mak jdk12.mak none.mak
+        jolt.mak jdk.mak jdk12.mak none.mak \
+	jikes.mak gcc296.mak gcc30.mak
 
-FILES = Makefile $(COMPILERS) gcc_defaults.mak suncc_defaults.mak jdk_defaults.mak
+FILES = Makefile $(COMPILERS) gcc_defaults.mak suncc_defaults.mak jdk_defaults.mak jikes_defaults.mak
 
 include $(TOP)/config/common_make_rules
 

@@ -44,3 +44,7 @@ MOD_DESC_FREEBSD16_AUDIO=Native audio module for FreeBSD systems
 
 AUDIO_DEFINES += -DSUPPORT_FREEBSD16
 
+#ifdef INCLUDE_JAVA_CPP
+#    AUDIO_DEFINES += -DTHREAD_SAFETY
+#    MODULE_LIBS += -lpthread
+#endif

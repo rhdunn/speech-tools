@@ -437,7 +437,7 @@ int EST_TokenStream::restart(void)
       case tst_none: 
 	break;
       case tst_file:
-	rewind(fp);
+        fp = freopen(Origin,"rb",fp);
 	p_filepos = 0;
 	break;
       case tst_pipe:
@@ -642,7 +642,14 @@ int EST_TokenStream::getch_internal()
 	break;
       case tst_file:
 	p_filepos++;
-	return getc(fp);
+	{
+	    char lc;
+	    if (stdio_fread(&lc,1,1,fp) == 0)
+		return EOF;
+	    else
+		return (int)lc;
+	}
+/*	return getc(fp); */
       case tst_pipe:
 	cerr << "EST_TokenStream pipe not yet supported" << endl;
 	return EOF;

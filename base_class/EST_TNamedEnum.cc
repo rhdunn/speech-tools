@@ -73,7 +73,10 @@ template<class ENUM, class VAL, class INFO>
 void EST_TValuedEnumI<ENUM,VAL,INFO>::initialise(const void *vdefs, ENUM (*conv)(const char *))
 {
   int n=0;
-  const struct EST_TValuedEnumDefinition<const char *,VAL,INFO> *defs = (const struct EST_TValuedEnumDefinition<const char *,VAL,INFO> *)vdefs;
+  //  const struct EST_TValuedEnumDefinition<const char *,VAL,INFO> *defs = (const struct EST_TValuedEnumDefinition<const char *,VAL,INFO> *)vdefs;
+
+  typedef EST_TValuedEnumDefinition<const char *,VAL,INFO> _EST_TMPNAME;
+  const _EST_TMPNAME *defs = (const _EST_TMPNAME *)vdefs;
 
   // fprintf(stderr, "start setup\n");
 

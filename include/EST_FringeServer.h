@@ -43,7 +43,7 @@
 /** A class providing mechanisms to talk to fringe.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_FringeServer.h,v 1.7 1999/05/30 13:51:43 awb release $
+  * @version $Id: EST_FringeServer.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 class EST_FringeServer : public EST_Server
 {

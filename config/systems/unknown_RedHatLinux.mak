@@ -31,15 +31,12 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
+ ##                 Author: Robert Clark (robert@cstr.ed.ac.uk)           ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux 2.0 on Power PC                                    ##
+ ## Settings for unknown Red Hat Linux versions                           ##
  ##                                                                       ##
  ###########################################################################
 
-
-include $(EST)/config/systems/Linux2.0.mak
-
-
+include $(EST)/config/systems/Linux.mak
+include $(EST)/config/systems/RedHatLinux.mak
 

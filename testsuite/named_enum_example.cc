@@ -160,11 +160,11 @@ int main(void)
       cout << nm << " is " << (int)c
 	   << " = " << ColourMap.name(c) 
 	   << " (" << (spanish?spanish:"[NULL]") << " in Spanish)"
-	   << " = {" << hex
+	   << " = {" 
 	   << info.red << ", "
 	   << info.green << ", "
 	   << info.blue
-	   << dec << "}\n";
+	   << "}\n";
     }
 
   // In the special case of EST_TNamedEnum (i.e. simple mappings from

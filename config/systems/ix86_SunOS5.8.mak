@@ -31,18 +31,11 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
+ ##                 Author: Alan W Black (awb@cstr.ed.ac.uk)              ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 6.1 (untested)                             ##
+ ## Settings for SunOS 5.8                                                ##
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/alpha_Linux2.2.mak
-include $(EST)/config/systems/alpha_RedHatLinux.mak
+include $(EST)/config/systems/ix86c_SunOS5.mak
 
-ifndef GCC
-    GCC=egcs
-endif
-EGCS_CC=gcc
-EGCS_CXX=g++
-CFLAGS += -mieee

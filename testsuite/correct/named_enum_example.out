@@ -1,8 +1,8 @@
 c1 is red
 c2 is [NULL]
-red is 1 = red (rojo in Spanish) = {ff, 0, 0}
-navy is 2 = blue (azul in Spanish) = {0, 0, ff}
-puce is 666 = kinda brownish (no conocido in Spanish) = {7f, 7f, 7f}
+red is 1 = red (rojo in Spanish) = {255, 0, 0}
+navy is 2 = blue (azul in Spanish) = {0, 0, 255}
+puce is 666 = kinda brownish (no conocido in Spanish) = {127, 127, 127}
 
 
 colour name map

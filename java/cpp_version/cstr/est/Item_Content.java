@@ -52,7 +52,6 @@ public class Item_Content
   private long cpp_handle;
   private boolean mine;
   private String [] cachedFeatureNames;
-  private Hashtable features;
 
   public Item_Content()
     {
@@ -66,15 +65,14 @@ public class Item_Content
 
   Item_Content(long handle, boolean m)
     {
-      create_cpp_streamItem(handle);
+      create_cpp_itemContent(handle);
       mine=m;
-      features = new Hashtable(20);
     }
 
   protected void finalize() throws Throwable
     {
       if (mine)
-	destroy_cpp_streamItem();
+	destroy_cpp_itemContent();
       super.finalize();
     }
 
@@ -83,6 +81,22 @@ public class Item_Content
   public Item getItem()
     {
       return new Item(cpp_getItem());
+    }
+
+  private native long cpp_getItem(String relName);
+
+  public Item getItem(String relName)
+    {
+	long h = cpp_getItem(relName);
+      return h==0L?null:new Item(h);
+    }
+
+  private native long cpp_getItem(long relh);
+
+  public Item getItem(Relation rel)
+    {
+	long h = cpp_getItem(rel.getHandle());
+	return h==0L?null:new Item(h);
     }
 
   private native String [] cpp_featureNames();
@@ -140,6 +154,37 @@ public class Item_Content
       return cpp_getF(n,(float)0.0,0L);
     }
 
+  private native Object cpp_get(String n, Object def, long r);
+  
+  public Object get(String n, Relation r)
+    {
+      return cpp_get(n,null,r.getHandle());
+    }
+
+  public Object get(String n, Object def, Relation r)
+    {
+      return cpp_get(n,def,r.getHandle());
+    }
+
+  public Object get(String n)
+    {
+      return cpp_get(n,null,0L);
+    }
+
+  private native void cpp_set(String n, float val);
+  
+  public void set(String n, float val)
+    {
+      cpp_set(n, val);
+    }
+
+  private native void cpp_set(String n, String val);
+  
+  public void set(String n, String val)
+    {
+      cpp_set(n, val);
+    }
+
   public String name()
     {
       return cpp_getS("name", "<NONAME>", 0L);
@@ -148,6 +193,15 @@ public class Item_Content
   public String getName()
     {
       return cpp_getS("name", "<NONAME>", 0L);
+    }
+
+  private native long cpp_getFeatures();
+
+  public Features getFeatures()
+    {
+      long fh = cpp_getFeatures();
+
+      return new Features(fh);
     }
 
   private native float cpp_getStartTime();
@@ -190,8 +244,8 @@ public class Item_Content
 
   private native static boolean initialise_cpp();
   private native static boolean finalise_cpp();
-  private native boolean create_cpp_streamItem(long handle);
-  private native boolean destroy_cpp_streamItem();
+  private native boolean create_cpp_itemContent(long handle);
+  private native boolean destroy_cpp_itemContent();
 
   static {
     System.loadLibrary("estjava");

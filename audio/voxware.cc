@@ -114,9 +114,11 @@ static int sb_set_sample_rate(int sbdevice, int samp_rate)
 {
     int fmt;
     int sfmts;
+    int stereo=0;
 
     ioctl(sbdevice,SNDCTL_DSP_RESET,0);
     ioctl(sbdevice,SNDCTL_DSP_SPEED,&samp_rate);
+    ioctl(sbdevice,SNDCTL_DSP_STEREO,&stereo);
     ioctl(sbdevice,SNDCTL_DSP_GETFMTS,&sfmts);
 
     if (sfmts == AFMT_U8)
@@ -193,15 +195,30 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al)
     else if ((actual_fmt == AFMT_S16_LE) || 
 	     (actual_fmt == AFMT_S16_BE))
     {
-	for (i=0; i < num_samples; i += r/2)
+      int blksize, nbuf, c;
+      short *buf;
+
+      ioctl (audio, SNDCTL_DSP_GETBLKSIZE, &blksize);
+      nbuf=blksize;
+      buf=new short[nbuf];
+
+      for (i=0; i < num_samples; i += r/2)
 	{
-	    if (num_samples > i+AUDIOBUFFSIZE)
-		n = AUDIOBUFFSIZE;
-	    else
-		n = num_samples-i;
-	    // r = write(tmp,&waveform[i], n*2);
-	    r = write(audio,&waveform[i], n*2);
-	    if (r <= 0)
+	  if (num_samples > i+nbuf)
+	    n = nbuf;
+	  else
+	    n = num_samples-i;
+
+	  for(c=0; c<n;c++)
+	    buf[c]=waveform[c+i];
+
+	  for(; c<nbuf;c++)
+	    buf[c]=waveform[n-1];
+
+	  // r = write(tmp,&waveform[i], n*2);
+	  // r = write(audio,&waveform[i], n*2);
+	  r=write(audio, buf, nbuf*2);
+	  if (r <= 0)
 	    {
 	      THREAD_UNPROTECT();
 	      EST_warning("%s: failed to write to buffer (sr=%d)",aud_sys_name, sample_rate );
@@ -209,8 +226,9 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al)
 		return -1;
 	    }
 	    // ioctl(audio, SNDCTL_DSP_SYNC, 0);
-//	    fprintf(stderr,"[%d]", r);
+	  // fprintf(stderr,"[%d]", r);
 	}
+      delete [] buf;
     }
     else
     {
@@ -237,12 +255,19 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
     int num_samples;
     int audio=-1,actual_fmt;
     int i,r,n;
+    char *audiodevice;
+
+    if (al.present("-audiodevice"))
+	audiodevice = al.val("-audiodevice");
+    else
+	audiodevice = "/dev/dsp";
 
     sample_rate = al.ival("-sample_rate");
     
-    if ((audio = open("/dev/dsp",O_RDONLY)) == -1)
+    if ((audio = open(audiodevice,O_RDONLY)) == -1)
     {
-	cerr << aud_sys_name << ": can't open /dev/dsp for reading" << endl;
+	cerr << aud_sys_name << ": can't open " << audiodevice
+	     << "for reading" << endl;
 	return -1;
     }
     
@@ -253,7 +278,7 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
     {
 	// We assume that the device returns audio in native byte order
 	// by default
-	inwave.resize(sample_rate*al.ival("-time"));
+	inwave.resize((int)(sample_rate*al.fval("-time")));
 	inwave.set_sample_rate(sample_rate);
 	num_samples = inwave.num_samples();
 	waveform = inwave.values().memory();

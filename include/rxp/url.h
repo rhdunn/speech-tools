@@ -14,7 +14,7 @@
 /*************************************************************************/
 /* url.h	-- Henry Thompson
  *
- * $Header: /home/festival/CVS/speech_tools/include/rxp/url.h,v 1.2 1998/07/24 15:12:33 awb release $
+ * $Header: /home/CVS/speech_tools/include/rxp/url.h,v 1.2 2001/04/04 13:11:27 awb Exp $
  */
 
 #ifndef _URL_H

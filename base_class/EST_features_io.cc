@@ -275,9 +275,9 @@ EST_read_status EST_Features::load(EST_TokenStream &ts)
 		 (v.string().matches(RXdouble)))
 	{
 	    if (v.string().matches(RXint))
-		set_path(f, EST_Val(atoi(v.string())));
+	      set_path(f, EST_Val(atoi(v.string())));
 	    else
-		set_path(f, EST_Val(atof(v.string())));
+	      set_path(f, EST_Val(atof(v.string())));
 	}
 	else if (v.string().contains("F:"))
 	{

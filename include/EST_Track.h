@@ -312,6 +312,10 @@ public:
     void copy_frame_out(int n, float *buf, int offset=0, int num=EST_ALL) 
 	const {p_values.copy_row(n, buf, offset, num); } 
 
+    /** copy frame {\tt n} into EST_FVector */
+    void copy_frame_out(int n, EST_FVector &f, int offset=0, int num=EST_ALL)
+        const {p_values.copy_row(n, f, offset, num); } 
+
     /** copy buf into pre-allocated channel n of track */
     void copy_channel_in(int n, const float *buf, int offset=0, 
 			  int num=EST_ALL)
