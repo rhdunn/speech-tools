@@ -71,4 +71,4 @@ ling_class_init.o EST_utterance_aux.o EST_UtteranceFile.o: %.o : %.cc
 	$(strip $(CXX_COMMAND_TEMPLATES) $(UTTERANCEFILEDEFS) $< )
 
 genxml.o: genxml.cc
-	$(strip $(CXX_COMMAND_TEMPLATES) -DESTLIBDIR=\"$(EST_HOME)/lib\" $< )
+	$(strip $(CXX_COMMAND_TEMPLATES) -DESTLIBDIRC='$(EST_HOME)/lib' $< )

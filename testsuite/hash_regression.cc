@@ -71,7 +71,7 @@ while(! file.eof())
   {
     EST_String line;
 
-    line = file.get();
+    line = (EST_String)file.get();
 
     if (file.eof())
       break;

@@ -35,8 +35,8 @@
 /*-----------------------------------------------------------------------*/
 /*                                                                       */
 /* Implementation of an inside-outside reestimation procedure for        */
-/* building a sochastic CFG seeded with a bracket corpus.                */
-/* Based on "Inside-Outside Reestimation from partially bracked          */
+/* building a stochastic CFG seeded with a bracket corpus.               */
+/* Based on "Inside-Outside Reestimation from partially bracketed        */
 /* corpora", F Pereira and Y. Schabes. pp 128-135, 30th ACL, Newark,     */
 /* Delaware 1992.                                                        */
 /*                                                                       */
@@ -54,8 +54,8 @@
 
 static const EST_bracketed_string def_val_s;
 static EST_bracketed_string error_return_s;
-const EST_bracketed_string *EST_TVector<EST_bracketed_string>::def_val=&def_val_s;
-EST_bracketed_string *EST_TVector<EST_bracketed_string>::error_return=&error_return_s;
+template <> const EST_bracketed_string *EST_TVector<EST_bracketed_string>::def_val=&def_val_s;
+template <> EST_bracketed_string *EST_TVector<EST_bracketed_string>::error_return=&error_return_s;
 
 
 #if defined(INSTANTIATE_TEMPLATES)
@@ -316,7 +316,7 @@ double EST_SCFG_traintest::f_O_cal(int c, int p, int i, int k)
 
 void EST_SCFG_traintest::reestimate_rule_prob_B(int c, int ri, int p, int q, int r)
 {
-    // Restimate probability for binary rules
+    // Re-estimate probability for binary rules
     int i,j,k;
     double n2=0;
     
@@ -344,8 +344,10 @@ void EST_SCFG_traintest::reestimate_rule_prob_B(int c, int ri, int p, int q, int
     double fp = f_P(c);
     double n1,d1;
     n1 = n2 / fp;
+    if (fp == 0) n1=0;
 
     d1 = f_P(c,p) / fp;
+    if (fp == 0) d1=0;
     //	printf("n1 %f d1 %f n2 %f fp %f\n",n1,d1,n2,fp);
     n[ri] += n1;
     d[ri] += d1;
@@ -354,7 +356,7 @@ void EST_SCFG_traintest::reestimate_rule_prob_B(int c, int ri, int p, int q, int
 
 void EST_SCFG_traintest::reestimate_rule_prob_U(int c,int ri, int p, int m)
 {
-    // Restimate probability for unary rules
+    // Re-estimate probability for unary rules
     int i;
 
 //    printf("reestimate_rule_prob_U: %f p %s m %s\n",
@@ -404,7 +406,7 @@ void EST_SCFG_traintest::reestimate_grammar_probs(int passes,
 					const EST_String &outfile)
 {
     // Iterate over the corpus cummulating factors for each rules
-    // This reduces the sapce requirements and recalculations of
+    // This reduces the space requirements and recalculations of
     // values for each sentences.  
     // Repeat training passes to number specified
     int pass = 0;
@@ -454,11 +456,14 @@ void EST_SCFG_traintest::reestimate_grammar_probs(int passes,
 	for (se=0.0,ri=0,r=rules.head(); r != 0; r=next(r),ri++)
 	{
 	    double n_prob = n[ri]/d[ri];
+	    if (d[ri] == 0)
+		n_prob = 0;
 	    se += (n_prob-rules(r).prob())*(n_prob-rules(r).prob());
 	    rules(r).set_prob(n_prob);
 	}
-	printf("pass %d cross entropy %g RMSE %f\n",
-	       pass,-(lPc/mC),sqrt(se/rules.length()));
+	printf("pass %d cross entropy %g RMSE %f %f %d\n",
+	       pass,-(lPc/mC),sqrt(se/rules.length()),
+	       se,rules.length());
 	
 	if (checkpoint != -1) 
 	{

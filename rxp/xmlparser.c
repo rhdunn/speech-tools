@@ -12,10 +12,10 @@
 /* WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.       */
 /*                                                                       */
 /*************************************************************************/
-/* 	$Id: xmlparser.c,v 1.1 2002/12/27 15:05:30 awb Exp $	 */
+/* 	$Id: xmlparser.c,v 1.3 2004/05/04 00:00:17 awb Exp $	 */
 
 #ifndef lint
-static char vcid[] = "$Id: xmlparser.c,v 1.1 2002/12/27 15:05:30 awb Exp $";
+static char vcid[] = "$Id: xmlparser.c,v 1.3 2004/05/04 00:00:17 awb Exp $";
 #endif /* lint */
 
 /* 
@@ -812,7 +812,7 @@ static int parse(Parser p)
 
     if(p->state == PS_end || p->state == PS_error)
     {
-	/* After an error or EOF, jsut keep returning EOF */
+	/* After an error or EOF, just keep returning EOF */
 	p->xbit.type = XBIT_eof;
 	return 0;
     }
@@ -1182,7 +1182,9 @@ static int parse_pcdata(Parser p)
 	{
 	    s->next = next;
 	    if(count > 0)
+	    {
 		require(transcribe(p, count, count));
+	    }
 	    count = 0;
 	    if(at_eoe(s))
 	    {
@@ -1213,7 +1215,9 @@ static int parse_pcdata(Parser p)
 	    }
 	    s->next = next;
 	    if(count > 0)
+	    {
 		require(transcribe(p, count+1, count));
+	    }
 	    count = 0;
 	    if(!ParserGetFlag(p, ReturnComments) && 
 	       buflen >= next + 3 &&
@@ -1242,7 +1246,9 @@ static int parse_pcdata(Parser p)
 
 		s->next = next-1;
 		if(count > 0)
+	        {
 		    require(transcribe(p, count, count));
+	        }
 		goto done;
 	    }
 	    if(buflen >= next+1 && buf[next] == '#')
@@ -1251,7 +1257,9 @@ static int parse_pcdata(Parser p)
 
 		s->next = next+1;
 		if(count > 0)
+	        {
 		    require(transcribe(p, count+2, count));
+	        }
 		count = 0;
 		require(parse_character_reference(p,
 				   ParserGetFlag(p, ExpandCharacterEntities)));
@@ -1266,7 +1274,9 @@ static int parse_pcdata(Parser p)
 
 		s->next = next;
 		if(count > 0)
+	        {
 		    require(transcribe(p, count+1, count));
+	        }
 		count = 0;
 		require(parse_reference(p, 0, 
 				       ParserGetFlag(p, ExpandGeneralEntities),
@@ -1327,7 +1337,9 @@ static int parse_comment(Parser p, int skip)
 	if(at_eol(s))
 	{
 	    if(!skip)
+	    {
 		require(transcribe(p, count, count));
+	    }
 	    count = 0;
 	}
 	c2 = c1; c1 = c;
@@ -1442,7 +1454,9 @@ static int parse_string(Parser p, const char8 *where, enum literal_type type)
 		break;
 	    }
 	    if(count > 0)
+	    {
 		require(transcribe(p, count+1, count));
+	    }
 	    count = 0;
 	    ExpandBuf(p->pbuf, p->pbufnext+1);
 	    p->pbuf[p->pbufnext++] = ' ';
@@ -1457,9 +1471,13 @@ static int parse_string(Parser p, const char8 *where, enum literal_type type)
 
 	case XEOE:
 	    if(s == start_source)
+	    {
 		return error(p, "Quoted string goes past entity end");
+	    }
 	    if(count > 0)
+	    {
 		require(transcribe(p, count, count));
+	    }
 	    count = 0;
 	    ParserPop(p);
 	    s = p->source;
@@ -1472,7 +1490,9 @@ static int parse_string(Parser p, const char8 *where, enum literal_type type)
 		break;
 	    }
 	    if(count > 0)
+	    {
 		require(transcribe(p, count+1, count));
+	    }
 	    count = 0;
 	    if(p->external_pe_depth == 0)
 	    {
@@ -1493,7 +1513,9 @@ static int parse_string(Parser p, const char8 *where, enum literal_type type)
 	    }
 
 	    if(count > 0)
+	    {
 		require(transcribe(p, count+1, count));
+	    }
 	    count = 0;
 	    if(looking_at(p, "#"))
 		require(parse_character_reference(p, 
@@ -2695,7 +2717,9 @@ static int parse_attlist_decl(Parser p)
 	    type = AT_enumeration;
 
 	if(type != AT_enumeration)
+	{
 	    require(expect_dtd_whitespace(p, "after attribute type"));
+        }
 
 	if(type == AT_notation || type == AT_enumeration)
 	{

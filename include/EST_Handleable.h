@@ -38,13 +38,13 @@
 /** Reference Counting Interface.
   *
   * This simple class does most of the things an object which is to be
-  * maniputated by EST_THandle style smart pointers needs to provide.
+  * manipulated by EST_THandle style smart pointers needs to provide.
   * 
   * @see EST_THandle
   * @see EST_TBox
   * @see EST_TrackMap
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Handleable.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_Handleable.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 #include <limits.h>

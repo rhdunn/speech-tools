@@ -5,8 +5,8 @@
  ## Extract the doc++ comments and any grouped code from an example       ##
  ## program.                                                              ##
  ##                                                                       ##
- ## This is very hacky and probably doesnt generalise properly.           ##
- ## Ill try and rewrite it as a full parse and recreate system at some    ##
+ ## This is very hacky and probably doesn't generalise properly.          ##
+ ## I'll try and rewrite it as a full parse and recreate system at some   ##
  ## point.                                                                ##
  ##                                                                       ##
  ###########################################################################

@@ -41,7 +41,12 @@
 #include "ling_class/EST_FeatureFunctionPackage.h"
 
 			
-Declare_TStringHash_T(EST_FeatureFunctionPackage::Entry, EST_FeatureFunctionPackage_Entry)
+static EST_Val Dummy_Func(EST_Item *) { return EST_Val(); }
+static struct EST_FeatureFunctionPackage::Entry Dummy_Entry = { Dummy_Func };
+template <> EST_String
+EST_THash<EST_String, EST_FeatureFunctionPackage::Entry>::Dummy_Key = "DUMMY";
+template <> EST_FeatureFunctionPackage::Entry
+EST_THash<EST_String, EST_FeatureFunctionPackage::Entry>::Dummy_Value = Dummy_Entry;
 
 
 #if defined(INSTANTIATE_TEMPLATES)

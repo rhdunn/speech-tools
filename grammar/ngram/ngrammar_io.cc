@@ -377,7 +377,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
 	    approx_num_samples += dd[j]; // probably not right
 	    n.vocab_pdf.cumulate(k,dd[j]);
 	    
-	    // Number of consecutive occurences of this frequency as in
+	    // Number of consecutive occurrences of this frequency as in
 	    // dd[j+1] if its a negative number
 	    if (j+1 >= num_entries)
 		j++;
@@ -393,7 +393,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
     // With smoothing num_samples might not be as exact as you like
     n.p_num_samples = (int)approx_num_samples;
     
-    delete dd;
+    delete [] dd;
     
     ts.close();
     fclose(ifd);
@@ -859,7 +859,7 @@ save_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n,
     
     // We use a simple form of run-length encoding, if consecutive
     // values are equal only a length is printed.  lengths are
-    // neagtive as frequencies (even smoothed ones) can never be -ve
+    // negative as frequencies (even smoothed ones) can never be -ve
     
     if ( trace )
 	cerr << "Saving ..." << endl;

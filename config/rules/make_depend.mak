@@ -66,7 +66,8 @@ ifneq ($(ALL_DEPEND),)
 		ext=`expr "$$i" : '.*\.\(.*\)'` ;\
 		{ \
 		case "$$ext" in \
-		c|cc)	$(MAKE_DEPEND) $(DEPEND_FLAGS) "$$i";;\
+		c)	$(MAKE_DEPEND_C) $(DEPEND_FLAGS) "$$i";;\
+		cc)	$(MAKE_DEPEND_CXX) $(DEPEND_FLAGS) "$$i";;\
 		java)	echo "$$basename.class : $$basename.java";;\
 		*)      echo "# Can't make depend for extension $$ext";;\
 		esac ;\

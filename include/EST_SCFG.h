@@ -45,10 +45,10 @@
 #include "EST_TList.h"
 #include "siod.h"
 
-/** This class represents a bracted string used in training of SCFGs.
+/** This class represents a bracketed string used in training of SCFGs.
 
     An object in this class builds an index of valid bracketing of
-    the string.  Thus offering both a tree like access and direct
+    the string, thus offering both a tree like access and direct
     access to the leafs of the tree.  The definition of ``valid
     bracketing'' is any substring \[ W_{i,j} \] that doesn't cross any
     brackets.
@@ -237,7 +237,7 @@ class EST_SCFG {
     //@}
 };
 
-/** A class used to train (and test) SCFGs is an extention of 
+/** A class used to train (and test) SCFGs is an extension of 
     \Ref{EST_SCFG}.
 
     This offers an implementation of Pereira and Schabes ``Inside-Outside
@@ -261,16 +261,16 @@ class EST_SCFG_traintest : public EST_SCFG {
     /// Partial (denominator) for reestimation
     EST_DVector d;
 
-    /// Caculate inside probability.
+    /// Calculate inside probability.
     double f_I_cal(int c, int p, int i, int k);
-    /// Lookup or caculate inside probability.
+    /// Lookup or calculate inside probability.
     double f_I(int c, int p, int i, int k)
     { double r; 
       if ((r=inside[p][i][k]) != -1) return r;
       else return f_I_cal(c,p,i,k); }
-    /// Caculate outside probability.
+    /// Calculate outside probability.
     double f_O_cal(int c, int p, int i, int k);
-    /// Lookup or caculate outside probability.
+    /// Lookup or calculate outside probability.
     double f_O(int c, int p, int i, int k)
     { double r; 
       if ((r=outside[p][i][k]) != -1) return r;
@@ -281,11 +281,11 @@ class EST_SCFG_traintest : public EST_SCFG {
         nonterminal {\tt p}
     */
     double f_P(int c,int p);
-    /// Re-estimate probability of binary rule using iniside-outside algorithm
+    /// Re-estimate probability of binary rule using inside-outside algorithm
     void reestimate_rule_prob_B(int c, int ri, int p, int q, int r);
-    /// Re-estimate probability of unary rule using iniside-outside algorithm
+    /// Re-estimate probability of unary rule using inside-outside algorithm
     void reestimate_rule_prob_U(int c, int ri, int p, int m);
-    /// Do grammar restimation
+    /// Do grammar re-estimation
     void reestimate_grammar_probs(int passes,
 				  int startpass,
 				  int checkpoint,
@@ -308,15 +308,15 @@ class EST_SCFG_traintest : public EST_SCFG {
     void test_corpus();
     /** Test the current grammar against the current corpus.
 
-        Sumamry includes percentage of cross bracketing accuracy 
+        Summary includes percentage of cross bracketing accuracy 
         and percentage of fully correct parses.
     */
     void test_crossbrackets();
 
     /** Load a corpus from the given file.
 
-        Each setence in the corpus should be contained in parentheses.
-        Additional paranethesis may be used to denote phrasing within
+        Each sentence in the corpus should be contained in parentheses.
+        Additional parenthesis may be used to denote phrasing within
         a sentence.  The corpus is read using the LISP reader so LISP
         conventions shold apply, notable single quotes should appear
         within double quotes.

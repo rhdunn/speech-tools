@@ -42,7 +42,9 @@
 #include "EST_THash.h"
 #include "EST_Val.h"
 
-Declare_THash(int,EST_Val)
+static EST_Val Dummy_Val;
+template <> int EST_THash<int, EST_Val>::Dummy_Key = 0;
+template <> EST_Val EST_THash<int, EST_Val>::Dummy_Value = Dummy_Val;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

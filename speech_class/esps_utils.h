@@ -46,7 +46,7 @@ struct ESPS_PREAMBLE {
     int data_offset;    /* offset from start to start of data records */
     int record_size;    /* data record size in bytes */
     int check;          /* ESPS magic number */
-    int edr;            /* byte order independant order or native */
+    int edr;            /* byte order independent order or native */
     int fil1;           /* dunno */
     int foreign_hd;     /* foreign header -- not supported */
 };
@@ -140,7 +140,7 @@ typedef struct ESPS_HDR_struct *esps_hdr;
 #define ESPS_FLOAT  2
 #define ESPS_INT    3
 #define ESPS_SHORT  4
-#define ESPS_CHAR   5   /* I doubt I'm treaking char and byte appropriately */
+#define ESPS_CHAR   5   /* I doubt I'm treating char and byte appropriately */
 #define ESPS_CODED  7   /* enumerated type. Same size as short */
 #define ESPS_BYTE   8
 /* There are others too including COMPLEX ones */

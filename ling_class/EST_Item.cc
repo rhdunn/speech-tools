@@ -35,12 +35,12 @@
 /*-----------------------------------------------------------------------*/
 /*  Linguistic items (e.g. words, phones etc) held as part of Relations  */
 /*                                                                       */
-/*  These objects may be held in relations within an utternace.  They    */
+/*  These objects may be held in relations within an utterance.  They    */
 /*  fact contain two sections, a structural part and a contents part     */
 /*  (EST_Item_Content) though the user will usually only see the whole   */
 /*  object.  The content part may be shared between linguistic items in  */
 /*  other relations, e.g. the word item may appear both in the word      */
-/*  relation and the syntaxt relation.                                   */
+/*  relation and the syntax relation.                                    */
 /*                                                                       */
 /*  Each linguistic item is in a particular relation but it is easy      */
 /*  to link to that item in another relation.  Traversal of the relation */
@@ -613,26 +613,21 @@ ostream& operator << (ostream &s, const EST_Item &a)
     return s;
 }
 
+
 void evaluate(EST_Item *a,EST_Features &f)
 {
-    EST_Val t, v;
-    EST_String name;
-
-    EST_Features::Entries p;
+    EST_Features::RwEntries p;
 
     for(p.begin(f); p; ++p)
-	if (p->v.type() == val_type_featfunc)
+      if (p->v.type() == val_type_featfunc)
 	{
-	    t = p->v;
-	    if (featfunc(t) != NULL)
-		v = (featfunc(t))(a);
-	    else
+	  if (featfunc(p->v) != NULL)
+	    p->v = (featfunc(p->v))(a);
+	  else
 	    {
-	      name = p->k;
-	      fprintf(stderr, "NULL %s function\n", (const char *)name);
-	      v = EST_Features::feature_default_value;
+	      fprintf(stderr, "NULL %s function\n", (const char *) p->k );
+	      p->v = EST_Features::feature_default_value;
 	    }
-	    f.set_val(name, v);
 	}
 }
 

@@ -13,7 +13,7 @@
 #include "siodp.h"
 #include "EST_Pathname.h"
 
-static void siod_string_print(LISP exp, ostrstream &sd);
+static void siod_string_print(LISP exp, EST_String &sd);
 
 LISP open_files = NIL;
 
@@ -109,7 +109,7 @@ static LISP fflush_l(LISP p)
     return NIL;
 }
 
-static void siod_string_print(LISP exp, ostrstream &sd)
+static void siod_string_print(LISP exp, EST_String &sd)
 {
     LISP tmp;
     int i;
@@ -117,22 +117,22 @@ static void siod_string_print(LISP exp, ostrstream &sd)
     switch TYPE(exp)
     {
       case tc_nil:
-	sd << "nil";
+	sd += "nil";
 	break;
       case tc_cons:
-	sd << "(";
+	sd += "(";
 	siod_string_print(car(exp),sd);
 	for(tmp=cdr(exp);CONSP(tmp);tmp=cdr(tmp))
 	{
-	    sd << " ";
+	    sd += " ";
 	    siod_string_print(car(tmp),sd);
 	}
 	if NNULLP(tmp) 
 	{
-	    sd << " . ";
+	    sd += " . ";
 	    siod_string_print(tmp,sd);
 	}
-	sd << ")";
+	sd += ")";
 	break;
       case tc_flonum:
 	if (FLONMPNAME(exp) == NULL)
@@ -142,22 +142,23 @@ static void siod_string_print(LISP exp, ostrstream &sd)
 	    sprintf(FLONMPNAME(exp),"%s",tkbuffer);
 	}
 	sprintf(tkbuffer,"%s",FLONMPNAME(exp));
-	sd << tkbuffer;
+	sd += tkbuffer;
 	break;
       case tc_string:
-	sd << "\"";
+	sd += "\"";
 	for (i=0; exp->storage_as.string.data[i] != '\0'; i++)
 	{
 	    if (exp->storage_as.string.data[i] == '"')
-		sd << '\\';
+		sd += "\\";
 	    if (exp->storage_as.string.data[i] == '\\')
-		sd << '\\';
-	    sd << exp->storage_as.string.data[i];
+		sd += "\\";
+	    sprintf(tkbuffer,"%c",exp->storage_as.string.data[i]);
+	    sd += tkbuffer;
 	}
-	sd << "\"";
+	sd += "\"";
 	break;
       case tc_symbol:
-	sd << PNAME(exp);
+	sd += PNAME(exp);
 	break;
       case tc_subr_0:
       case tc_subr_1:
@@ -168,23 +169,23 @@ static void siod_string_print(LISP exp, ostrstream &sd)
       case tc_fsubr:
       case tc_msubr:
 	sprintf(tkbuffer,"#<SUBR(%d) ",TYPE(exp));
-	sd << tkbuffer;
-	sd << (*exp).storage_as.subr.name;
-	sd << ">";
+	sd += tkbuffer;
+	sd += (*exp).storage_as.subr.name;
+	sd += ">";
 	break;
       case tc_c_file:
 	sprintf(tkbuffer,"#<FILE %p ",(void *)exp->storage_as.c_file.f);
-	sd << tkbuffer;
+	sd += tkbuffer;
 	if (exp->storage_as.c_file.name)
-	    sd << exp->storage_as.c_file.name;
-	sd << ">";
+	    sd += exp->storage_as.c_file.name;
+	sd += ">";
         break;
       case tc_closure:
-	sd << "#<CLOSURE ";
+	sd += "#<CLOSURE ";
 	siod_string_print(car((*exp).storage_as.closure.code),sd);
-	sd << " ";
+	sd += " ";
 	siod_string_print(cdr((*exp).storage_as.closure.code),sd);
-	sd << ">";
+	sd += ">";
 	break;
       default:
 	struct user_type_hooks *p;
@@ -198,26 +199,17 @@ static void siod_string_print(LISP exp, ostrstream &sd)
 	    else
 		sprintf(tkbuffer,"#<UNKNOWN %d %p>",TYPE(exp),(void *)exp);
 	}
-	sd << tkbuffer;
+	sd += tkbuffer;
     }
     return;
 }
 
-
 EST_String siod_sprint(LISP exp)
 {
-    ostrstream sd;
     EST_String r;
 
-    siod_string_print(exp,sd);
-
-    sd << '\0';
-    r = sd.str();
-
-#ifdef __GNUC__
-    // need to do this otherwise sd doesn't free its internal buffer
-    sd.freeze(0);
-#endif
+    r = "";
+    siod_string_print(exp,r);
 
     return r;
 }

@@ -40,8 +40,6 @@
 
 /**@name EST_wave_aux
 Auxiliary functions for processing waveforms.
-Auxiliary functions for processing waveforms.
-Auxiliary functions for processing waveforms.
   */
 
 //@{
@@ -57,22 +55,10 @@ Auxiliary functions for processing waveforms.
 #include "EST_TNamedEnum.h"
 
 
-/** extract lkj lkjf lkj.
-funcytions. function.s
-lkjlkj/. ;ljf ;dflj d;fljf;lj f;ljf.
-*/
 int wave_extract_channel(EST_Wave &single, const EST_Wave &multi, int channel);
 
-/** extract lkj lkjf lkj.
-funcytions. function.s
-lkjlkj/. ;ljf ;dflj d;fljf;lj f;ljf 
-*/
 void wave_combine_channels(EST_Wave &combined, const EST_Wave &multi);
 
-/** extract lkj lkjf lkj.
-funcytions. function.s
-lkjlkj/. ;ljf ;dflj d;fljf;lj f;ljf 
-*/
 int wave_subwave(EST_Wave &subsig,EST_Wave &sig,int offset,int length);
 
 int wave_divide(EST_WaveList &wl, EST_Wave &sig, EST_Relation &keylab,

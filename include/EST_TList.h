@@ -155,7 +155,7 @@ template <class T> class EST_TList : public EST_UList
   /// return const reference to item in list pointed to by {\tt ptr}
     const T  &operator () (const EST_Litem *ptr) const
 	    { return item(ptr); };
-  /// return const reference to item in list pointed to by {\tt ptr}
+  /// return non-const reference to item in list pointed to by {\tt ptr}
     T  &operator () (const EST_Litem *ptr)
  	    { return item(ptr); };
 

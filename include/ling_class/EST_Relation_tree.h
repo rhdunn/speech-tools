@@ -99,7 +99,7 @@ inline EST_Item *daughtern(const EST_Item *n,const char *relname)
 inline EST_Item *next_sibling(const EST_Item *n,const char *relname)
     { return next_sibling(as(n,relname)); }
 
-/** return previous sibling (sistem) of <parameter>n</parameter> as seen 
+/** return previous sibling (sister) of <parameter>n</parameter> as seen 
     from relation <parameter>relname</parameter> */
 inline EST_Item *prev_sibling(const EST_Item *n,const char *relname)
     { return prev_sibling(as(n,relname)); }
@@ -117,7 +117,7 @@ EST_Item *last_leaf_in_tree(const EST_Item *root);
 
 /** return the first leaf (terminal node) which is dominated by
  <parameter>n</parameter>. Note that this is different from daughter1 etc
-as this descends the tree to find the lefttmost terminal node (it
+as this descends the tree to find the leftmost terminal node (it
 is like the transitive closure of daughter1).
 */
 inline EST_Item *first_leaf(const EST_Item *n) {return first_leaf_in_tree(n);}

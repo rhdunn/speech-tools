@@ -42,7 +42,9 @@
 #include "EST_String.h"
 #include "EST_Val.h"
 
-Declare_TStringHash(EST_Val)
+static EST_Val Dummy_Val;
+template <> EST_String EST_THash<EST_String, EST_Val>::Dummy_Key = "DUMMY";
+template <> EST_Val EST_THash<EST_String, EST_Val>::Dummy_Value = Dummy_Val;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

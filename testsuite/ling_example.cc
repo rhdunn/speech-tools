@@ -47,8 +47,8 @@ int main(void)
   * An item such as 
   * <graphic fileref="../arch_doc/eq01.gif" format="gif"></graphic> 
   * is constructed as follows: (note that
-  * the atttributes are in capitals by linguistic convention only:
-  * attirbute names are case sensitive and can be upper or lower
+  * the attributes are in capitals by linguistic convention only:
+  * attribute names are case sensitive and can be upper or lower
   * case).
   */
   //@{
@@ -209,7 +209,7 @@ int main(void)
   cout << "This is false: " << p.f_present("MANNER");
   //@} code
 
-  /** A attirbute can be removed by <function>f_remove</function>
+  /** A attribute can be removed by <function>f_remove</function>
     */
 
   //@{ code
@@ -263,9 +263,9 @@ int main(void)
     * If you already have a EST_Item pointer and want to add it to a
     * relation, you can give it as an argument to
     * <function>append()</function>, but this is generally
-    * inadvisable as it involves some unecessary copying, and also
+    * inadvisable as it involves some unnecessary copying, and also
     * you have to allocate the memory for the next EST_Item pointer
-    * yourself everytime (if you don't you will overwrite the
+    * yourself every time (if you don't you will overwrite the
     * previous one):
     */
 	

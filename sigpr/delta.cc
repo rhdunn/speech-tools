@@ -34,7 +34,7 @@
 /*                     Date   :  July 1995                               */
 /*-----------------------------------------------------------------------*/
 /*                 Compute delta coefficients for                        */
-/*                        Tracks and Tracks                                */
+/*                        Tracks and Tracks                              */
 /*                                                                       */
 /*=======================================================================*/
 #include <stdlib.h>
@@ -135,8 +135,8 @@ static float compute_gradient(const EST_FVector &x, int num_points)
     
     // time between points is assumed to be one unit
     
-    // these are solutions to least-sqaures fit of straight line
-    // to num_points points
+    // These are solutions to least-squares fit of straight line
+    // to num_points points.
     switch (num_points){
 	
     case 1:

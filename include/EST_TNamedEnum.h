@@ -35,7 +35,7 @@
  /************************************************************************/
  /*                                                                      */
  /* A template class which allows names (const char *s) to be            */
- /* associated with enums, providing convertion.                         */
+ /* associated with enums, providing conversion.                         */
  /*                                                                      */
  /* EST_TValuesEnum is the obvious generalisation to associating         */
  /* things other than const char * with each value.                      */
@@ -124,9 +124,9 @@ protected:
 public:
 
   EST_TNamedEnumI(EST_TValuedEnumDefinition<ENUM,const char *,INFO> defs[])
-	{initialise((const void *)defs); };
+	{this->initialise((const void *)defs); };
   EST_TNamedEnumI(EST_TValuedEnumDefinition<const char *,const char *,INFO> defs[], ENUM (*conv)(const char *))
-	{initialise((const void *)defs, conv); };
+	{this->initialise((const void *)defs, conv); };
   const char *name(ENUM tok, int n=0) const {return value(tok,n); };
 
 };
@@ -136,9 +136,9 @@ public:
 template<class ENUM, class VAL> class EST_TValuedEnum : public EST_TValuedEnumI<ENUM,VAL,NO_INFO> { 
 public:
   EST_TValuedEnum(EST_TValuedEnumDefinition<ENUM,VAL,NO_INFO> defs[]) 
-	{initialise((const void *)defs);};
+	{this->initialise((const void *)defs);};
   EST_TValuedEnum(EST_TValuedEnumDefinition<const char *,VAL,NO_INFO> defs[], ENUM (*conv)(const char *)) 
-	{initialise((const void *)defs, conv);};
+	{this->initialise((const void *)defs, conv);};
 };
 
 
@@ -148,11 +148,11 @@ private:
   EST_write_status priv_save(EST_String name, EST_TNamedEnum *definitive, char quote) const;
 public:
   EST_TNamedEnum(ENUM undef_e, const char *undef_n = NULL) 
-	{initialise(undef_e, undef_n);};
+	{this->initialise(undef_e, undef_n);};
   EST_TNamedEnum(EST_TValuedEnumDefinition<ENUM,const char *,NO_INFO> defs[]) 
-	{initialise((const void *)defs);};
+	{this->initialise((const void *)defs);};
   EST_TNamedEnum(EST_TValuedEnumDefinition<const char *,const char *,NO_INFO> defs[], ENUM (*conv)(const char *)) 
-	{initialise((const void *)defs, conv);};
+	{this->initialise((const void *)defs, conv);};
 
   EST_read_status load(EST_String name) { return priv_load(name, NULL); };
   EST_read_status load(EST_String name, EST_TNamedEnum &definitive) { return priv_load(name, &definitive); };

@@ -33,7 +33,7 @@
  /*                                                                       */
  /*                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             */
  /* --------------------------------------------------------------------  */
- /* Recursive descent parsing skeliton.                                   */
+ /* Recursive descent parsing skeleton.                                   */
  /*                                                                       */
  /*************************************************************************/
 

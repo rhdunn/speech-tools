@@ -67,7 +67,7 @@ int wave_divide(EST_WaveList &wl, EST_Wave &sig, EST_Relation &keylab,
 	if (end < start)
 	    continue;
 	wave_subwave(a, sig, start, end-start);
-	filename = k->f("file");
+	filename = (EST_String)k->f("file");
 	a.set_name(filename + ext);
 	wl.append(a);
 	start = end;
@@ -87,7 +87,7 @@ int wave_extract(EST_Wave &part, EST_Wave &sig, EST_Relation &keylab,
     for (k = keylab.head(); k; k = next(k))
     {
 	end = k->F("end",0);
-	key_file_name = k->f("file");
+	key_file_name = (EST_String)k->f("file");
 	if (key_file_name == file)
 	{
 	    wave_subwave(part, sig, start, end-start);

@@ -38,10 +38,10 @@
 
 /**@name EST_TMatrix 
   * 
-  * The EST_TMatrix class is a generl purpose 2 dimensional array
+  * The EST_TMatrix class is a general purpose 2 dimensional array
   * container class. It handles memory allocation and (if required) bounds
-  * checking and is reasonably efficiant, so there should be little need
-  * to use bare &cpp; arays.
+  * checking and is reasonably efficient, so there should be little need
+  * to use bare &cpp; arrays.
   *
   * @see EST_TMatrix
   * @see EST_TVector
@@ -74,7 +74,7 @@ int main(void)
   //@{
   /**@name Declaration
     * 
-    * Matrixes are declared by giving the type and the number of 
+    * Matrices are declared by giving the type and the number of 
     * rows and columns. Here we create a 10 row by 5 column matrix.
     */
   //@{ code
@@ -88,7 +88,7 @@ int main(void)
     *
     * Access to values in the matrix is via the a() member function.
     * This returns a reference, so you can assign values to matrix cells.
-    * As is usually the case in &cpp;, column and row indecies start from 0.
+    * As is usually the case in &cpp;, column and row indices start from 0.
     */
   //@{ code
 
@@ -185,7 +185,7 @@ int main(void)
   //@{
 
   /** Here is how we can create new variables which refer to the 11th
-    * row, 4th column and a 5X3 rectnagle with top left hand corner (8,2).
+    * row, 4th column and a 5X3 rectangle with top left hand corner (8,2).
     * (since the first column or row is numbered 0, the numbers may be one
     * less than you expect).
     */
@@ -264,10 +264,10 @@ int main(void)
 
 /**@name Template Instantiation.
   * 
-  * Some &cpp; compilers requre explicit guidance about which types
+  * Some &cpp; compilers require explicit guidance about which types
   * of Matrix will be used. For many common types, including float,
   * this guidance is included in the &est; libraries. However, if you
-  * need to use matrecies of your own types, you will need to include
+  * need to use matrices of your own types, you will need to include
   * declarations similar to the following.
   */
 //@{

@@ -57,12 +57,12 @@ public:
   // declare a member function via a typedef.
 
 #define LoadTrackFileArgs const EST_String filename, \
-			  EST_Track &tr, float ishift
+			  EST_Track &tr, float ishift, float startt
 
 #define SaveTrackFileArgs const EST_String filename, EST_Track tr
 
 #define LoadTrack_TokenStreamArgs EST_TokenStream &ts, \
-				  EST_Track &tr, float ishift
+				  EST_Track &tr, float ishift, float startt
 
 #define SaveTrac_TokenStreamArgs FILE *fp, EST_Track tr
 

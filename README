@@ -1,12 +1,13 @@
 		EDINBURGH SPEECH TOOLS LIBRARY
-                 VERSION 1.2.3 January 2003
+                 VERSION 1.2.95 July 2004
 
-Principal authors: Alan W Black, Paul Taylor, Richard Caley and Simon King
+Principal authors: Alan W Black, Paul Taylor, Richard Caley, 
+                   Simon King, Rob Clark and Korin Richmond
 
 Centre for Speech Technology
 University of Edinburgh 
-80 South Bridge
-Edinburgh EH1 1HN, UK
+2 Buccleuch Place
+Edinburgh EH8 9LW, UK
 http://www.cstr.ed.ac.uk/projects/speech_tools
 
 Although this is a considered stable release, there are still a number
@@ -24,10 +25,10 @@ basic signal processing software.
 ========================================================================
 
 
-            Edinburgh Speech Tools Library version 1.2.3
+            Edinburgh Speech Tools Library version 1.2.95
               Centre for Speech Technology Research                
                    University of Edinburgh, UK                     
-                    Copyright (c) 1994-2003
+                    Copyright (c) 1994-2004
                       All Rights Reserved.                         
                                                                    
 Permission is hereby granted, free of charge, to use and distribute  
@@ -130,11 +131,11 @@ base_class/string/EST_strcasecmp.c
 ACKNOWLEDGEMENTS
 ------------------------------------------------------------------------
 
-Most of the software was written by Paul Taylor, Alan W Black, Simon King
-and Richard Caley additional contributions have been made by the
-following people.  Slightly different licence agreements accompany
-these pieces of code, so it is important that the various agreements
-be properly understood.
+Most of the software was written by Paul Taylor, Alan W Black, Simon
+King, Richard Caley, Rob Clark and Korin Richmond. Additional
+contributions have been made by the following people.  Slightly
+different licence agreements accompany these pieces of code, so it is
+important that the various agreements be properly understood.
 
 Tony Robinson: some signal processing code.
 Markus Mummert: sample rate converter (rateconv.cc).
@@ -204,12 +205,12 @@ described at the overview, theorectical, practical and code level.
 The build process for the documentation is still dependent on some
 more obscure packages so it is recommended that you take the
 pre-built documentation.  Or access it on-line through
-   http://www.cstr.ed.ac.uk/projects/speech_tools.html
+   http://www.cstr.ed.ac.uk/projects/speech_tools
 
 The library documentation is in texinfo format which can be converted
 into GNU info HTML and postscript, see Makefile in doc/
 
-Note the documentation is not up to date.
+Note the documentation is not up to date. We are in the process of moving the documentation to Doxygen.
 
 BUGS/COMMENTS ETC
 ------------------------------------------------------------------------

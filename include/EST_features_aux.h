@@ -35,10 +35,10 @@
 #ifndef __EST_FEATURES_AUX_H__
 #define __EST_FEATURES_AUX_H__
 
-/** Non core feature funtionality.
+/** Non core feature functionality.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_features_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_features_aux.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 //@{
@@ -65,7 +65,7 @@ enum EST_feat_status
   /// No value for feature, default returned
   efs_not_set=1,
 
-  /// An error occured and was caught.
+  /// An error occurred and was caught.
   efs_error=2
 };
 

@@ -178,7 +178,7 @@ void EST_UList::exchange(EST_UItem *a, EST_UItem *b)
     }
 
     // I know this isn't very readable but there are eight pointers
-    // that need to be changed, and half of them are trival back pointers
+    // that need to be changed, and half of them are trivial back pointers
     // care need only be taken when b and a are adjacent, this actual
     // sets p and n twice if they are adjacent but still gets the right answer
     EST_UItem *ap=a->p,*an=a->n,*bn=b->n,*bp=b->p;
@@ -346,7 +346,7 @@ static EST_UItem *partition(EST_UItem *p, EST_UItem *r,
 			    bool (*gt)(const EST_UItem *item1, const EST_UItem *item2),
 			    void (*exchange)(EST_UItem *item1, EST_UItem *item2))
 {
-    // this can be tidied up / speeded up
+    // this can be tidied up / sped up
     
     EST_UItem *i,*j,*i2,*j2;
     EST_UItem *x = p;

@@ -88,7 +88,9 @@ void EST_Features::save_fpair(ostream &outf,
     else if ((fvalue.type() == val_string) &&
 	     ((fvalue.string().matches(RXint)) ||
 	      (fvalue.string().matches(RXdouble)) ||
-	      (fvalue.string().contains("("))))
+	      (fvalue.string().contains("(")) ||
+	      (fvalue.string().contains(")")) ||
+	      (fvalue.string().contains(";")) ))
 	// force quoting, cause it looks like a number but isn't
 	outf << quote_string(fvalue.string(),"\"","\\",1);
     else if (fvalue.type() == val_float)

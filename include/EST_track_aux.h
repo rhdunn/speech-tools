@@ -35,7 +35,7 @@
 /**@name EST_track_aux.h
   * EST_Track Auxiliary functions
   * @author Paul Taylor <pault@cstr.ed.ac.uk>
-  * @version $Id: EST_track_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_track_aux.h,v 1.4 2004/05/24 11:15:51 korin Exp $
   */
 
 //@{
@@ -83,6 +83,9 @@ void normalise(EST_TrackList &trlist, EST_FVector &mean,
 
 EST_Track differentiate(EST_Track &c, float samp_int=0.0);
 EST_Track difference(EST_Track &a, EST_Track &b);
+
+float mean( const EST_Track &a, int channel );
+void mean( const EST_Track &a, EST_FVector &m );
 
 void meansd(EST_Track &a, float &m, float &sd, int channel);
 
@@ -167,7 +170,7 @@ int get_frame_size(EST_Track &pms, int current_pos, int sample_rate,
 			 int prefer_prev=0);
 
 
-/// How many coefficiants in track (looks for Coef0 and coefN channels)
+/// How many coefficients in track (looks for Coef0 and coefN channels)
 int get_order(const EST_Track &t, EST_CoefficientType type, int d=0);
 int get_order(const EST_Track &t);
 
@@ -185,8 +188,8 @@ void get_start_positions(const EST_Track &t,
   * Functions which define which part of a single is associated with a
   * given frame in a track. 
   * <p>
-  * This is defined here in one place for consistancy. They are inline since 
-  * they tiend to be used in inner loops.There are two versions,
+  * This is defined here in one place for consistency. They are inline since 
+  * they tend to be used in inner loops. There are two versions,
   * the second for when there are offsets in the track.
   */
 //@{

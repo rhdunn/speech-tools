@@ -64,7 +64,7 @@ static int save_pm(EST_String filename, EST_Track fz);
 /**
 pda is a pitch detection algorithm that produces a fundamental frequency
 contour from a speech waveform file. At present only the
-super resolution pitch detetmination algorithm is implemented.
+super resolution pitch determination algorithm is implemented.
 See (Medan, Yair, and Chazan, 1991) and (Bagshaw et al., 1993) for a detailed
 description of the algorithm.
 </para><para>

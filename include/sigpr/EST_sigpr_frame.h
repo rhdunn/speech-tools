@@ -61,7 +61,7 @@ void sig2lpc(const EST_FVector &sig, EST_FVector &acf,
 		EST_FVector &ref, EST_FVector &lpc);
 
 
-/** Calulate cepstral coefficients from lpc coefficients.
+/** Calculate cepstral coefficients from lpc coefficients.
 
 It is possible to calculate a set of cepstral coefficients from
 lpc coefficients using the relationship: 
@@ -239,8 +239,8 @@ void fft2fbank(const EST_FVector &fft_frame,
 	       const float Hz_per_fft_coeff,
 	       const EST_FVector &mel_fbank_frequencies);
 	       
-/** Compute the dicrete cosine transform of log Mel-scale filter bank output
-to get the Mel cepstral coeffecients for a frame of speech.
+/** Compute the discrete cosine transform of log Mel-scale filter bank output
+to get the Mel cepstral coefficients for a frame of speech.
 Optional liftering (filtering in the cepstral domain) can be applied to
 normalise the magnitudes of the coefficients. This is useful because,
 typically, the higher order cepstral coefficients are significantly

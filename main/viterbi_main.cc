@@ -123,7 +123,7 @@ int num_obs = 1;
 /**
 viterbi is a simple time-synchronous Viterbi decoder. It finds the
 most likely sequence of items drawn from a fixed vocabulary, given
-frame-by-frame observation probabilites for each item in that
+frame-by-frame observation probabilities for each item in that
 vocabulary, and a ngram grammar. Possible uses include:
 
 <itemizedlist>
@@ -131,7 +131,7 @@ vocabulary, and a ngram grammar. Possible uses include:
 </itemizedlist>
 
 viterbi can optionally use two sets of frame-by-frame observation
-probabilites in a weighted-sum fashion. Also, the ngram language model
+probabilities in a weighted-sum fashion. Also, the ngram language model
 is not restricted to the conventional sliding window type in which the
 previous n-1 items are the ngram context. Items in the ngram context
 at each frame may be given. In this case, the user must provide a file

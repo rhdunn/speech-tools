@@ -93,7 +93,7 @@ will double filter the waveform {\tt sig} with a previously designed
 filter, given as {\tt numerator}. The filter coefficients can be
 designed using one of the designed functions,
 e.g. \Ref{design_FIR_filter}. Double filtering is performed by
-filtering the signal normally, resversing the waveform, filtering
+filtering the signal normally, reversing the waveform, filtering
 again and reversing the waveform again. Normal filtering will impose a
 lag on the signal depending on the order of the filter. By filtering
 the signal forwards and backwards, the lags cancel each other out and
@@ -247,7 +247,7 @@ correction value for that point:
 
 \[s_{n} = \sum_{i=1}^{P} a_{i}.s_{n-i} + e_{n}\]
 
-Given a set of coefficents and the original signal, we can use this
+Given a set of coefficients and the original signal, we can use this
 equation to work out e, the {\it residual}. Conversely given the
 coefficients and the residual signal, an estimation of the original
 signal can be calculated.
@@ -304,7 +304,7 @@ This function takes a set of LP frames and a residual and produces a
 synthesized signal. 
 
 This is functionally equivalent to \Ref{lpc_filter_1} except it
-resduces the residual by 0.5 before filtering.  Importantly it is
+reduces the residual by 0.5 before filtering.  Importantly it is
 about three times faster than \Ref{lpc_filter_1} but in doing so uses
 direct C buffers rather than the neat C++ access function.  This
 function should be regarded as temporary and will be deleted after
@@ -376,7 +376,7 @@ void post_emphasis(EST_Wave &sig, EST_Wave &out,
 
 //@}
 
-/**@name Miscelaneous filters.
+/**@name Miscellaneous filters.
 
 Some of these filters are non-linear and therefore don't fit the
 normal paradigm.

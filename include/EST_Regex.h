@@ -49,7 +49,7 @@ class EST_Regex;
   * @see string_example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
   * @author (regular expression library by Henry Spencer, University of Toronto)
-  * @version $Id: EST_Regex.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_Regex.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 class EST_Regex : protected EST_String {
@@ -143,7 +143,7 @@ extern EST_Regex RXdouble;	// "-?\\(\\([0-9]+\\.[0-9]*\\)\\|\\([0-9]+\\)\\|\\(\\
 //@}
 
 // GCC lets us use the static constant to declare arrays, Sun CC
-// doesn`t, so for a quiet, if ugly, life we declare it here with a suitable
+// doesn't, so for a quiet, if ugly, life we declare it here with a suitable
 // value and check in EST_Regex.cc to make sure it`s OK
 
 #define  EST_Regex_max_subexpressions 10

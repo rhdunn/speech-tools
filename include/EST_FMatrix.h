@@ -44,6 +44,8 @@
 #include "EST_TSimpleMatrix.h"
 #include "EST_TSimpleVector.h"
 
+#include "EST_Val.h"
+#include "EST_Val_defs.h"
 
 class EST_FVector;
 
@@ -112,7 +114,7 @@ public:
 class EST_FVector: public EST_TSimpleVector<float> {
 public:
     /// Size constructor.
-  EST_FVector(int n): EST_TSimpleVector<float>(n) {}
+    EST_FVector(int n): EST_TSimpleVector<float>(n) {}
     /// Copy constructor.
     EST_FVector(const EST_FVector &a): EST_TSimpleVector<float>(a) {}
     /// Default constructor.
@@ -160,7 +162,7 @@ int pseudo_inverse(const EST_FMatrix &a, EST_FMatrix &inv,int &singularity);
 /// some useful matrix creators
 /// make an identity matrix of dimension n
 void eye(EST_FMatrix &a, const int n);
-/// make already square matris into I without resizing
+/// make already square matrix into I without resizing
 void eye(EST_FMatrix &a);
 
 /// the user should use est_seed to seed the random number generator
@@ -237,5 +239,8 @@ polynomial_value(const EST_FVector &coeffs, const float x);
 
 /// vector dot product
 float operator*(const EST_FVector &v1, const EST_FVector &v2);
+
+VAL_REGISTER_CLASS_DCLS(fmatrix,EST_FMatrix)
+VAL_REGISTER_CLASS_DCLS(fvector,EST_FVector)
 
 #endif

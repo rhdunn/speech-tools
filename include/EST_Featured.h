@@ -42,7 +42,7 @@
   * access them nicely. Used as a parent class.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Featured.h,v 1.2 2001/04/04 13:11:27 awb Exp $ */
+  * @version $Id: EST_Featured.h,v 1.3 2004/05/04 00:00:16 awb Exp $ */
 
 class EST_Featured {
 private:
@@ -129,7 +129,7 @@ public:
   void f_remove(const EST_String name)
     { if (p_features) p_features->remove(name); }
 
-  // itteration
+  // iteration
 
   protected:
       struct IPointer_feat { EST_Features::RwEntries i;  };

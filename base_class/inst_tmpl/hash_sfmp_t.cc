@@ -40,7 +40,8 @@
 #include "EST_FMatrix.h"
 #include "EST_THash.h"
 
-Declare_TStringHash_T(EST_FMatrix*,EST_StringFMatrixP)
+template <> EST_String EST_THash<EST_String, EST_FMatrix *>::Dummy_Key = "DUMMY";
+template <> EST_FMatrix *EST_THash<EST_String, EST_FMatrix *>::Dummy_Value = NULL;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

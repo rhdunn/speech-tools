@@ -38,7 +38,8 @@ Cambridge, MA 02138
 
 extern "C" const char * repl_prompt;
 
-Declare_TStringHash_T(EST_Regex *, hash_string_regex)
+template <> EST_String EST_THash<EST_String, EST_Regex *>::Dummy_Key = "DUMMY";
+template <> EST_Regex *EST_THash<EST_String, EST_Regex *>::Dummy_Value = NULL;
 
 #if defined(INSTANTIATE_TEMPLATES)
 #include "../base_class/EST_THash.cc"
@@ -370,10 +371,10 @@ LISP apply_hooks(LISP hooks,LISP arg)
     r = arg;
     
     if (hooks && (!CONSP(hooks)))  // singleton
-	r = leval(cons(hooks,cons(arg,NIL)),NIL);
+	r = leval(cons(hooks,cons(quote(arg),NIL)),NIL);
     else
 	for (h=hooks; h != NIL; h=cdr(h))
-	    r = leval(cons(car(h),cons(arg,NIL)),NIL);
+	    r = leval(cons(car(h),cons(quote(arg),NIL)),NIL);
     return r;
 }
 

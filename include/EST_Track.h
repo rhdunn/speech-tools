@@ -287,7 +287,7 @@ public:
 	{ ((EST_Track *)this)->sub_track(st, start_frame, nframes, 
 					 start_chan, nchans); } 
 
-    /** Copy contiguous portion of track into {\tt st}. Unilike the
+    /** Copy contiguous portion of track into {\tt st}. Unlike the
 	normal sub_track functions, this makes a completely new track.
 	values written into this will not affect the main track and it
 	can be resized.
@@ -298,15 +298,22 @@ public:
 	@param nframes number of channels to be included in total
     */
 
-    void copy_sub_track(EST_Track &st,
-			int start_frame=0, int nframes=EST_ALL,
-			int start_chan=0, int nchans=EST_ALL) const;
+    void copy_sub_track( EST_Track &st,
+			 int start_frame=0, int nframes=EST_ALL,
+			 int start_chan=0, int nchans=EST_ALL) const;
 
-    
+    void copy_sub_track_out( EST_Track &st, const EST_FVector& frame_times ) const;
+    void copy_sub_track_out( EST_Track &st, const EST_IVector& frame_indices ) const;
+
     /** copy channel {\tt n} into pre-allocated buffer buf */
     void copy_channel_out(int n, float *buf, int offset=0, int num=EST_ALL)
 	const
 	{ p_values.copy_column(n, buf, offset, num); } 
+
+    /** copy channel {\tt n} into EST_FVector */
+    void copy_channel_out(int n, EST_FVector &f, int offset=0, int num=EST_ALL)
+	const
+	{ p_values.copy_column(n, f, offset, num); } 
 
     /** copy frame {\tt n} into pre-allocated buffer buf */
     void copy_frame_out(int n, float *buf, int offset=0, int num=EST_ALL) 
@@ -320,6 +327,11 @@ public:
     void copy_channel_in(int n, const float *buf, int offset=0, 
 			  int num=EST_ALL)
 	{ p_values.set_column(n, buf, offset, num); }
+
+    /** copy f into pre-allocated channel n of track */
+    void copy_channel_in(int n, const EST_FVector &f, int offset=0, 
+			 int num=EST_ALL)
+      { p_values.set_column(n, f, offset, num); }
 
     /** copy channel buf into pre-allocated channel n of track */
     void copy_channel_in(int c, 
@@ -425,7 +437,7 @@ public:
     /** return amplitude of time t, channel c. This can be used for
 	reading or writing to this point. By default the nearest frame
 	to this time is used. If {\tt interp} is set to {\tt
-	it_linear}, linear interpolaion is performed between the two
+	it_linear}, linear interpolation is performed between the two
 	amplitudes of the two frames either side of the time point to
 	give an estimation of what the amplitude would have been at
 	time {\tt t}.  If {\tt interp} is set to {\tt it_linear_nz},
@@ -464,16 +476,24 @@ public:
     float &t(int i=0)			   { return p_times[i]; }
     float  t(int i=0) const                    { return p_times(i); } 
 
-    /// return time of framet i in milli-seconds.
+    /// return time of frame i in milli-seconds.
     float ms_t(int i) const		   { return p_times(i) * 1000.0; }
 
     /** set frame times to regular intervals of time {\tt t}.
+	The {\tt start} parameter specifies the integer multiple of {\tt t} at
+	which to start.  For example, setting this to 0 will start at time
+	0.0 (The default means the first time value = {\tt t}
      */
-    void fill_time(float t, int start =1);
+    void fill_time( float t, int start=1 );
 
-    /** fill times with times of other track
+    /** set frame times to regular intervals of time {\tt t}.
+	The {\tt start} parameter specifies the first time value.
      */
-    void fill_time(EST_Track &t);
+    void fill_time( float t, float start );
+
+    /** fill time channel with times from another track
+     */
+    void fill_time( const EST_Track &t );
 
     /** fill all amplitudes with value {\tt v} */
     void fill(float v) { p_values.fill(v); }
@@ -552,8 +572,12 @@ public:
 	file's header. If no header is found, the function assumes the
 	file is ascii data, with a fixed frame shift, arranged with rows
 	representing frames and columns channels. In this case, the
-	frame shift must be specified as an argument to this function*/
-    EST_read_status load(const EST_String name, float ishift = 0.0);
+	frame shift must be specified as an argument to this function.
+        For those file formats which don't contain provision for specifying
+	an initial time (e.g. HTK, or ascii...), the {\tt startt} parameter
+	may be specified.
+    */
+    EST_read_status load(const EST_String name, float ishift = 0.0, float startt = 0.0);
 
     /** Load character data from an already opened tokenstream {\tt ts} 
 	into the track. 
@@ -562,16 +586,24 @@ public:
 	file's header. If no header is found, the function assumes the
 	file is ascii data, with a fixed frame shift, arranged with rows
 	representing frames and columns channels. In this case, the
-	frame shift must be specified as an argument to this function*/
-    EST_read_status load(EST_TokenStream &ts, float ishift = 0.0);
+	frame shift must be specified as an argument to this function
+        For those file formats which don't contain provision for specifying
+	an initial time (e.g. HTK, or ascii...), the {\tt startt} parameter
+	may be specified.
+    */
+    EST_read_status load(EST_TokenStream &ts, float ishift = 0.0, float startt = 0.0);
 
     /** Load a file called {\tt name} of format {\tt type} 
 	into the track. If no header is found, the function assumes the
 	file is ascii data, with a fixed frame shift, arranged with rows
 	representing frames and columns channels. In this case, the
-	frame shift must be specified as an argument to this function*/
+	frame shift must be specified as an argument to this function
+        For those file formats which don't contain provision for specifying
+	an initial time (e.g. HTK, or ascii...), the {\tt startt} parameter
+	may be specified.
+    */
     EST_read_status load(const EST_String name, const EST_String type, 
-			 float ishift = 0.0);
+			 float ishift = 0.0, float startt = 0.0 );
 
     /** Save the track to a file {\tt name} of format {\tt type}. */
     EST_write_status save(const EST_String name, 
@@ -597,7 +629,7 @@ public:
     /// return true if frame i is a value
     int val(int i) const;
     /// return true if frame i is a break
-    int track_break(int i) const;
+    int track_break(int i) const { return (p_is_val(i)); }
 
     /** starting at frame i, return the frame index of the first
 	value frame before i. If frame i is a value, return i */

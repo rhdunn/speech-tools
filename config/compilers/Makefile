@@ -38,7 +38,7 @@ TOP=../..
 DIRNAME=config/compilers
 
 COMPILERS = gcc.mak gcc27.mak gcc28.mak gcc295.mak \
-	egcs.mak gcc27emx.mak \
+	egcs.mak gcc27emx.mak intel80.mak \
         suncc.mak suncc40.mak \
         jolt.mak jdk.mak jdk12.mak none.mak \
 	jikes.mak gcc296.mak gcc30.mak gcc31.mak gcc32.mak

@@ -418,7 +418,7 @@ void siod_est_init()
     // you will often also need to define 
     //    TYPENAME_free(LISP x) too if you want the contents gc'd
     // other options to the set_*_hooks functions allow you to customize
-    // the objects behavior more
+    // the object's behaviour more
 
     tc_utt = siod_register_user_type("Utterance");
     set_gc_hooks(tc_utt, 0, NULL,utt_mark,NULL,utt_free,NULL,&kind);

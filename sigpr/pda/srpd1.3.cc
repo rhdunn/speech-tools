@@ -511,24 +511,22 @@ void initialise_parameters (struct Srpd_Op *p_par)
 void initialise_structures (struct Srpd_Op *p_par, SEGMENT_ *p_seg,
      CROSS_CORR_ *p_cc)
 {
-    /* note: bug fix (20/5/96) relates to misalignment of f0 contour with
-       waveform*/
-  p_par->Nmax = (int) ceil (p_par->sample_freq / p_par->min_pitch);
-  p_par->Nmin = (int) floor (p_par->sample_freq / p_par->max_pitch);
-  p_par->min_pitch = (double) (p_par->sample_freq / p_par->Nmax);
-  p_par->max_pitch = (double) (p_par->sample_freq / p_par->Nmin);
-/*  p_seg->size = 3 * p_par->Nmax + 1; pault 20/5.96*/
+  p_par->Nmax = (int) ceil((float)p_par->sample_freq / p_par->min_pitch);
+  p_par->Nmin = (int) floor((float)p_par->sample_freq / p_par->max_pitch);
+  p_par->min_pitch = (float)p_par->sample_freq / (float)p_par->Nmax;
+  p_par->max_pitch = (float)p_par->sample_freq / (float)p_par->Nmin;
+
   p_seg->size = 3 * p_par->Nmax;
-/*  p_seg->shift = (int) floor (p_par->shift / 1000.0 * p_par->sample_freq);*/
-  /* pault 20/5/96*/
-  p_seg->shift = (int) floor (p_par->shift / 1000.0 * p_par->sample_freq) + 1;
-  p_seg->length = (int) floor (p_par->length / 1000.0 * p_par->sample_freq);
+  p_seg->shift = (int) rint( p_par->shift / 1000.0 * (float)p_par->sample_freq );
+  p_seg->length = (int) rint( p_par->length / 1000.0 * (float)p_par->sample_freq );
   p_seg->data = walloc(short,p_seg->size);
+
   p_cc->size = p_par->Nmax - p_par->Nmin + 1;
   p_cc->coeff = walloc(double,p_cc->size);
-  return;
 
+  return;
 }
+
 
 void initialise_status (struct Srpd_Op *paras, STATUS_ *p_status)
 {
@@ -628,8 +626,9 @@ int read_next_wave_segment(EST_Wave &sig, Srpd_Op *paras, SEGMENT_ *p_seg)
     int i;
     long offset;
     static int wave_pos;
+    
 
-/*    printf("size %d shift %d length %d\n", p_seg->size, p_seg->shift, p_seg->length);*/
+    //printf("read:  size %d shift %d length %d\n", p_seg->size, p_seg->shift, p_seg->length);
 
     if (status == BEGINNING) 
     {
@@ -657,8 +656,12 @@ int read_next_wave_segment(EST_Wave &sig, Srpd_Op *paras, SEGMENT_ *p_seg)
 	}
 	if (padding-- == 0)
 	    status = MIDDLE_;
-	else if (tracklen-- <= 0)
+	else if (tracklen-- <= 0) {
+		status = BEGINNING;
+		padding = -1;
+		tracklen = 0;
 	    return (0);
+	}
 	else
 	    return (2);
     }
@@ -682,19 +685,28 @@ int read_next_wave_segment(EST_Wave &sig, Srpd_Op *paras, SEGMENT_ *p_seg)
 	    else
 		status = END;
 	}
-	else
+	else {
+		status = BEGINNING;
+		padding = -1;
+		tracklen = 0;
 	    return (0);
+	    }
     }
     if (status == END) 
     {
 	if (tracklen-- > 0)
 	    return (2);
-	else
+	else	{
+		status = BEGINNING;
+		padding = -1;
+		tracklen = 0;
 	    return (0);
+	    }
     }
+    status = BEGINNING;
+    padding = -1;
+    tracklen = 0;
     return (0);
-
-
 }
 
 void write_track(STATUS_ status, struct Srpd_Op paras, FILE *outfile)

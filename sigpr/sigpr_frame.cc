@@ -389,8 +389,8 @@ void lpc2ref(const EST_FVector &lpc, EST_FVector &ref)
 
 void ref2lpc(const EST_FVector &ref, EST_FVector &lpc)
 {
-    // Here we use Christopher Longet Higgin's alrgorihm converted to 
-    // an equivalent by awb.  Its doesn't have the reverse order or
+    // Here we use Christopher Longet Higgin's algorithm converted to 
+    // an equivalent by awb. It doesn't have the reverse order or
     // negation requirement.
     int order = ref.length() - 1;
     float a, b;

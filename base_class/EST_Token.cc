@@ -759,7 +759,7 @@ EST_Token &EST_TokenStream::get(void)
 	    }
 	}
 	tok_stuff[i] = '\0';
-	// Are there any punctuation sumbols at the start
+	// Are there any punctuation symbols at the start?
 	for (j=0; 
 	     ((j < i) && CLASS2(tok_stuff[j], '$', '"'));
 	     j++);

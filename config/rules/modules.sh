@@ -110,7 +110,7 @@ for M in $*
 	done
 
 	$fl || for f in \
-	    `find $MODULE_DIRECTORY \( -name CVS -prune \) -o \( -name "$M.mak" -o -name "$m.mak" \) -print `
+	    `find $MODULE_DIRECTORY \( -name CVS -prune \) -o \( -name "$M.mak" -o -name "$m.mak" \) -print -follow`
 		do
 		if [ -f "$f" ]
 			then

@@ -659,7 +659,7 @@ EST_Item *EST_Relation::last_leaf() const
 
 EST_Utterance *get_utt(EST_Item *s)
 {
-    // Occasionally you need to get the utternace from a stream_item
+    // Occasionally you need to get the utterance from a stream_item
     // This finds any relations in s and follows them to the utterance
     // If there aren't any Relations the this streamitem isn't in an
     // utterances

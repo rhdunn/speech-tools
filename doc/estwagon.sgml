@@ -98,7 +98,7 @@ standard measures.
 Wagon has to automatically form questions about each feature in the
 data set.  
 </para><para>
-For descrete features questions are build for each member of the set,
+For discrete features questions are build for each member of the set,
 e.g. if feature n has value x.  Our implementation does not currently
 support more complex questions which could achieve better results
 (though at the expense of training time).  Questions about features
@@ -118,7 +118,7 @@ may use this form of question.
 For continuous features Wagon tries to find a partition of
 the range of the values that best optimizes the average
 impurity of the partitions.  This is currently done by linearly
-spliting the range into a predefined subparts (10 by default)
+splitting the range into a predefined subparts (10 by default)
 and testing each split.  This again isn't optimal but does
 offer reasonably accuracy without require vast amounts of
 computation.
@@ -199,7 +199,7 @@ but may be useful if showing which features are particualrly important
 to this build.
 </para><para>
 Stepwise tests each success tree against the specified test set, (balance,
-held out and stop options are repsected for each build).  As this
+held out and stop options are respected for each build).  As this
 is using the test set which optimizing the tree, it is not valid
 to view the specified test set as a genuine test set.  Another
 externally held test set should be used to test the accuracy of
@@ -317,7 +317,7 @@ There are also a number of special symbols that may be used in a
 description file.  If the type (first toke after the name) is
 <command>ignore</command> the feature will be ignored in the model
 building process.  You may also specified features to ignore at tree
-building time but it is often convinient to explicitly ignore
+building time but it is often convenient to explicitly ignore
 feature(s) in the description file.
 </para><para>
 For open categorial features the token <command>_other_</command>

@@ -92,7 +92,7 @@ int main(void)
 
     //@} code
 
-    /**  Now allocate enrough space in the track to hold the analysis.
+    /**  Now allocate enough space in the track to hold the analysis.
 	 The following command resizes fv to have enough frames for
 	 analysis frames at 0.01 intervals up to the end of the waveform,
 	 (sig.end()), and enough channels to store lpc_order + 1 coefficients.
@@ -169,7 +169,7 @@ int main(void)
       </para></formalpara>
       <formalpara><title>pitch-synchronous</title><para> 
       The time points represent <emphasis>pitchmarks</emphasis>
-      and correspond to a specific position in each pitch perdiod,
+      and correspond to a specific position in each pitch period,
       e.g. the instant of glottal closure.</para></formalpara>
       <para>
 
@@ -333,7 +333,7 @@ int main(void)
       order numerical differentiation.
 
       By convention, delta coefficients have a "_d" suffix and acceleration
-      coefficicents "_a". If the coefficient is mulit-dimensional, the
+      coefficients "_a". If the coefficient is multi-dimensional, the
       numbers go after the "_d" or "_a".
 
       */
@@ -419,7 +419,7 @@ int main(void)
     hamm(256, win_vals);
     //@} code
 
-    /** The make_windoe function also creates a window:
+    /** The make_window function also creates a window:
      */
     //@{ code
     EST_Window::make_window(win_vals, 256, "hamming");
@@ -436,13 +436,13 @@ int main(void)
     /** Alternatively, exactly the same operation can be performed in a
 	single step by passing the window function to the
 	\Ref{EST_Window::window_signal} function which takes a
-	\Ref{EST_Wave} and performs windoing on a section of it,
+	\Ref{EST_Wave} and performs windowing on a section of it,
 	storing the output in the \Ref{EST_FVector} {\tt frame}.
     */
     //@{ code
     EST_Window::window_signal(sig, hamm, 1000, 256, frame, 1);
     //@} code
-    /** The window function need not be expliticly created, the window
+    /** The window function need not be explicitly created, the window
 	signal can work on just the name of the window type:
     */
 
@@ -453,7 +453,7 @@ int main(void)
     //@}
     /**@name Frame based signal processing
       @id sigpr-example-frames
-      The signal processing library provides an extensize set of functions
+      The signal processing library provides an extensive set of functions
       which operate on a single frame of coefficients.
       The following example shows one method of splitting the signal
       into frames and calling a signal processing algorithm.
@@ -548,7 +548,7 @@ int main(void)
        Filtering involves 2 stages: the design of the filter and the
        use of this filter on the waveform.  
        </para><para>
-       First we examine a simple low-pass filter which attempts to supress
+       First we examine a simple low-pass filter which attempts to suppress
        all frequencies about a cut-off. Imagine we want to low pass filter
        a signal at 400Hz. First we design the filter:
     */
@@ -615,7 +615,7 @@ int main(void)
     //@} code
     /**The normal filtering functions can cause a time delay in the
        filtered waveform. To attempt to eliminate this, a set of
-       double filter function functions are provided which guarentess
+       double filter function functions are provided which guarantees
        zero phase differences between the original and filtered waveform.
     */
     //@{ code

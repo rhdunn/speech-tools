@@ -141,7 +141,7 @@ void raw_spectrogram(EST_Track &sp, EST_Wave &sig,
     // enough frames to cover the entire signal
     int num_frames= (int)ceil(sig.num_samples()/(float)frame_shift);
     
-    // spectrogram gets order/2 powers, the modului of order/2
+    // spectrogram gets order/2 powers, the moduli of order/2
     // complex numbers
     sp.resize(num_frames, order/2, FALSE);
 

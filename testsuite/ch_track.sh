@@ -44,7 +44,7 @@ test_conversions () {
 	/bin/rm -f tmp/ch_track.htk tmp/ch_track.track
 
 	# Get htk version with basic header
-	$CH_TRACK -otype htk $DATA/ch_track.htk -o tmp/ch_track.htk || exit 1
+	$CH_TRACK -otype htk "$DATA"/ch_track.htk -o tmp/ch_track.htk || exit 1
 
 	$CH_TRACK -otype esps tmp/ch_track.htk -o tmp/ch_track.track || exit 1
 	$CH_TRACK -otype htk tmp/ch_track.track -o tmp/ch_track.htk2 || exit 1
@@ -61,7 +61,7 @@ test_conversions () {
 		else echo ch_track htk to ascii to htk: fail
 	fi
 
-	$CH_TRACK -otype htk $DATA/ch_track.htk -o tmp/ch_track.htk || exit 1
+	$CH_TRACK -otype htk "$DATA"/ch_track.htk -o tmp/ch_track.htk || exit 1
 
 	$CH_TRACK -otype htk_user tmp/ch_track.htk -o tmp/ch_track.track || exit 1
 	$CH_TRACK -otype htk tmp/ch_track.track -o tmp/ch_track.htk2 || exit 1
@@ -74,10 +74,10 @@ test_conversions () {
 test_info ()
 {
   echo info and help >&2
-  $CH_TRACK -info $DATA/ch_track.htk
+  $CH_TRACK -info "$DATA"/ch_track.htk
   $CH_TRACK -h 
-  $CH_TRACK $DATA/ch_track.htk -otype esps -o tmp/ch_track.esps
-  $CH_TRACK -info $DATA/ch_track.htk tmp/ch_track.esps
+  $CH_TRACK "$DATA"/ch_track.htk -otype esps -o tmp/ch_track.esps
+  $CH_TRACK -info "$DATA"/ch_track.htk tmp/ch_track.esps
 }
 
 echo >$OUTPUT

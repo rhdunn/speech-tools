@@ -389,7 +389,7 @@ void override_lib_ops(EST_Option &a_list, EST_Option &al)
 <title>I got a perplexity of Infinity - what went wrong ?</title>
 
 A perplexity of Infinity means that at least one of the ngrams in your
-test data had a probility of zero. Possible reasons for this include:
+test data had a probability of zero. Possible reasons for this include:
 
 <itemizedlist>
 

@@ -33,6 +33,8 @@ use "-" to make input and output files stdin/out
 
 -s <float>       Frame spacing of input in seconds, for unheadered input file
 
+-startt <float>  Time of first frame, for formats which don't provide this
+
 -c <string>      Select a subset of channels (starts from 0). 
                  Tracks can have multiple channels. This option 
                  specifies a list of numbers, refering to the channel 

@@ -33,7 +33,7 @@
  //                  Author: Richard Caley (rjc@cstr.ed.ac.uk)             \\
  //                    Date: Mon Sep 22 1997                               \\
  //  --------------------------------------------------------------------  \\
- //  A class which implements the image producer interface useing a Wave   \\
+ //  A class which implements the image producer interface using a Wave    \\
  //  as the source of the image.                                           \\
  //                                                                        \\
  //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\

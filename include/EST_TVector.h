@@ -102,7 +102,7 @@ extern const int EST_ALL;
      both const and non-const versions are provided.
 
      Access through () and [] are guaranteed to be as fast as standard
-     C arrays (assuming a resonable optimizing compiler).  
+     C arrays (assuming a reasonable optimizing compiler).  
 
      <programlisting>
      EST_FVector x(10);
@@ -118,11 +118,11 @@ extern const int EST_ALL;
 
      </programlisting>
 
-     To instantialte a template for a a vector of type {FooBar}
+     To instantiate a template for a a vector of type {FooBar}
 
      <programlisting>
      #include "../base_class/EST_TVector.cc"
-     // If you want List to vector convertion (and defined a TList)
+     // If you want List to vector conversion (and defined a TList)
      #include "../base_class/EST_Tvectlist.cc"
        
      template class EST_TVector<FooBar>;
@@ -222,7 +222,7 @@ public:
   static const T *def_val;
 
   /** A reference to this variable is returned if you try and access
-    * beyond the bounds of the matrix. The vaue is undefined, but you
+    * beyond the bounds of the matrix. The value is undefined, but you
     * can check for the reference you get having the same address as
     * this variable to test for an error.
     */
@@ -246,11 +246,11 @@ public:
   //@{
 
   /// number of items in vector.
-  int num_columns() const {return p_num_columns;}
+  INLINE int num_columns() const {return p_num_columns;}
   /// number of items in vector.
-  int length() const {return num_columns();}
+  INLINE int length() const {return num_columns();}
   /// number of items in vector.
-  int n() const {return num_columns();}
+  INLINE int n() const {return num_columns();}
 
   /// read-only const access operator: without bounds checking
   INLINE const T &a_no_check(int n) const { return fast_a_v_x(n); }
@@ -319,7 +319,7 @@ public:
 };
 
 //@}
-/// assignment operator: fill track with values in list <parameter>s</paramater>.
+/// assignment operator: fill track with values in list <parameter>s</parameter>.
 template<class T>
 extern EST_TVector<T> &set(EST_TVector<T> &v, const EST_TList<T> &s);
 

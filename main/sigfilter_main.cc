@@ -67,7 +67,7 @@ void FIR_double_filter(EST_Wave &in_sig, EST_Wave &out_sig,
 //@synopsis
 
 /**
-<command>sigfilter</command> filters an input waveform and prduces a 
+<command>sigfilter</command> filters an input waveform and produces a 
 output waveform.
 
 */

@@ -48,13 +48,10 @@
 #if defined(__EMX__)
     /* For OS/2 */
 #   include <iostream.h>
-#   include <strstrea.h>
 #elif defined(SYSTEM_IS_UNIX)
 #   include <iostream.h>
-#   include <strstream.h>
 #elif defined(SYSTEM_IS_WIN32)
 #   include "win32/EST_iostream_win32.h"
-#   include <strstrea.h>
 #else
 #   error No System Selected
 #endif

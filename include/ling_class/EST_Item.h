@@ -60,9 +60,9 @@ class ling_class_init;
 /** A class for containing individual linguistic objects such as
 words or phones.
 
-These contain two types of infomation. This first is specific to the
+These contain two types of information. This first is specific to the
 \Ref{EST_Relation} we are viewing this ling item from, the second part
-constists of a set of features.  These features may be shared by
+consists of a set of features.  These features may be shared by
 instances of this ling item in different <link
 linkend="est-relation">EST_Relation</link> within the same <link
 linkend="est-utterance">EST_Utterances</link>
@@ -111,7 +111,7 @@ protected:
     //@{
     /// Default constructor
     EST_Item();
-    /// Copy constructure only makes reference to contents 
+    /// Copy constructor only makes reference to contents 
     EST_Item(const EST_Item &item);
     /// Includes reference to relation 
     EST_Item(EST_Relation *rel);
@@ -125,7 +125,7 @@ protected:
     /**@name Feature access functions. 
        These functions are wrap-around functions to the basic access
        functions in the \Ref{EST_Features} class.  In all these
-       functioms, if the optional argument <parameter>m} is set to 1, an
+       functions, if the optional argument <parameter>m} is set to 1, an
        error is thrown if the feature does not exist*/
 
     //@{
@@ -172,7 +172,7 @@ protected:
     //@}
 
     /**@name Feature setting functions.
-       A separate function is provided for each permissable value type
+       A separate function is provided for each permissible value type
     */
     //@{
     /** set feature <parameter>name</parameter> to <parameter>val</parameter> */

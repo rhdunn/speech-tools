@@ -33,7 +33,7 @@
 /*                  Author :  Alan Black and Paul Taylor                 */
 /*                  Date   :  June 1996                                  */
 /*-----------------------------------------------------------------------*/
-/*   File I/O function sspecific for various file formats                */
+/*   File I/O functions specific to various file formats                 */
 /*                                                                       */
 /*   Note that internally data will always be shorts and                 */
 /*   native byte order, conversions to/from other byte formats           */
@@ -380,7 +380,7 @@ enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
     
     *data = convert_raw_data((unsigned char *)file_data, 
 			     data_length, actual_sample_type, actual_bo);
-    // becuase internally data is always shorts
+    // because internally data is always shorts
     *sample_type = st_short;
     *bo = EST_NATIVE_BO;
     *word_size = 2;
@@ -1203,9 +1203,9 @@ enum EST_write_status save_wave_audlab(FILE *fp, const short *data, int offset,
 /* Deep thanks go to Peter Kabal from McGill University whose AF code */
 /* showed me this was even possible.  I looked at his code to find    */
 /* parts I couldn't work out myself.  Also to Rodney Johnson of       */
-/* Entrophic who's document "ESPS APPLICATION NOTE: Non-ESPS Programs */
+/* Entropic whose document "ESPS APPLICATION NOTE: Non-ESPS Programs  */
 /* and the ESPS File System" gave details of how to access ESPS files */
-/* without using the ESPS library code                                */
+/* without using the ESPS library code.                               */
 
 #include "esps_utils.h"
 enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int

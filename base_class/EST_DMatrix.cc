@@ -498,7 +498,7 @@ EST_read_status EST_DMatrix::load(const EST_String &filename)
     if ((r = est_load(filename)) == format_ok)
 	return r;
     else if (r == wrong_format)
-    {   // maybe its an acient ascii file
+    {   // maybe its an ancient ascii file
 	EST_TokenStream ts, tt;
 	EST_StrList sl;
 	int i, j, n_rows=0, n_cols=0;
@@ -618,7 +618,7 @@ EST_read_status EST_DVector::load(const EST_String &filename)
     if ((r = est_load(filename)) == format_ok)
 	return r;
     else if (r == wrong_format)
-    {   // maybe its an acient ascii file
+    {   // maybe its an ancient ascii file
       EST_TokenStream ts;
       EST_String s;
       int i;

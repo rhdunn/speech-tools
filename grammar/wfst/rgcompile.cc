@@ -35,7 +35,7 @@
 /*-----------------------------------------------------------------------*/
 /*                                                                       */
 /* A Regular grammar compiler, its pretty free about the grammar         */
-/* Actuially it will take full context free grammars and convert them    */
+/* Actually it will take full context free grammars and convert them     */
 /* up to a specified rewrite depth                                       */
 /*                                                                       */
 /* Based loosely on "Finite State Machines from Features Grammars" by    */
@@ -130,7 +130,7 @@ void EST_WFST::build_from_rg(LISP inalpha, LISP outalpha,
 {
     // This is sort of similar to determinising in that the "state"
     // is represented by a list of numbers, i.e. the remainder of
-    // of preduction
+    // of production
     LISP current, start_state, remainder, set, new_prod;
     int ns, current_state;
     const char *current_sym;
@@ -185,7 +185,7 @@ void EST_WFST::build_from_rg(LISP inalpha, LISP outalpha,
 	else if (siod_member_str(current_sym,terms))
 	{
 	    ns = production_index(remainder,index,p_num_states);
-	    // Add transtion for this terminal symbol
+	    // Add transition for this terminal symbol
 	    p_states[current_state]
 		->add_transition(0.0, // no weights
 				 ns,

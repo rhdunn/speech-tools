@@ -237,7 +237,7 @@ some kind of representation of linguistic structures and put it under
 	mkdir ling_class/widgets
 
 In the `widgets' directory you need to create 2 files, a `Makefile'
-controling the compilation of that directory and a `widgets.mak' file
+controlling the compilation of that directory and a `widgets.mak' file
 which describes how it fits into the speech_tools.
 
 Follow the structure of `example.Makefile' and `example.module.mak' in

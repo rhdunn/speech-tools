@@ -73,12 +73,12 @@ PROFILE_gprof_CCFLAGS   = -pg
 PROFILE_gprof_CXXFLAGS  = -pg
 PROFILE_gprof_LINKFLAGS = -pg
 
-SHARED_CCFLAGS  = -fpic -fno-shared-data
+SHARED_CCFLAGS  = -fPIC -fno-shared-data
 SHARED_CXXFLAGS  = -fPIC -fno-shared-data
 SHARED_LINKFLAGS = -fno-shared-data
 
 ifndef GCC_MAKE_SHARED_LIB
-    MAKE_SHARED_LIB = gcc -shared -fno-shared-data -o XXX
+    MAKE_SHARED_LIB = $(CXX) -shared -fno-shared-data -o XXX
 else
     MAKE_SHARED_LIB = $(GCC_MAKE_SHARED_LIB)
 endif
@@ -99,7 +99,8 @@ COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++ -lgcc
 
 ## special ways of doing things, blank means default
 
-MAKE_DEPEND = $(CC) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
+MAKE_DEPEND_C = $(CC) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
+MAKE_DEPEND_CXX = $(CC) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
 BUILD_LIB   = $(AR) cruv
 INDEX_LIB   = $(RANLIB)
 

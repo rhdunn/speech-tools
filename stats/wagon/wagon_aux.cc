@@ -412,7 +412,8 @@ float WImpurity::cluster_impurity()
     }
 
     // This is sum distance between cross product of members
-    return a.sum();
+//    return a.sum();
+    return a.stddev() * a.samples();
 }
 
 float WImpurity::cluster_distance(int i)

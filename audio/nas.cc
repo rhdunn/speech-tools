@@ -102,7 +102,7 @@ int play_nas_wave(EST_Wave &inwave, EST_Option &al)
 
     /* Check sample rate of server -- should really check the if it   */
     /* only supports individual sample rate of which this wave is not */
-    /* one then we should reample                                     */
+    /* one then we should resample.                                   */
     samp_rate = inwave.sample_rate();
     bool samp_rate_ok = FALSE;
     for (i=0; dev_sr[i] != -1; i++)

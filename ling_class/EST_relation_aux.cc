@@ -416,7 +416,7 @@ int relation_divide(EST_RelationList &slist, EST_Relation &lab,
 	if (k->F("end") > lab.head()->F("end"))
 	    break;
 
-    filename = k->f("file");
+    filename = (EST_String)k->f("file");
     a.f.set("name", (filename + ext));
     kstart = 0.0;
     
@@ -454,7 +454,7 @@ int relation_divide(EST_RelationList &slist, EST_Relation &lab,
 	    k = next(k);
 	    kstart = start(k);
 	    a.clear();
-	    filename = k->f("file");
+	    filename = (EST_String)k->f("file");
 	    a.f.set("name", (filename + ext));
 	}
 	else

@@ -43,8 +43,8 @@
 #define DEFAULT_FRAME_FACTOR 2.0
 
 /* Note: some of these functions deliberately don't have
-   doc++ style comments, mainly because they are or will be
-   superceded soon
+   doc++ style comments, mainly because they are, or will be
+   superseded soon.
 */
 
 /**@name Functions for use with frame based processing
@@ -67,7 +67,7 @@ analysis where the time shift is related to the local pitch period.
 
 //@{
 
-/** Produce a single set of coefficents from a waveform. The type of 
+/** Produce a single set of coefficients from a waveform. The type of 
   coefficient required is given in the argument <parameter>type</parameter>. 
   Possible types are:
 
@@ -233,7 +233,7 @@ These functions are used to produce a track of fundamental frequency
 
 
 /** Top level pitch (F0) detection algorithm. Returns a track
-conatining evenly spaced frames of speech, each containing a F0 value
+containing evenly spaced frames of speech, each containing a F0 value
 for that point.
 
 At present, only the \Rref{srpd} pitch tracker is implemented, so
@@ -251,7 +251,7 @@ void pda(EST_Wave &sig, EST_Track &fz, EST_Features &op, EST_String method="");
 
 
 /** Top level intonation contour detection algorithm. Returns a track
-conatining evenly spaced frames of speech, each containing a F0 for that point. {\tt icda} differs from \Ref{pda} in that the contour is
+containing evenly spaced frames of speech, each containing a F0 for that point. {\tt icda} differs from \Ref{pda} in that the contour is
 smoothed, and unvoiced portions have interpolated F0
 values.
 
@@ -273,11 +273,11 @@ void icda(EST_Wave &sig, EST_Track &fz, EST_Track &speech,
 void default_pda_options(EST_Features &al);
 
 
-/** Super resolution pitch trackerer.
+/** Super resolution pitch tracker.
 
 srpd is a pitch detection algorithm that produces a fundamental
 frequency contour from a speech waveform. At present only the super
-resolution pitch detetmination algorithm is implemented.  See (Medan,
+resolution pitch determination algorithm is implemented.  See (Medan,
 Yair, and Chazan, 1991) and (Bagshaw et al., 1993) for a detailed
 description of the algorithm.  </para><para>
 
@@ -365,15 +365,15 @@ void smooth_portion(EST_Track &c, EST_Option &op);
 //@}
 
 
-/**@name  Delta and Acceleration coefficents
+/**@name  Delta and Acceleration coefficients
 
-Produce delta and acceleration coefficents from a set of coefficients
+Produce delta and acceleration coefficients from a set of coefficients
 or the waveform.
 */
 
 //@{
 
-/** Produce a set of delta coefficents for a track
+/** Produce a set of delta coefficients for a track
 
 The delta function is used to produce a set of coefficients which
 estimate the rate of change of a set of parameters. The output track
@@ -388,7 +388,7 @@ the same number of frames and channels as <parameter>tr</parameter>.
 
 void delta(EST_Track &tr, EST_Track &d, int regression_length = 3);
 
-/** Produce multiple sets of delta coefficents from a waveform.
+/** Produce multiple sets of delta coefficients from a waveform.
 
   Calculate specified types of delta coefficients. This function is
   used when the base types of coefficients haven't been calculated.
@@ -407,7 +407,7 @@ void delta(EST_Track &tr, EST_Track &d, int regression_length = 3);
 void sigpr_delta(EST_Wave &sig, EST_Track &fv, EST_Features &op, 
 		const EST_StrList &slist);
 
-/** Produce multiple sets of acceleration coefficents from a waveform
+/** Produce multiple sets of acceleration coefficients from a waveform
 
   Calculate specified types of acceleration coefficients. This function
   is used when the base types of coefficient haven't been calculated.
@@ -432,13 +432,13 @@ void sigpr_acc(EST_Wave &sig, EST_Track &fv, EST_Features &op,
 
 //@}
 
-/* Convert a track containing coefficents of one type to a track
+/* Convert a track containing coefficients of one type to a track
 containing coefficients of another.
 
 @param in_track input set of coefficients
 @param out_track input set of coefficients
 @param out_name name of desired output coefficients.
-@param in_name optional: often it is possible to determin the type of 
+@param in_name optional: often it is possible to determine the type of 
 the input coefficients from the channel names. If this is not possible or
 these names should be ignored, the {\tt in_type} parameter can be used.
 

@@ -167,7 +167,7 @@ int main(void)
        Removing items from lists is done by having the EST_Litem point
        to a particular item, and then passing this pointer to the
        remove function. This can be tricky as this leaves the EST_Litem
-       pointer pointing to a non-existant item. To get round this, the
+       pointer pointing to a non-existent item. To get round this, the
        remove() function returns a pointer to the previous item in the
        list.
       */
@@ -214,7 +214,7 @@ int main(void)
 
     //@{ code
 
-    // Sort into alphbetical order
+    // Sort into alphabetical order
     sort(slist);
  
    cout << "\n[ Sorted\n";
@@ -251,7 +251,7 @@ bool second_char_gt(const EST_UItem *uv1, const EST_UItem *uv2)
 //@}
 
 // we would need to include the following template
-// declarations if lists of strings weren't aready 
+// declarations if lists of strings weren't already declared.
 // then this is only useful for and legal for 
 // things which have < == and > defined
 

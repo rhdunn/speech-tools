@@ -310,8 +310,8 @@ containing Tilt paramterised items.
 </para><para>
 
 Another function, also called <function>rfc_to_tilt</function> takes a
-Features object containing the 4 rise fall paramaters and writes the 3
-tilt paramaters into another features object. This function can be
+Features object containing the 4 rise fall parameters and writes the 3
+tilt parameters into another features object. This function can be
 used to do rfc_to_tilt conversion for a single event.
 
 </para>
@@ -362,8 +362,8 @@ containing RFC paramterised items.
 </para><para>
 
 Another function, also called <function>tilt_to_rfc</function> takes a
-Features object containing the 3 Tilt paramaters and writes the 4 rise
-fall RFC paramaters into another features object. This function can be
+Features object containing the 3 Tilt parameters and writes the 4 rise
+fall RFC parameters into another features object. This function can be
 used to do tilt_to_rfc conversion for a single event.
 </para>
 
@@ -402,7 +402,7 @@ containing RFC parameterised items and produces a F0 contour in a
 Track.  </para><para>
 
 The function <function>synthesize_rf_event</function> takes a Features
-object containing the 4 rise fall RFC paramaters and generates the F0
+object containing the 4 rise fall RFC parameters and generates the F0
 contour for a single event.
 </para>
 
@@ -421,7 +421,7 @@ file containing a set of approximateintonational event boundaries.
 <simplesect><title><link
 linkend="tilt-synthesis-manual">tilt_synthesis</link></title><para>
 tilt_synthesis generates a F0 contour, given a label file containing
-parameteriszed Tilt or RFC events.  </para></simplesect>
+parameterised Tilt or RFC events.  </para></simplesect>
 
 Generation of F0 contours can be done with:
 

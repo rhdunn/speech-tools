@@ -44,7 +44,7 @@
 
 /**@name matrix_example
   * 
-  * some stuff about matrixs
+  * some stuff about matrices
   *
   * @see EST_TMatrix
   */

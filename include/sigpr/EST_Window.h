@@ -49,7 +49,7 @@
 //@{
   
 /// Function which creates a window.
-typedef void	    EST_WindowFunc(int size, EST_TBuffer<float> &r_window);
+typedef void EST_WindowFunc(int size, EST_TBuffer<float> &r_window, int window_centre=-1 );
 
 //@}
 
@@ -59,7 +59,7 @@ of signal processing windows.
 
 Signal processing algorithms often work by on small sections of the
 speech waveform known as {\em frames}. A full signal must first be
-divided into these frames before these algroithms can work. While it
+divided into these frames before these algorithms can work. While it
 would be simple to just "cut out" the required frames from the
 waveforms, this is usually undesirable as large discontinuities can
 occur at the frame edges. Instead it is customary to cut out the frame
@@ -124,15 +124,21 @@ public:
     */
   //@{
   
-  /** Make a Buffer of containing a window function of specified type. 
+  /** Make a Buffer of containing a window function of specified type.
+      If window_centre < 0 (default -1), then a symmetric window is
+      returned. For positive values of the window_centre argument, 
+      asymmetric windows are returned.
     */
   static void make_window(EST_TBuffer<float> &window_vals, int size, 
-    const char *name);
+    const char *name, int window_centre=-1);
 
   /** Make a EST_FVector containing a window function of specified type. 
+      If window_centre < 0 (default -1), then a symmetric window is
+      returned. For positive values of the window_centre argument, 
+      asymmetric windows are returned.
     */
   static void make_window(EST_FVector &window_vals, int size, 
-    const char *name);
+    const char *name, int window_centre=-1);
 
   /// Return the creation function for the given window type.
   static Func *creator(const char *name, bool report_error = false);

@@ -99,17 +99,10 @@ int play_sun16_wave(EST_Wave &inwave, EST_Option &al)
 	else 
 	    inwave.resample(16000);
     }
-    if ((audiodevice = getenv("AUDIODEV")) == NULL) 
-    {
-        if (al.present("-audiodevice"))
-             audiodevice = al.val("-audiodevice");
-	else
-             audiodevice = "/dev/audio";
-    }
- 
+
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");
-    else
+    else if ((audiodevice = getenv("AUDIODEV")) == NULL) 
 	audiodevice = "/dev/audio";
 
     if ((fdaudio = fopen(audiodevice,"wb")) == NULL)

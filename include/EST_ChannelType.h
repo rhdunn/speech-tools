@@ -74,7 +74,7 @@ enum EST_CoefficientType
   cot_free
 };
 
-/**@name Channel Type Numberring Scheme
+/**@name Channel Type Numbering Scheme
   *
   * Channel types are given numbers containing the following information:
   * \begin{itemize}
@@ -86,9 +86,9 @@ enum EST_CoefficientType
   * to the following rules:
   * \begin{itemize}
   *	\item Single values which can be differentiated are paired as
-  *		if they were start and end positions of an unuknown type
+  *		if they were start and end positions of an unknown type
   *		of coefficient.
-  *	\item Single vaules which can't be differentiated are put in the
+  *	\item Single values which can't be differentiated are put in the
   *		positions where the 3rd derivatives would logically be
   *		found.
   * \end{itemize}
@@ -129,7 +129,7 @@ enum EST_CoefficientType
 						 EST_ChannelTypeSE(T))
 
 
-/** Build a number representing a channel type for a coeficient type.
+/** Build a number representing a channel type for a coefficient type.
   * 
   * CT = coefficient type
   * D  = Number of levels of differentiation.
@@ -162,7 +162,7 @@ enum EST_CoefficientType
   * @see EST_Track
   * @see EST_TrackMap:example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_ChannelType.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_ChannelType.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 enum EST_ChannelType {

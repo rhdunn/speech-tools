@@ -153,8 +153,8 @@ returns the key for a given <function>EST_TBI</function> pointer.
 defined.
 
 <listitem><para><function>add_item (K k, V v, int ns).</function> </para><para>
-Add KV pair k,v to <function>KVL</function>. By default, the list is serched
-everytime for an occurance of k and if k is already defined, its value
+Add KV pair k,v to <function>KVL</function>. By default, the list is searched
+every time for an occurance of k and if k is already defined, its value
 is overwritten. However, if "ns" is set to 1, no searching of the list
 is performed, and the key value pair is merely appended.
 

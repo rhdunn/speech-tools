@@ -46,17 +46,18 @@
 #include "EST_rw_status.h"
 #include "EST_types.h"
 
+class EST_Track;
 class EST_String;
 class EST_TokenStream;
 
 
 /** A class for storing digital waveforms. The waveform is stored as
-an arraay of 16 bit shorts. Mutliple channels are supported, but if no
+an array of 16 bit shorts. Multiple channels are supported, but if no
 channel information is given the 0th channel is accessed.
 <p>
 
 The waveforms can be of any sample rate, and can be changed to another
-samping rate using the <tt>resample</tt> function.
+sampling rate using the <tt>resample</tt> function.
 
 */
 
@@ -92,7 +93,7 @@ public:
   ~EST_Wave();
     
 
-  /**@name Access functions for finding ampltiudes of samples */
+  /**@name Access functions for finding amplitudes of samples */
   //@{
 
   /** return amplitude of sample <tt>i</tt> from channel <tt>
@@ -156,10 +157,10 @@ public:
   EST_String sample_type() const { return f_String("sample_type","short"); }
   void set_sample_type(const EST_String t) { f_set("sample_type", t); }
 
-  EST_String file_type() const { return f_String("file_type","nist"); }
+  EST_String file_type() const { return f_String("file_type","riff"); }
   void set_file_type(const EST_String t) { f_set("file_type", t); }
 
-  /// A string indentifying the waveform, commonly used to store the filename
+  /// A string identifying the waveform, commonly used to store the filename
   EST_String name() const { return f_String("name"); }
 
   /// Sets name.
@@ -185,6 +186,12 @@ public:
       as appropriate.
   */
   void rescale(float gain,int normalize=0);
+
+  // multiply samples by a factor contour.  The factor_contour track
+  // should contains factor targets at time points throughout the wave,
+  // between which linear interpolation is used to calculate the factor
+  // for each sample.
+  void rescale( const EST_Track &factor_contour );
 
   /// clear waveform and set size to 0.
   void clear() {resize(0,EST_ALL);}

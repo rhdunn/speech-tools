@@ -50,10 +50,10 @@ template class EST_TVector<EST_Item*>;
 #endif
 
 static EST_Item *const def_val_item_ptr = NULL;
-EST_Item* const *EST_Item_ptr_Vector::def_val = &def_val_item_ptr;
+template <> EST_Item* const *EST_Item_ptr_Vector::def_val = &def_val_item_ptr;
 
 static EST_Item* error_return_item_ptr = NULL;
-EST_Item* *EST_Item_ptr_Vector::error_return = &error_return_item_ptr;
+template <> EST_Item* *EST_Item_ptr_Vector::error_return = &error_return_item_ptr;
 
 typedef
 float (*local_cost_function)(const EST_Item *item1,
@@ -154,7 +154,7 @@ bool dp_match(const EST_Relation &lexical,
 
     // aligns lexical and surface forms using dynamic programming
     // i.e. the lexical form is transformed into the surface form
-    //      by substitutions, inderstions and deletions
+    //      by substitutions, insertions and deletions
 
     // makes links between associated (matching or substituted) items
     // insertions and deletions are 'left dangling'

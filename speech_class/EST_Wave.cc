@@ -49,6 +49,8 @@
 #include "EST_TNamedEnum.h"
 #include "EST_WaveFile.h"
 
+#include "EST_Track.h"
+
 #include "waveP.h"
 
 const EST_String DEF_FILE_TYPE = "riff";
@@ -436,7 +438,7 @@ EST_write_status EST_Wave::save_file(FILE *fp,
 
 void EST_Wave::resample(int new_freq)
 {
-    // Rseample wave to new sample rate
+    // Resample wave to new sample rate
     if (new_freq != p_sample_rate)
     {
 	if (p_values.rateconv(p_sample_rate, new_freq) != 0)
@@ -475,6 +477,47 @@ void EST_Wave::rescale(float gain, int normalize)
 	    a_no_check(i,j)= ns;
 	}
 }
+
+void EST_Wave::rescale( const EST_Track &fc )
+{
+  int ns, start_sample, end_sample;
+  float target1, target2, increment, factor;
+  
+  int fc_length = fc.length();
+  int _num_channels = num_channels();
+
+  cerr << ((int)(fc.t(fc_length-1) * p_sample_rate)) << endl;
+
+  if( ((int)(fc.t(fc_length-1) * p_sample_rate)) > num_samples() )
+    EST_error( "Factor contour track exceeds waveform length (%d samples)",
+		 (fc.t(fc_length-1) * p_sample_rate) - num_samples() );
+
+  start_sample = static_cast<unsigned int>( fc.t( 0 )*p_sample_rate );
+  target1 = fc.a(0,0); // could use separate channels for each waveform channel
+
+  for ( int k = 1; k<fc_length; ++k ){
+    end_sample   = static_cast<unsigned int>( fc.t( k )*p_sample_rate );
+    target2 = fc.a(k);
+    
+    increment = (target2-target1)/(end_sample-start_sample+1);
+  
+    factor = target1;
+    for( int i=start_sample; i<end_sample; ++i, factor+=increment )
+      for( int j=0; j<_num_channels; ++j ){
+	ns = (int)(((float)a_no_check(i,j) * factor) + 0.5);
+	if (ns < -32766)
+	  a_no_check(i,j)= -32766;
+	else if (ns > 32766)
+	  a_no_check(i,j)= 32766;
+	else
+	  a_no_check(i,j)= ns;
+      }
+    start_sample = end_sample;
+    target1 = target2;
+  }
+}
+
+
 
 EST_Wave &EST_Wave::operator =(const EST_Wave &w)
 {

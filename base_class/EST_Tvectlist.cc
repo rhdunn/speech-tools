@@ -33,11 +33,12 @@
 /*                     Author :  Paul Taylor                             */
 /*                     Date   :  April 1995                              */
 /*-----------------------------------------------------------------------*/
-/*                  Vector/List convertion templates                     */
+/*                  Vector/List conversion templates                     */
 /* only include this if you define both vectors and lists for the class  */
 /*                                                                       */
 /*=======================================================================*/
 #include <fstream.h>
+#include "EST_TList.h"
 #include "EST_TVector.h"
 #include "EST_cutils.h"
 
@@ -46,8 +47,8 @@ EST_TVector<T> &set(EST_TVector<T> &v, const EST_TList<T> &in)
 {
   v.resize(in.length(), FALSE);
   EST_Litem *p;
-  int i;
-  for (i = 0, p = in.head(); p!= 0; p = next(p), ++i)
+  int i = 0;
+  for (p = in.head(); p!= 0; p = next(p), ++i)
     v.a_no_check(i) = in.item(p);
   
   return v;
@@ -57,7 +58,8 @@ template<class T> EST_TVector<T> &copy(EST_TVector<T> a,const EST_TList<T> &in)
 {
     a.resize(in.length(), FALSE);
     EST_Litem *p;
-    for (i = 0, p = in.head(); p!= 0; p = next(p), ++i)
+    int i = 0;
+    for (p = in.head(); p!= 0; p = next(p), ++i)
 	a[i] = in.item(p);
 
     return a;

@@ -375,7 +375,7 @@ void threshold_labels(EST_Relation &reflab, float t)
 
 /* Check through relations of each ref label, and make there aren't
 multiple ref labels related to the same test label. If this is
-discoved, compare scores of all the relevant labels and delete the
+discovered, compare scores of all the relevant labels and delete the
 relations of all but the lowest.
 
 At this stage, each ref label should have one and only one relation to the
@@ -442,7 +442,7 @@ in the reference set. The lowest score for each reference is then
 recorded. A test is carried out to make sure that no two reference
 labels point to the same test label. Then any ref label above a
 certain distance is classified as incorrect. The numbers of insertions
-and delations are then calculated.  */
+and deletions are then calculated.  */
 
 EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int method,
 		       float t, int v)
@@ -975,7 +975,7 @@ void print_aligned_trans(EST_Relation &ref, EST_Relation &test, EST_FMatrix &m)
     pos_only(test);
     pos_only(ref);
 
-    // first check for emtpy matrices - indicates all insertions or deletions
+    // first check for empty matrices - indicates all insertions or deletions
 
     if ((m.num_columns() == 0) && (m.num_rows() != 0))
     {

@@ -36,7 +36,7 @@
  /*                   Date: Tue Sep4th 1997                               */
  /* --------------------------------------------------------------------  */
  /* Declare unix things. On unix just include header files,               */
- /* on other systems define compatability routines                        */
+ /* on other systems define compatibility routines                        */
  /*                                                                       */
  /*************************************************************************/
 

@@ -40,7 +40,8 @@
 #include "ling_class/EST_Relation.h"
 #include "EST_THash.h"
 
-Declare_TStringHash_T(EST_Relation*,EST_StringRelationP)
+template <> EST_String EST_THash<EST_String, EST_Relation *>::Dummy_Key = "DUMMY";
+template <> EST_Relation *EST_THash<EST_String, EST_Relation *>::Dummy_Value = NULL;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

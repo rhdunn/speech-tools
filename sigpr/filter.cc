@@ -45,7 +45,7 @@
 #include "sigpr/EST_Window.h"
 #include "EST_error.h"
 
-// there are multiple possible styles of this becase of different
+// there are multiple possible styles of this because of different
 // possibilities of where to change the filter coefficients.
 
 void lpc_filter(EST_Wave &sig, EST_FVector &a, EST_Wave &res)
@@ -128,13 +128,19 @@ void inv_lpc_filter_ola(EST_Wave &in_sig, EST_Track &lpc, EST_Wave &out_sig)
 
 	inv_lpc_filter(in_sub, filter, out_sub);
 
-	EST_Window::make_window(window_vals, size, "hanning");
+
+	int centreIndex = (int)(lpc.t(i) * (float)in_sig.sample_rate());
+
+	EST_Window::make_window(window_vals, size, "hanning", centreIndex-start);
+
+	//	printf( "%d %d %d (start centre end)\n", start, centreIndex, end );
 
 	// overlap and add using hanning window on original
-	for (k = 0, j = start; j < end; ++j, ++k)
-	    out_sig.a_no_check(j) += 
-		(int)((float)out_sub.a_no_check(k) * 
-		      window_vals.a_no_check(k));
+	for (k = 0, j = start; j < end; ++j, ++k){
+	  out_sig.a_no_check(j) += 
+	    (int)((float)out_sub.a_no_check(k) * 
+		  window_vals.a_no_check(k));
+	}
     }
 }
 
@@ -184,6 +190,8 @@ void lpc_filter_1(EST_Track &lpc, EST_Wave & res, EST_Wave &sig)
     }    
 }
 
+
+
 void lpc_filter_fast(EST_Track &lpc, EST_Wave & res, EST_Wave &sig)
 {
     // An (unfortunately) faster version of the above.  This is about
@@ -217,7 +225,8 @@ void lpc_filter_fast(EST_Track &lpc, EST_Wave & res, EST_Wave &sig)
 	    for (j = 1; j < n; ++j)
 		s += filt[j] * buff[k-j];
 	    // The 0.5 should be a parameter
-	    buff[k] = s + (residual[m]*0.5);
+	    //	    buff[k] = s + (residual[m]*0.5);
+	    buff[k] = s + residual[m];
 	}
 	start = end;
     }
@@ -227,7 +236,6 @@ void lpc_filter_fast(EST_Track &lpc, EST_Wave & res, EST_Wave &sig)
     wfree(buff);
     wfree(filt);
 }
-
 
 void post_emphasis(EST_Wave &sig, float a)
 {
@@ -351,12 +359,12 @@ void FIRfilter(const EST_Wave &in_sig, EST_Wave &out_sig,
     // could speed up here with three loops :
     // 1 for first part (filter overlaps start of wave, one 'if')
     // 2 for middle part (filter always within wave, no 'if's)
-    // 3 for last part (filter ovelaps end of wave, one 'if')
+    // 3 for last part (filter overlaps end of wave, one 'if')
 
     // To make this faster do the float conversion once and hold it
     // in a conventional array.  Note this has been checked to be 
     // safe but if you change the code below you'll have to confirm it
-    // remains safe. If acces through FVector was fast I'd use them
+    // remains safe. If access through FVector was fast I'd use them
     // but this is about twice as fast.
     float *in = walloc(float,n);
     for (i=0; i < n; ++i)

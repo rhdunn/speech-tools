@@ -259,14 +259,14 @@ int EST_WFST::transition(int state,const EST_String &in,
 
 int EST_WFST::transition(int state,int in, int out) const
 {
-    // Finds first transition (hopefully determinstic)
+    // Finds first transition (hopefully deterministic)
     float prob;
     return transition(state,in,out,prob);
 }
 
 EST_WFST_Transition *EST_WFST::find_transition(int state,int in, int out) const
 {
-    // Finds first transition (hopefully determinstic)
+    // Finds first transition (hopefully deterministic)
     EST_WFST_State *s = p_states(state);
     EST_Litem *i;
 
@@ -286,7 +286,7 @@ EST_WFST_Transition *EST_WFST::find_transition(int state,int in, int out) const
 
 int EST_WFST::transition(int state,int in, int out,float &prob) const
 {
-    // Finds first transition (hopefully determinstic)
+    // Finds first transition (hopefully deterministic)
     EST_WFST_Transition *trans = find_transition(state,in,out);
 
     if (trans == 0)
@@ -534,7 +534,7 @@ EST_read_status EST_WFST::load(const EST_String &filename)
     }
 
     // Value is a quoted quoted s-expression.  Two reads is the 
-    // safest way to ununquote them
+    // safest way to unquote them
     LISP inalpha = 
 	read_from_string(get_c_string(read_from_string(hinfo.val("in"))));
     LISP outalpha = 

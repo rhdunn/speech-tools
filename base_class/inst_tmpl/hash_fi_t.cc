@@ -38,7 +38,8 @@
 #include "EST_String.h"
 #include "EST_THash.h"
 
-Declare_THash(float, int)
+template <> float EST_THash<float, int>::Dummy_Key = 0.0;
+template <> int EST_THash<float, int>::Dummy_Value = 0;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

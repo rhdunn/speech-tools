@@ -62,7 +62,7 @@
 #define NEARLY_ZERO 0.00001
 
 #define REASONABLE_FRAME_SIZE (20)
-#define UNREASONABLE_FRAME_SIZE (50)
+#define UNREASONABLE_FRAME_SIZE (80)
 
 #if 0
 static const char *NIST_SIG = "NIST_1A\n   1024\n";
@@ -83,9 +83,10 @@ enum EST_sample_type_t nist_to_sample_type(char *type);
 EST_read_status read_est_header(EST_TokenStream &ts, EST_Features &hinfo, 
 				bool &ascii, EST_EstFileType &t);
 
-EST_read_status EST_TrackFile::load_esps(const EST_String filename, EST_Track &tr, float ishift)
+EST_read_status EST_TrackFile::load_esps(const EST_String filename, EST_Track &tr, float ishift, float startt)
 {
   (void)ishift;
+  (void)startt;
 
     float **tt;
     float fsize;
@@ -150,8 +151,10 @@ EST_read_status EST_TrackFile::load_esps(const EST_String filename, EST_Track &t
     return format_ok;
 }
 
-EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &tr, float ishift)
+EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &tr, float ishift, float startt)
 {
+    (void)startt;
+
     EST_TokenStream ts, tt;
     EST_StrList sl;
 
@@ -170,9 +173,10 @@ EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &
     if (ishift < NEARLY_ZERO)
     {
       cerr<<
-	"Error: Frame spacing must be specified (or apparent frame shift nearly zero)\n";
+	  "Error: Frame spacing must be specified (or apparent frame shift nearly zero)\n";
       return misc_read_error;
     }
+
     // first read in as list
 
     for (n_rows = 0; !ts.eof(); ++n_rows)
@@ -211,9 +215,10 @@ EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &
     return format_ok;
 }
 
-EST_read_status EST_TrackFile::load_xgraph(const EST_String filename, EST_Track &tr, float ishift)
+EST_read_status EST_TrackFile::load_xgraph(const EST_String filename, EST_Track &tr, float ishift, float startt)
 {
   (void)ishift;
+  (void)startt;
 
     EST_TokenStream ts, tt;
     EST_StrList sl;
@@ -267,9 +272,10 @@ EST_read_status EST_TrackFile::load_xgraph(const EST_String filename, EST_Track 
     return format_ok;
 }
 
-EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr, float ishift)
+EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr, float ishift, float startt)
 {
   (void)ishift;
+  (void)startt;
 
     EST_TokenStream ts;
     EST_StrList sl;
@@ -342,7 +348,7 @@ EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr
 }
 
 EST_read_status EST_TrackFile::load_est(const EST_String filename, 
-					EST_Track &tr, float ishift)
+					EST_Track &tr, float ishift, float startt)
 {
     EST_TokenStream ts;
     EST_read_status r;
@@ -355,7 +361,7 @@ EST_read_status EST_TrackFile::load_est(const EST_String filename,
     // set up the character constant values for this stream
     ts.set_SingleCharSymbols(";");
     tr.set_name(filename);
-    r = load_est_ts(ts, tr, ishift);
+    r = load_est_ts(ts, tr, ishift, startt);
 
     if ((r == format_ok) && (!ts.eof()))
     {
@@ -375,9 +381,10 @@ static float get_float(EST_TokenStream &ts,int swap)
 }
 
 EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
-					EST_Track &tr, float ishift)
+					EST_Track &tr, float ishift, float startt)
 {
     (void)ishift;
+    (void)startt;
     int i, j;
     int num_frames, num_channels, num_aux_channels;
     EST_Features hinfo;
@@ -450,6 +457,15 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
     else
 	swap = FALSE;
 	    
+    const int BINARY_CHANNEL_BUFFER_SIZE=1024;
+    float *frame=0; 
+    float frame_buffer[BINARY_CHANNEL_BUFFER_SIZE];
+    if( !ascii )
+      if( num_channels > BINARY_CHANNEL_BUFFER_SIZE )
+	frame = new float[num_channels];
+      else
+	frame = frame_buffer;
+
     // there are too many ifs here
     for (i = 0; i < num_frames; ++i)
     {
@@ -493,17 +509,37 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 	    tr.set_value(i);	
 
 	// Read Channels
-	for (j = 0; j < num_channels; ++j)
-	{
-	    if(ascii)
-	      {
-		tr.a(i, j) = ts.get().Float(ok);
-		if (!ok)
-		  return misc_read_error;
-	      }
-	    else
-		tr.a(i,j) = get_float(ts,swap);
+// 	for (j = 0; j < num_channels; ++j)
+// 	{
+// 	    if(ascii)
+// 	      {
+// 		tr.a(i, j) = ts.get().Float(ok);
+// 		if (!ok)
+// 		  return misc_read_error;
+// 	      }
+// 	    else
+// 		tr.a(i,j) = get_float(ts,swap);
+// 	}
+
+	if( ascii ){
+	  for (j = 0; j < num_channels; ++j){
+	    tr.a(i, j) = ts.get().Float(ok);
+	    if (!ok)
+	      return misc_read_error;
+	  }
 	}
+	else{
+	  ts.fread( frame, sizeof(float), num_channels );
+	  if( swap )
+	    for( j=0; j<num_channels; ++j ){
+	      swapfloat( &frame[j] );
+	      tr.a(i,j) = frame[j];
+	    }
+	  else
+	    for( j=0; j<num_channels; ++j )
+	      tr.a(i,j) = frame[j];
+	}
+	
 
 	// Read aux Channels
 	for (j = 0; j < tr.num_aux_channels(); ++j)
@@ -521,6 +557,10 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 	    }
 	}
     }
+    
+    if( !ascii )
+      if( frame != frame_buffer )
+	delete [] frame;
 
     // copy header info into track
     tr.f_set(hinfo);
@@ -537,13 +577,15 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 }
 
 EST_read_status load_snns_res(const EST_String filename, EST_Track &tr, 
-			      float ishift)
+			      float ishift, float startt)
 {
+    (void)startt;
+  
     EST_TokenStream ts, str;
     EST_StrList sl;
     int i, j;
     EST_String t, k, v;
-    
+
     if (ishift < NEARLY_ZERO)
     {
 	cerr<<
@@ -570,15 +612,15 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
     
     while (1)
     {
-	t = ts.get_upto_eoln();
+	t = (EST_String)ts.get_upto_eoln();
 	//	cout << "t=" << t << endl;
 	if (t.contains("teaching output included"))
 	    teaching = 1;
 	if (!t.contains(":"))
 	    break;
 	str.open_string(t);
-	k = str.get_upto(":");
-	v = str.get_upto_eoln();
+	k = (EST_String)str.get_upto(":");
+	v = (EST_String)str.get_upto_eoln();
 	if (k == "No. of output units")
 	    num_channels = v.Int();
 	if (k == "No. of patterns")
@@ -776,9 +818,10 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 
     fprintf(fp, "EST_File Track\n");
     fprintf(fp, "DataType binary\n");
-    fprintf(fp, "NumFrames %d\n", tr.num_frames());
     fprintf(fp, "ByteOrder %s\n", ((EST_NATIVE_BO == bo_big) ? "10" : "01"));
+    fprintf(fp, "NumFrames %d\n", tr.num_frames());
     fprintf(fp, "NumChannels %d\n",tr.num_channels());
+    fprintf(fp, "EqualSpace %d\n",tr.equal_space());
     if(breaks)
 	fprintf(fp, "BreaksPresent true\n");
     fprintf(fp, "CommentChar ;\n\n");
@@ -1081,15 +1124,27 @@ static EST_write_status save_htk_as(const EST_String filename,
 	track.change_type(0.0, FALSE);
 	s = rint((HTK_UNITS_PER_SECOND * track.shift())/10.0) * 10.0;
     }
-    
+
+    // hkt files need to be big_endian irrespective of hardware. The
+    // code here was obviously only ever ran on a Sun.  I've tried to
+    // fix this and it seems to work with floats, don't have data to
+    // check with shorts though. (Rob, March 2004)
+
     struct htk_header header;
-    header.num_samps = track.num_frames();
-    header.samp_period = (long) s;
+
+    header.num_samps = (EST_BIG_ENDIAN ? track.num_frames()
+			: SWAPINT(track.num_frames()));
+
+
+    header.samp_period = (EST_BIG_ENDIAN ? (long) s : SWAPINT((long) s));
     if(use_type == HTK_DISCRETE)
-	header.samp_size = sizeof(short);
+      header.samp_size = (EST_BIG_ENDIAN ? sizeof(short) :
+			  SWAPSHORT(sizeof(short)));
     else
-	header.samp_size = sizeof(float) * file_num_channels;
-    header.samp_type = type;	
+      header.samp_size = (EST_BIG_ENDIAN ? (sizeof(float) * file_num_channels) :
+			  SWAPSHORT((sizeof(float) * file_num_channels)));
+			  
+    header.samp_type = EST_BIG_ENDIAN ? type : SWAPSHORT(type);	
 
     int i, j;
     FILE *outf;
@@ -1107,7 +1162,7 @@ static EST_write_status save_htk_as(const EST_String filename,
     fwrite((char*)&(header.samp_period), 1, sizeof(header.samp_period), outf);
     fwrite((char*)&(header.samp_size), 1, sizeof(header.samp_size), outf);
     fwrite((char*)&(header.samp_type), 1, sizeof(header.samp_type), outf);
-    
+
     // write the data
     if(use_type == HTK_DISCRETE)
     {
@@ -1124,7 +1179,8 @@ static EST_write_status save_htk_as(const EST_String filename,
 	    }
 	    for (i = 0; i < track.num_frames(); ++i)
 	    {
-		short tempshort=(short)(track.a(i, 0));
+		short tempshort = (EST_BIG_ENDIAN ? (short)(track.a(i, 0)) :
+				   SWAPSHORT((short)(track.a(i, 0)))) ;
 		fwrite((unsigned char*) &tempshort, 1, sizeof(short), outf);
 	    }
 	}
@@ -1133,9 +1189,17 @@ static EST_write_status save_htk_as(const EST_String filename,
 	for (i = 0; i < track.num_frames(); ++i)	
 	{
 	    if ((type & HTK_EST_PS) != 0)
+	      {
+		if(!EST_BIG_ENDIAN)
+		  swapfloat(&(track.t(i)));
 		fwrite((unsigned char*) &(track.t(i)), 1, sizeof(float), outf);
+	      }
 	    for (j = 0; j < track.num_channels(); ++j)
+	      {
+		if(!EST_BIG_ENDIAN)
+		  swapfloat(&(track.a(i,j)));
 		fwrite((unsigned char*) &(track.a(i, j)), 1, sizeof(float), outf);
+	      }
 	}
     
     if (outf != stdout)
@@ -1200,9 +1264,10 @@ EST_write_status EST_TrackFile::save_htk_discrete(const EST_String filename, EST
 }
 
 
-static EST_read_status load_ema_internal(const EST_String filename, EST_Track &tmp, float ishift, bool swap)
+static EST_read_status load_ema_internal(const EST_String filename, EST_Track &tmp, float ishift, float startt, bool swap)
 {
     (void)ishift;
+    (void)startt;
     
     int i, j, k, nframes, new_order;
     EST_TVector<short> file_data;
@@ -1267,21 +1332,22 @@ static EST_read_status load_ema_internal(const EST_String filename, EST_Track &t
     return format_ok;
 }
 
-EST_read_status EST_TrackFile::load_ema(const EST_String filename, EST_Track &tmp, float ishift)
+EST_read_status EST_TrackFile::load_ema(const EST_String filename, EST_Track &tmp, float ishift, float startt)
 {
-  return load_ema_internal(filename, tmp, ishift, FALSE);
+  return load_ema_internal(filename, tmp, ishift, startt, FALSE);
 }
 
 
-EST_read_status EST_TrackFile::load_ema_swapped(const EST_String filename, EST_Track &tmp, float ishift)
+EST_read_status EST_TrackFile::load_ema_swapped(const EST_String filename, EST_Track &tmp, float ishift, float startt)
 {
-  return load_ema_internal(filename, tmp, ishift, TRUE);
+  return load_ema_internal(filename, tmp, ishift, startt, TRUE);
 }
 
 #if 0
-EST_read_status EST_TrackFile::load_NIST(const EST_String filename, EST_Track &tmp, float ishift)
+EST_read_status EST_TrackFile::load_NIST(const EST_String filename, EST_Track &tmp, float ishift, float startt)
 {
   (void)ishift; // what does this do ?
+  (void)startt;
 
   char header[NIST_HDR_SIZE];
   int samps,sample_width,data_length,actual_bo;
@@ -1438,11 +1504,17 @@ EST_write_status EST_TrackFile::save_NIST(const EST_String filename, EST_Track t
 #endif
 
 
-EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tmp, float ishift)
+EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tmp, float ishift, float startt)
 {
     (void)ishift;
     
+    // num_values is total number of fields in file
+    // num_channels is number of fields in resultant track
+    // order is order of LPC etc. analysis
+    // e.g. if order is 12 and we have energy and delta then num_values = (12 + 1) * 2 = 26
+
     int i,j, order, new_frames, num_values, num_channels;
+
     EST_String pname;
     int swap;
     int time_included;
@@ -1450,30 +1522,30 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     FILE *fp;
     struct htk_header header;
     int header_sz = sizeof(header);
-    
+
+    // numbers A and B for decompression of generally compressed files 
+    float *compressA=NULL, compressA_Buffer[REASONABLE_FRAME_SIZE];
+    float *compressB=NULL, compressB_Buffer[REASONABLE_FRAME_SIZE];
+    bool fileIsCompressed=false;
+
     unsigned short samp_type, base_samp_type;
     
-    if ((fp = fopen(filename, "rb")) == NULL)
-    {
-	cerr << "EST_Track load: couldn't open EST_Track input file" << endl;
-	return misc_read_error;
+    if ((fp = fopen(filename, "rb")) == NULL){
+      cerr << "EST_Track load: couldn't open EST_Track input file" << endl;
+      return misc_read_error;
     }
     
     // try and read the header
-    if (fread(&header, header_sz, 1, fp) != 1)
-    {
-	fclose(fp);
-	return wrong_format;
+    if (fread(&header, header_sz, 1, fp) != 1){
+      fclose(fp);
+      return wrong_format;
     }
     
-    swap = htk_swapped_header(&header);
-    //    cout << "swap = " << swap << endl;
-    // see if the header looks reasonable, i.e. can we work out the sample type
-    
-    if (swap < 0)
-    {
-	fclose(fp);
-	return read_format_error;
+    swap = htk_swapped_header(&header); // this is regrettable
+
+    if( swap<0 ){
+      fclose(fp);
+      return read_format_error;
     }
     
     samp_type = header.samp_type;
@@ -1481,166 +1553,257 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     
     time_included = (samp_type & HTK_EST_PS) != 0;
     
-    switch(base_samp_type)
-    {
-	
+    switch(base_samp_type){
     case HTK_WAVE:
-	cerr << "Can't read HTK WAVEFORM format file into track" << endl;
-	return misc_read_error;
-	break;
-	
+      cerr << "Can't read HTK WAVEFORM format file into track" << endl;
+      return misc_read_error;
+      break;
+      
     case HTK_LPC:
-	pname = "ct_lpc";
-	break;
-	
+      pname = "ct_lpc";
+      break;
+
     case HTK_LPCREFC:
-	pname = "ct_other";
-	break;
-	
-    case HTK_LPCCEP:
-	pname = "ct_cepstrum";
-	break;
-	
-    case HTK_LPDELCEP:
-	// equivalent to HTK_LPCCEP + DELTA
-	base_samp_type = HTK_LPCCEP;
-	samp_type = HTK_LPCCEP | HTK_DELTA; // set delta bit 
-	pname = "ct_cepstrum";
-	break;
-	
     case HTK_IREFC:
-	pname = "ct_other";
-	break;
-	
+      EST_warning( "reading HTK_IREFC and HTK_LPREC parameter types is unsupported" );
+      fclose( fp );
+      return read_format_error;
+      break;
+       
+    case HTK_LPCCEP:
+      pname = "ct_cepstrum";
+      break;
+      
+    case HTK_LPDELCEP:
+      // equivalent to HTK_LPCCEP + DELTA
+      base_samp_type = HTK_LPCCEP;
+      samp_type = HTK_LPCCEP | HTK_DELTA; // set delta bit 
+      pname = "ct_cepstrum";
+      break;
+      
     case HTK_MFCC:
-	pname = "ct_other";
-	break;
-	
+      pname = "ct_other";
+      break;
+      
     case HTK_FBANK:
     case HTK_USER:
-	pname = "ct_other";
-	break;
-	
+      pname = "ct_other";
+      break;
+      
     case HTK_DISCRETE:
-	cerr << "Can't read HTK DISCRETE format file into track" << endl;
-	return misc_read_error;
-	break;
-
+      cerr << "Can't read HTK DISCRETE format file into track" << endl;
+      return misc_read_error;
+      break;
+      
     case HTK_MELSPEC:
-	pname = "ct_other";
-	break;
-	
+      pname = "ct_other";
+      break;
+      
     default:
-	fclose(fp);
-	return wrong_format;
-	break;
+      fclose(fp);
+      return wrong_format;
+      break;
     }
     
     // if we get this far we have decided this is a HTK format file
     
-    // num_values is total number of fields in file
-    // num_channels is number of fields in resultant track
-    // order is order of LPC etc. analysis
-    // e.g. if order is 12 and we have energy and delta then num_values = (12 + 1) * 2 = 26
-    
-    num_channels = num_values = header.samp_size / sizeof(float); // assumes data always stored as floats !
-    
-    if (num_values > UNREASONABLE_FRAME_SIZE)
-    {
-	fclose(fp);
+    // handle compressed/uncompressed files differently
+    if( header.samp_type & HTK_COMP ){
+
+      fileIsCompressed = true;
+
+      num_channels = num_values = header.samp_size / sizeof(short int);
+
+      // get compression numbers A and B
+      if (num_channels > REASONABLE_FRAME_SIZE){
+	compressA = new float[num_values];
+	compressB = new float[num_values];
+      }
+      else{
+	compressA = compressA_Buffer;
+	compressB = compressB_Buffer;
+      }
+
+      if( (fread( compressA, sizeof(float), num_values, fp )) != static_cast<size_t>(num_values) ){
+	fclose( fp );
 	return read_format_error;
+      }
+      
+      if( (fread( compressB, sizeof(float), num_values, fp )) != static_cast<size_t>(num_values) ){
+	fclose( fp );
+	return read_format_error;
+      }
+
+      if (swap){
+	swap_bytes_float( compressA, num_values );
+	swap_bytes_float( compressB, num_values );
+      }	
+
+      // subtract extra frames to account for the two vectors of floats
+      // used for decompression.
+      new_frames = header.num_samps - (2*(sizeof(float)-sizeof(short int)));
+    }
+    else{
+      num_channels = num_values = header.samp_size / sizeof(float);
+      new_frames = header.num_samps;
+    }
+    
+    if (num_values > UNREASONABLE_FRAME_SIZE){
+      fclose(fp);
+      return read_format_error;
     }
     
     if (time_included)
-	num_channels -= 1;
+      num_channels -= 1;
     
     float shift = ((float)header.samp_period/ (float)HTK_UNITS_PER_SECOND);
     
-    new_frames = header.num_samps;
     tmp.resize(new_frames, num_channels);
-    tmp.fill_time(shift);
+
+    if ((startt > 0) && (startt < NEARLY_ZERO ))
+	EST_warning( "setting htk file start to %f", startt );
+
+    tmp.fill_time(shift, startt);
+
     tmp.set_equal_space(!time_included);
     
     // check length of file is as expected from header info
-    long file_length;
+    long dataBeginPosition = ftell(fp);
+    if( dataBeginPosition == -1 ){
+      fclose(fp);
+      return wrong_format;
+    }
+    
     if (fseek(fp,0,SEEK_END)){
-	fclose(fp);
-	return wrong_format;
+      fclose(fp);
+      return wrong_format;
     }
     
-    if ((file_length = ftell(fp)) == -1)
-    {
-	fclose(fp);
-	return wrong_format;
-    }
-
-    
-    file_length = file_length + 1 - header_sz;
-    
-    long expected_floats = file_length / sizeof(float);
-    
-    if(expected_floats != (num_values * new_frames) )
-    {				// it probably isn't HTK format after all
-	fclose(fp);
-	return wrong_format;
+    long file_length;
+    if ((file_length = ftell(fp)) == -1){
+      fclose(fp);
+      return wrong_format;
     }
     
-
+    long expected_vals;
+    if( fileIsCompressed ){
+      expected_vals = (file_length-dataBeginPosition) / sizeof(short int);      
+      
+      if( header.samp_type & HTK_CRC )
+	expected_vals -= 1; // just ignore the appended cyclic redundancy checksum
+    }
+    else
+      expected_vals = (file_length-dataBeginPosition) / sizeof(float);      
+    
+    /*
+      printf( "%d %d %d %d %d %d\n",
+      expected_vals, file_length, dataBeginPosition, sizeof(float), num_values, new_frames );
+    */
+    
+    if( expected_vals != (num_values * new_frames) ){
+      // it probably isn't HTK format after all
+      fclose(fp);
+      return wrong_format;
+    }
+    
     // work out the order of the analysis
     // Reorg -- surely you can't increase order
     order = num_channels;
-    if (samp_type & HTK_NO_E) 
-	order++;
+    if( samp_type & HTK_NO_E ) 
+      order++;
     
-    if (samp_type & HTK_AC)
-	order /= 3;
-    else if (samp_type & HTK_DELTA)
-	order /= 2;
+    if( samp_type & HTK_AC )
+      order /= 3;
+    else if( samp_type & HTK_DELTA )
+      order /= 2;
     
-    if (samp_type & HTK_ENERGY)
-	order--;
+    if( samp_type & HTK_ENERGY )
+      order--;
     
     // go to start of data
-    if (fseek(fp, header_sz, SEEK_SET) == -1)
-    {
-	cerr << "Couldn't position htk file at start of data" << endl;
-	fclose(fp);
-	return misc_read_error;
+    if( fseek(fp, dataBeginPosition, SEEK_SET) == -1 ){
+      cerr << "Couldn't position htk file at start of data" << endl;
+      fclose(fp);
+      return misc_read_error;
     }
+
+    if( fileIsCompressed ){
+      short int *frame, frame_buffer[REASONABLE_FRAME_SIZE];
+      if( num_values > REASONABLE_FRAME_SIZE )
+	frame = new short int[num_values];
+      else
+	frame = frame_buffer;
+
+      int first_channel = time_included?1:0;
+      
+      for( i=0; i<new_frames; i++ ){
+	if( fread( frame, sizeof(short int), num_values, fp ) != (size_t) num_values ){
+	  cerr << "Could not read data from htk track file" << endl;
+	  fclose(fp);
+	  
+	  if( frame != frame_buffer )
+	    delete [] frame;
+	  if( compressA != compressA_Buffer )
+	    delete [] compressA;
+	  if( compressB != compressB_Buffer )
+	    delete [] compressB;
+
+	  return misc_read_error;
+	}
+
+	if( swap )
+	  swap_bytes_short( frame, num_values );
+	
+	if( time_included )
+	  tmp.t(i) = ((float)frame[0]+compressB[0])/compressA[0];
+	
+	for( j=0; j<num_channels; ++j ){
+	  int index = j+first_channel;
+	  tmp.a(i,j) = ((float)frame[index]+compressB[index])/compressA[index];
+	}
+
+	tmp.set_value(i);
+      }
+
+      if( frame != frame_buffer )
+	delete [] frame;
+      if( compressA != compressA_Buffer )
+	delete [] compressA;
+      if( compressB != compressB_Buffer )
+	delete [] compressB;
+    }
+    else{
+      float *frame, frame_buffer[REASONABLE_FRAME_SIZE];
     
-    float *frame, frame_buffer[REASONABLE_FRAME_SIZE];
-    
-    if (num_values > REASONABLE_FRAME_SIZE)
+      if (num_values > REASONABLE_FRAME_SIZE)
 	frame = new float[num_values];
-    else
+      else
 	frame = frame_buffer;
     
-    // actually read in the data
-    int first_channel = time_included?1:0;
-    for (i=0; i<new_frames; i++)
-    {
-	if (fread(frame, sizeof(float), num_values, fp) != 
-	    (size_t) num_values )
-	{
-	    cerr << "Could not read data from htk track file" << endl;
-	    fclose(fp);
-	    if (frame != frame_buffer)
-		delete[] frame;
-	    return misc_read_error;
+      int first_channel = time_included?1:0;
+      for( i=0; i<new_frames; i++ ){
+	if( fread( frame, sizeof(float), num_values, fp ) != (size_t) num_values ){
+	  cerr << "Could not read data from htk track file" << endl;
+	  fclose(fp);
+	  if (frame != frame_buffer)
+	    delete [] frame;
+	  return misc_read_error;
 	}
-	if (swap)
-	    swap_bytes_float(frame,num_values);
+	if( swap )
+	  swap_bytes_float( frame, num_values );
 	
-	if (time_included)
-	    tmp.t(i) = frame[0];
-	
-	for (j = 0; j < num_channels; ++j)
-	    tmp.a(i, j) = frame[j+first_channel];
+	if( time_included )
+	  tmp.t(i) = frame[0];
+      
+	for( j=0; j<num_channels; ++j )
+	  tmp.a(i, j) = frame[j+first_channel];
+
 	tmp.set_value(i);
-    }
+      }
     
-    if (frame != frame_buffer)
-	delete[] frame;
+      if( frame != frame_buffer )
+	delete [] frame;
+    }
     
     // name the fields
     EST_String t;
@@ -1656,42 +1819,37 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     
     // energy present and not suppressed
     if ( (samp_type & HTK_ENERGY) && !(samp_type & HTK_NO_E) )
-	tmp.set_channel_name("E", i++);
+      tmp.set_channel_name("E", i++);
     
     // delta coeffs ?
-    if (samp_type & HTK_DELTA)
-    {
-	for (j = 0; j < order; j++)
-	{
-	    t = EST_String("c") + itoString(j+1) + "_d";
-	    tmp.set_channel_name(t, i++);
-	}
-	
-	// energy ?
-	if (samp_type & HTK_ENERGY)
-	    tmp.set_channel_name("E_d", i++);
+    if (samp_type & HTK_DELTA){
+      for (j = 0; j < order; j++){
+	t = EST_String("c") + itoString(j+1) + "_d";
+	tmp.set_channel_name(t, i++);
+      }
+      
+      // energy ?
+      if (samp_type & HTK_ENERGY)
+	tmp.set_channel_name("E_d", i++);
     }
     
     // 'acceleration'  coeffs ?
-    if (samp_type & HTK_AC)
-    {
-	for(j=0;j<order;j++)
-	{
-	    t = EST_String("ac")+ itoString(j+1)+ "_d_d";
-	    tmp.set_channel_name(t, j + i++);
-	}
-	// energy ?
-	if (samp_type & HTK_ENERGY)
-	    tmp.set_channel_name("E_d_d", i++);
+    if (samp_type & HTK_AC){
+      for(j=0;j<order;j++){
+	t = EST_String("ac")+ itoString(j+1)+ "_d_d";
+	tmp.set_channel_name(t, i++);
+      }
+      // energy ?
+      if (samp_type & HTK_ENERGY)
+	tmp.set_channel_name("E_d_d", i++);
     }
     
     // sanity check
-    if (i != num_channels)
-    {
-	cerr << "Something went horribly wrong - wanted " << num_values
-	    << " channels in track but got " << i << endl;
-	fclose(fp);
-	return wrong_format;
+    if (i != num_channels){
+      cerr << "Something went horribly wrong - wanted " << num_values
+	   << " channels in track but got " << i << endl;
+      fclose(fp);
+      return wrong_format;
     }
     tmp.f_set("contour_type",pname);
     tmp.set_name(filename);
@@ -1702,7 +1860,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
 
 /************************************************************************/
 /*                                                                      */
-/* Convert single f0 channel tracks into arbitrarilly chosen esps FEA   */
+/* Convert single f0 channel tracks into arbitrarily chosen esps FEA    */
 /* subtype, reputedly to make waves happy. This is evil beyond all      */
 /* understanding.                                                       */
 /*                                                                      */
@@ -1881,7 +2039,11 @@ int read_track(EST_Track &tr, const EST_String &in_file, EST_Option &al)
 {
     
     float ishift = 0;
+    float startt = 0.0;
     
+    if( al.present("-startt") )
+      startt = al.fval( "-startt" );
+
     if (al.present("ishift"))
 	ishift = al.fval("ishift");
     else if (al.present("-s"))
@@ -1891,12 +2053,12 @@ int read_track(EST_Track &tr, const EST_String &in_file, EST_Option &al)
     
     if (al.present("-itype"))
     {
-	if (tr.load(in_file, al.val("-itype", 0), ishift) != format_ok)
+	if (tr.load(in_file, al.val("-itype", 0), ishift, startt) != format_ok)
 	    return -1;
     }
     else
     {
-	if (tr.load(in_file, ishift) != format_ok)
+	if (tr.load(in_file, ishift, startt ) != format_ok)
 	    return -1;
     }
     

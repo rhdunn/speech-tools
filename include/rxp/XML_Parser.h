@@ -58,11 +58,11 @@
 
 
 /**@name XML Parser
-  * Recursive descent parsing skeliton with hooks for processing.
+  * Recursive descent parsing skeleton with hooks for processing.
   * A C++ wrapper around the rxp parser.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: XML_Parser.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: XML_Parser.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 //@{
 
@@ -84,7 +84,7 @@ private:
   EST_TKVL<EST_Regex, EST_String> known_ids;
 
 protected:
-  /** Do any neccessary remappings and open a stream which reads the given
+  /** Do any necessary remappings and open a stream which reads the given
     * entity.
     */
   static InputSource open_entity(Entity ent, void *arg);
@@ -126,7 +126,7 @@ protected:
 
   /** Called for empty elements.
     *
-    * Defaults to element_open(...) forllowed by element_closed(...).
+    * Defaults to element_open(...) followed by element_closed(...).
     */
   virtual void element(XML_Parser_Class &c,
 		  XML_Parser &p,
@@ -250,7 +250,7 @@ private:
   bool p_track_contents;
 
 protected:
-  /** The class to which this parser belogs. Defines the behaviour of
+  /** The class to which this parser belongs. Defines the behaviour of
     * the parser.
     */
   XML_Parser_Class *pclass;
@@ -261,12 +261,12 @@ protected:
   /// Where we are reading from.
   InputSource source;
 
-  /** The entity we started from. May beed to be freed at the end of the
+  /** The entity we started from. May need to be freed at the end of the
     * parse.
     */
   Entity initial_entity;
 
-  /// Arbitrary data which can beused by callbacks.
+  /// Arbitrary data which can be used by callbacks.
   void *data;
 
   /// The RXP parser object.

@@ -45,8 +45,8 @@ lpc_test () {
 
 	echo "LPC params" >&2
 	echo "LPC params"
-	$SIG2FV  $DATA/kdt_001.wav -o tmp/kdt_001.lpc -otype est -lpc_order 16 -coefs "lpc" -pm $DATA/kdt_001.pm -preemph 0.95 -factor 3 -window_type hamming 
-	$SIGFILTER $DATA/kdt_001.wav -o tmp/kdt_001.res -otype nist -lpcfilter tmp/kdt_001.lpc -inv_filter
+	$SIG2FV  "$DATA/kdt_001.wav" -o tmp/kdt_001.lpc -otype est -lpc_order 16 -coefs "lpc" -pm "$DATA/kdt_001.pm" -preemph 0.95 -factor 3 -window_type hamming 
+	$SIGFILTER "$DATA/kdt_001.wav" -o tmp/kdt_001.res -otype nist -lpcfilter tmp/kdt_001.lpc -inv_filter
 	$CH_TRACK -info tmp/kdt_001.lpc
 	$CH_WAVE -info tmp/kdt_001.res
 	# Should not be any of these unless there is an error
@@ -62,7 +62,7 @@ mfcc_test () {
 
 	echo "MFCC params" >&2
 	echo "MFCC params"
-	$SIG2FV  -coefs melcep  -delta melcep -melcep_order 12 -fbank_order 24 -shift 0.005 -factor 5.0 -preemph 0.97 -otype est $DATA/kdt_001.wav -o tmp/kdt_001.mfcc
+	$SIG2FV  -coefs melcep  -delta melcep -melcep_order 12 -fbank_order 24 -shift 0.005 -factor 5.0 -preemph 0.97 -otype est "$DATA/kdt_001.wav" -o tmp/kdt_001.mfcc
 	$CH_TRACK -info tmp/kdt_001.mfcc
         echo "expect one line containing 0s (first delta params)"
 	numzeros=`grep "0.000000" tmp/kdt_001.mfcc | wc -l`

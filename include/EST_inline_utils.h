@@ -32,10 +32,10 @@
  /************************************************************************/
 
 /**@name EST_inline_utils.h
-  * Some simple inline functions gatherred together in one place.
+  * Some simple inline functions gathered together in one place.
   * <p>
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_inline_utils.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_inline_utils.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 //@{

@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
 
 //    set_fn_start(ev);
 
-    // main RFC analyss function
+    // main RFC analysis function
     rfc_analysis(fz, ev, rfc_op);
 
     // convert to Tilt if necessary
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
 
 /** @name Input Intonation Files
 
-A label file containing approximate intonational event bounaries must
+A label file containing approximate intonational event boundaries must
 be given as input. A typical file in xlabel format is shown below:
 </para>
 <para>

@@ -2000,7 +2000,7 @@ double EST_Ngrammar::reverse_probability(const EST_StrVector &words,
       case EST_Ngrammar::dense:
         {
 	    const EST_NgrammarState &s = find_state_const(words);
-	    // need number of occurences of words[p_order-1]
+	    // need number of occurrences of words[p_order-1]
 	    return s.frequency(lastword(words))/
 		vocab_pdf.frequency(lastword(words));
         }
@@ -2029,7 +2029,7 @@ double EST_Ngrammar::reverse_probability(const EST_IVector &words,
       case EST_Ngrammar::dense:
         { 
 	    const EST_NgrammarState &s = find_state_const(words);
-	    // need number of occurences of words[p_order-1]
+	    // need number of occurrences of words[p_order-1]
 	    return s.frequency(lastword(words))/
 		vocab_pdf.frequency(lastword(words));
 	}

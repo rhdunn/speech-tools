@@ -248,8 +248,8 @@ void normalise(EST_Track &tr, float mean, float sd, int channel,
 
 EST_Track differentiate(EST_Track &c, float samp_int)
 {
-    // differentiate track. SEE ALSO delta(EST_Track, int) which does
-    // this in a more spohisticated way !!!
+    // Differentiate track. SEE ALSO delta(EST_Track, int) which does
+    // this in a more sophisticated way!!!
     
     EST_Track diff;
     int i, j;
@@ -333,28 +333,60 @@ EST_Track difference(EST_Track &a, EST_Track &b, EST_String fname)
     return difference(a, b, ch_a, ch_b);
 }
 
+
+float mean( const EST_Track &tr, int channel )
+{
+  if ( channel<0 || channel >= tr.num_channels() )
+    EST_error( "Tried to access channel %d of %d channel track", 
+	       channel, tr.num_channels() );
+
+  float mean=0.0;
+  int i, n;
+  int tr_num_frames = tr.num_frames();
+
+  for( i=0, n=0; i<tr_num_frames; ++i )
+    if( !tr.track_break(i) ){
+      mean += tr.a_no_check( i, channel );
+      ++n;
+    }
+
+  return mean/(float)n;
+}
+
+void mean( const EST_Track &tr, EST_FVector &m )
+{
+  unsigned int tr_num_channels = tr.num_channels();
+
+  m.resize( tr_num_channels, 0 );
+  
+  for( unsigned int i=0; i<tr_num_channels; ++i )
+    m.a_no_check(i) = mean( tr, i );
+}
+
+
 /** Calculate the mead and standard deviation for a single channel of a track
 */
 
-void meansd(EST_Track &tr, float &mean, float &sd, int channel)
+void meansd(EST_Track &tr, float &m, float &sd, int channel)
 {
-    float var;
-    int i, n;
+  int i, n;
 
-    for (n = 0, i = 0, mean = 0.0; i < tr.num_frames(); ++i)
-	if (!tr.track_break(i))
-	{
-	    mean += tr.a(i, channel);
-	    ++n;
-	}
-    
-    mean /= n;
-    
-    for (i = 0, var = 0.0; i < tr.num_frames(); ++i)
-	var += tr.track_break(i) ? 0.0 : pow(tr.a(i, channel) - mean, 2.0);
-    
-    var /= n;
+  m = mean( tr, channel );
+
+  float var=0.0;
+  int tr_num_frames = tr.num_frames();
+  for( i=0, n=0; i<tr_num_frames; ++i)
+    if( !tr.track_break(i) ){
+      var += pow(tr.a_no_check(i, channel) - m, 2.0);
+      ++n;
+    }
+
+  if( n>1 ){ // use n, not tr_num_frames because of breaks
+    var /= (float) (n-1);
     sd = sqrt(var);
+  }
+  else
+    sd = 0.0;
 }
 
 /** Calculate the root mean square error between the same channel in
@@ -1029,6 +1061,7 @@ EST_String options_track_input(void)
 // remove ???	
 	"-ctype <string>  Contour type: F0, track\n\n"
 	"-s <float>       Frame spacing of input in seconds, for unheadered input file\n\n"
+        "-startt <float>  Time of first frame, for formats which don't provide this\n\n"
 	"-c <string>      Select a subset of channels (starts from 0). \n"
 	"                 Tracks can have multiple channels. This option \n"
         "                 specifies a list of numbers, refering to the channel \n"
