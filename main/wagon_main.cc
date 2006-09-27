@@ -2,7 +2,7 @@
 /*                                                                       */
 /*                Centre for Speech Technology Research                  */
 /*                     University of Edinburgh, UK                       */
-/*                      Copyright (c) 1996,1997                          */
+/*                     Copyright (c) 1996-2005                           */
 /*                        All Rights Reserved.                           */
 /*                                                                       */
 /*  Permission is hereby granted, free of charge, to use and distribute  */
@@ -40,10 +40,10 @@
 /*  Added decision list support, Feb 1997                                */
 /*                                                                       */
 /*=======================================================================*/
-#include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <string.h>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 #include "EST_Wagon.h"
 #include "EST_cmd_line.h"
 
@@ -136,8 +136,14 @@ static int wagon_main(int argc, char **argv)
 	 "-o <ofile>        File to save output tree in\n"+
 	 "-distmatrix <ifile>\n"+
 	 "                  A distance matrix for clustering\n"+
-	 "-unittracks <ifile>\n"+
-         "                  dir with unit tracks in it\n"+
+	 "-track <ifile>\n"+
+         "                  track for vertex indices\n"+
+	 "-track_start <int>\n"+
+         "                  start channel vertex indices\n"+
+	 "-track_end <int>\n"+
+         "                  end (inclusive) channel for vertex indices\n"+
+	 "-unittrack <ifile>\n"+
+         "                  track for unit start and length in vertex track\n"+
 	 "-quiet            No questions printed during building\n"+
 	 "-verbose          Lost of information printing during build\n"+
 	 "-predictee <string>\n"+
@@ -156,6 +162,7 @@ static int wagon_main(int argc, char **argv)
 	 "-balance <float>  For derived stop size, if dataset at node, divided\n"+
 	 "                  by balance is greater than stop it is used as stop\n"+
 	 "                  if balance is 0 (default) always use stop as is.\n"+
+         "-vertex_output <string> Output <mean> or <best> of cluster\n"+
 	 "-held_out <int>   Percent to hold out for pruning\n"+
 	 "-heap <int> {210000}\n"+
 	 "              Set size of Lisp heap, should not normally need\n"+
@@ -193,6 +200,8 @@ static int wagon_main(int argc, char **argv)
 	wgn_float_range_split = atof(al.val("-frs"));
     if (al.present("-swopt"))
 	wgn_opt_param = al.val("-swopt");
+    if (al.present("-vertex_output"))
+	wgn_vertex_output = al.val("-vertex_output");
     if (al.present("-output") || al.present("-o"))
     {
 	if (al.present("-o"))
@@ -244,17 +253,44 @@ static int wagon_main(int argc, char **argv)
 	cerr << "wagon: distance matrix is smaller than number of training elements\n";
 	exit(-1);
     }
-    else if (al.present("-unittracks"))
+    else if (al.present("-track"))
     {
-	// This wont do when the list is pruned
-	int i;
-	wgn_UnitTracks = new EST_Track[wgn_dataset.length()];
-	for (i=0; i<wgn_dataset.length(); i++)
-	{
-	    char num[1024];
-	    sprintf(num,"%d",i);
-	    wgn_UnitTracks[i].load((al.val("-unittracks"))+"/"+num+".unit");
-	}
+        wgn_VertexTrack.load(al.val("-track"));
+        wgn_VertexTrack_start = 0;
+        wgn_VertexTrack_end = wgn_VertexTrack.num_channels()-1;
+    }
+
+    if (al.present("-track_start"))
+    {
+        wgn_VertexTrack_start = al.ival("-track_start");
+        if ((wgn_VertexTrack_start < 0) ||
+            (wgn_VertexTrack_start > wgn_VertexTrack.num_channels()))
+        {
+            printf("wagon: track_start invalid: %d out of %d channels\n",
+                   wgn_VertexTrack_start,
+                   wgn_VertexTrack.num_channels());
+            exit(-1);
+        }
+    }
+
+    if (al.present("-track_end"))
+    {
+        wgn_VertexTrack_end = al.ival("-track_end");
+        if ((wgn_VertexTrack_end < wgn_VertexTrack_start) ||
+            (wgn_VertexTrack_end > wgn_VertexTrack.num_channels()))
+        {
+            printf("wagon: track_end invalid: %d between start %d out of %d channels\n",
+                   wgn_VertexTrack_end,
+                   wgn_VertexTrack_start,
+                   wgn_VertexTrack.num_channels());
+            exit(-1);
+        }
+    }
+
+    if (al.present("-unittrack"))
+    {   /* contains two features, a start and length.  start indexes */
+        /* into VertexTrack to the first vector in the segment */
+        wgn_UnitTrack.load(al.val("-unittrack"));
     }
 
     if (al.present("-test"))

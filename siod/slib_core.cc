@@ -8,7 +8,7 @@
  * System functions
 
 */
-#include <stdio.h>
+#include <cstdio>
 #include "siod.h"
 #include "siodp.h"
 
@@ -233,6 +233,7 @@ static LISP l_unwind_protect(LISP args, LISP env)
 
     if (setjmp(*est_errjmp) != 0)
     {
+	wfree(est_errjmp);
 	est_errjmp = local_errjmp;
 	errjmp_ok = local_errjmp_ok;
 	siod_reset_prompt();
@@ -245,6 +246,7 @@ static LISP l_unwind_protect(LISP args, LISP env)
     else
     {
 	r = leval(car(args),env);
+	wfree(est_errjmp);
 	est_errjmp = local_errjmp;
 	errjmp_ok = local_errjmp_ok;
     }

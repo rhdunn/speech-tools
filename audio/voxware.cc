@@ -46,10 +46,10 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cctype>
 #include <sys/stat.h>
 #include "EST_cutils.h"
 #include "EST_walloc.h"
@@ -61,7 +61,7 @@
 #include "EST_error.h"
 
 #ifdef SUPPORT_FREEBSD16
-#include <machine/soundcard.h>
+#include <sys/soundcard.h>
 #include <fcntl.h>
 int freebsd16_supported = TRUE;
 int linux16_supported = FALSE;
@@ -77,8 +77,8 @@ static char *aud_sys_name = "FreeBSD";
 int linux16_supported = TRUE;
 int freebsd16_supported = FALSE;
 static char *aud_sys_name = "Linux";
-static int stereo_only = 0;
 #endif
+static int stereo_only = 0;
 
 #if defined(SUPPORT_LINUX16) || defined(SUPPORT_FREEBSD16)
 
@@ -87,7 +87,7 @@ static int stereo_only = 0;
 // as scheduling interrupts seem to break the writes. 
 
 #ifdef THREAD_SAFETY
-#include <signal.h>
+#include <csignal>
 #include <pthread.h>
 
 #define THREAD_DECS() \

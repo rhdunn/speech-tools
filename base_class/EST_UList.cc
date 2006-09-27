@@ -39,15 +39,15 @@
 
 void EST_UList::clear_and_free(void (*item_free)(EST_UItem *p))
 {
-    EST_UItem *p, *np;
+    EST_UItem *q, *np;
 
-    for (p=head(); p != 0; p = np)
+    for (q=head(); q != 0; q = np)
     {
-	np=next(p);
+	np=next(q);
 	if (item_free)
-	    item_free(p);
+	    item_free(q);
 	else
-	    delete p;
+	    delete q;
     }
     h = t = 0;
 }

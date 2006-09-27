@@ -39,7 +39,10 @@
  ###########################################################################
 
 CC=gcc
-CXX =gcc
+CXX=gcc
+ifeq ($(OSTYPE),Darwin)
+CXX=g++
+endif
 
 COMPILER_DESC=FSF gcc
 COMPILER_VERSION_COMMAND=$(CXX) -v 2>&1 | tail -1 | sed -e 's/^....//'

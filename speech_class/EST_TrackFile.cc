@@ -36,10 +36,10 @@
 /*                   File I/O functions for EST_Track class              */
 /*                                                                       */
 /*=======================================================================*/
-#include <fstream.h>
-#include <iostream.h>
-#include <stdlib.h>
-#include <math.h>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
 #include <time.h>
 #include "EST_unix.h"
 #include "EST_types.h"
@@ -522,6 +522,7 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 // 	}
 
 	if( ascii ){
+
 	  for (j = 0; j < num_channels; ++j){
 	    tr.a(i, j) = ts.get().Float(ok);
 	    if (!ok)

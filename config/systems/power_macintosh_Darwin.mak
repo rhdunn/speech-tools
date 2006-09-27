@@ -34,14 +34,14 @@
  ##                 Author: Alan W Black (awb@cstr.ed.ac.uk)              ##
  ##                   Date: Fri Oct  3 1997                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for FreeBSD.                                                 ##
+ ## Settings for Apple Darwin.                                            ##
  ##                                                                       ##
  ###########################################################################
 
 include $(EST)/config/systems/default.mak
 
 ## the native audio module for this type of system
-NATIVE_AUDIO_MODULE = NONE
+NATIVE_AUDIO_MODULE = MACOSX
 
 ## echo -n doesn't work (well only sometimes ?)
 ECHO_N = /usr/bin/printf "%s"

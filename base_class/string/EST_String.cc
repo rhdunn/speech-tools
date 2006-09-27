@@ -43,10 +43,10 @@
  /*************************************************************************/
 
 
-#include <iostream.h>
-#include <string.h>
-#include <stdio.h>
-#include <ctype.h>
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+#include <cctype>
 #include "EST_String.h"
 // #include "EST_error.h"
 #include "string_version.h"
@@ -312,7 +312,7 @@ int EST_String::gsub_internal (const char *os, int olength, const char *s, int l
 	}
       else
 	{
-	  ::make_updatable(memory, size);
+	  cp_make_updatable(memory, size);
 	  to = memory;
 	}
 
@@ -416,7 +416,7 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
 	}
       else
 	{
-	  ::make_updatable(memory, size);
+	  cp_make_updatable(memory, size);
 	  to = memory;
 	}
 
@@ -526,7 +526,7 @@ int EST_String::subst(EST_String source,
 	}
       else
 	{
-	  ::make_updatable(memory, size);
+	  cp_make_updatable(memory, size);
 	  to = memory;
 	}
 
@@ -927,7 +927,7 @@ EST_String &EST_String::operator = (const char c)
 EST_String &EST_String::operator = (const EST_String &s) 
 {
 #if 1
-  static EST_ChunkPtr hack = s.memory;
+/*  static EST_ChunkPtr hack = s.memory;  */
   memory = NON_CONST_CHUNKPTR(s.memory);
   size = s.size;
 #else

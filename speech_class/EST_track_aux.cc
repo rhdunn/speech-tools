@@ -37,8 +37,8 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "EST_cutils.h"
 #include "EST_simplestats.h"
 #include "EST_sort.h"
@@ -377,7 +377,7 @@ void meansd(EST_Track &tr, float &m, float &sd, int channel)
   int tr_num_frames = tr.num_frames();
   for( i=0, n=0; i<tr_num_frames; ++i)
     if( !tr.track_break(i) ){
-      var += pow(tr.a_no_check(i, channel) - m, 2.0);
+      var += pow(tr.a_no_check(i, channel) - m, float(2.0));
       ++n;
     }
 
@@ -401,7 +401,7 @@ float rms_error(EST_Track &a, EST_Track &b, int channel)
     
     for (i = 0; i < size; ++i)
 	if (a.val(i) && b.val(i))
-	    sum += pow((a.a(i, channel) - b.a(i, channel)), 2.0);
+	  sum += pow((a.a(i, channel) - b.a(i, channel)), float(2.0));
     
     sum = sqrt(sum / size);
     return sum;
@@ -493,7 +493,7 @@ void meansd(EST_TrackList &tl, float &mean, float &sd, int channel)
     for (p = tl.head(); p; p = next(p))
 	for (i = 0; i < tl(p).num_frames(); ++i)
 	    if (!tl(p).track_break(i))
-		var +=  pow(tl(p).a(i, channel) - mean, 2.0);
+	      var +=  pow(tl(p).a(i, channel) - mean, float(2.0));
 
     var /= n;
     sd = sqrt(var);

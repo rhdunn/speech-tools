@@ -36,7 +36,7 @@
 /* Ordinary Least Squares/Linear regression                              */
 /*                                                                       */
 /*=======================================================================*/
-#include <math.h>
+#include <cmath>
 #include "EST_multistats.h"
 #include "EST_simplestats.h"
 

@@ -8,11 +8,11 @@
  * String functions
 
 */
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <setjmp.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cctype>
 
 #include "EST_Pathname.h"
 #include "EST_cutils.h"

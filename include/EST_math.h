@@ -46,9 +46,18 @@
 extern "C" int isnan(double);
 #endif
 
+/* this isn't included from c, but just to be safe... */
+#ifdef __cplusplus
+#include <cmath>
+#include <climits>
+#include <cfloat>
+#else
 #include <math.h>
 #include <limits.h>
 #include <float.h>
+#endif
+
+using namespace std;
 
 #ifdef __cplusplus
 extern "C" {
@@ -75,7 +84,7 @@ extern "C" {
 /* Linux (and presumably Hurd too as Linux is GNU libc based) */
 /* Sorry I haven't confirmed this cpp symbol yet              */
 #if defined(linux)
-#define isnanf(X) isnan(X)
+#define isnanf(X) __isnanf(X)
 #endif
 
 /* OS/2 with gcc EMX */
@@ -92,6 +101,7 @@ extern "C" {
 /* Apple OSX */
 #if defined(__APPLE__)
 #define isnanf(X) isnan(X)
+#define isnan(X) __isnan(X)
 #endif
 
 /* FreeBSD *and other 4.4 based systems require anything, isnanf is defined */
@@ -171,7 +181,7 @@ inline double safe_exp10(const double x)
     if(x<=SAFE_LOG_ZERO)
 	return 0;
     else
-	return pow(10,x);
+      return pow(10.0,x);
 }
 
 

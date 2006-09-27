@@ -37,10 +37,10 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <stdlib.h>
-#include <iostream.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <iostream>
+#include <cstring>
+#include <cmath>
 #include <fcntl.h>
 #include "EST_system.h"
 #include "EST_socket.h"
@@ -99,6 +99,8 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 	    protocol = "linux16audio";
 	else if (irix_supported)
 	    protocol = "irixaudio";
+	else if (macosx_supported)
+            protocol = "macosxaudio";
 	else if (win32audio_supported)
 	    protocol = "win32audio";
 	else if (mplayer_supported)
@@ -120,6 +122,8 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 	return play_voxware_wave(*toplay,al);
     else if (upcase(protocol) == "IRIXAUDIO")
 	return play_irix_wave(*toplay,al);
+    else if (upcase(protocol) == "MACOSXAUDIO")
+	return play_macosx_wave(*toplay,al);
     else if (upcase(protocol) == "MPLAYERAUDIO")
 	return play_mplayer_wave(*toplay,al);
     else if (upcase(protocol) == "WIN32AUDIO")
@@ -252,6 +256,8 @@ EST_String options_supported_audio(void)
 	audios += " irixaudio";
     if (mplayer_supported)
 	audios += " mplayeraudio";
+    if (macosx_supported)
+	audios += "macosxaudio";
     if (win32audio_supported)
 	audios += " win32audio";
     if (os2audio_supported)

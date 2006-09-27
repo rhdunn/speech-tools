@@ -46,6 +46,7 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al);
 int play_mplayer_wave(EST_Wave &inwave, EST_Option &al);
 int play_win32audio_wave(EST_Wave &inwave, EST_Option &al);
 int play_irix_wave(EST_Wave &inwave, EST_Option &al);
+int play_macosx_wave(EST_Wave &inwave, EST_Option &al);
 
 int record_nas_wave(EST_Wave &inwave, EST_Option &al);
 int record_esd_wave(EST_Wave &inwave, EST_Option &al);

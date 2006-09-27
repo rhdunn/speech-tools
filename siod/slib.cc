@@ -75,13 +75,14 @@ Cambridge, MA 02138
 
   */
 
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <signal.h>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
+#include <csignal>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
 #include "EST_unix.h"
 
 #include "EST_cutils.h"
@@ -625,7 +626,7 @@ const char *get_c_string(LISP x)
      if (FLONMPNAME(x) == NULL)
      {
 	 char b[TKBUFFERN];
-	 sprintf(b,"%g",FLONM(x));
+	 sprintf(b,"%.8g",FLONM(x));
 	 FLONMPNAME(x) = (char *)must_malloc(strlen(b)+1);
 	 sprintf(FLONMPNAME(x),"%s",b);
      }
@@ -1261,6 +1262,7 @@ LISP user_gc(LISP args)
  gc_status_flag = old_status_flag;
  errjmp_ok = ej_ok;
  no_interrupt(flag);
+
  return(NIL);}
 
 LISP set_backtrace(LISP n)

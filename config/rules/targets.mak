@@ -74,6 +74,13 @@ ifdef ALL_DIRS
 	   $(MAKE) --no-print-directory -C $$i clean ; \
 	done
 endif
+ifdef EXTRA_LIB_BUILD_DIRS
+	@ for i in $(EXTRA_LIB_BUILD_DIRS) ; \
+	do \
+	   echo "clean in $(DIRNAME)/$$i" ;\
+	   $(MAKE) --no-print-directory -C $$i clean ; \
+	done
+endif
 
 ###########################################################################
 ## strip executables

@@ -39,7 +39,7 @@
 /*  and it searches for the best path through the candidates             */
 /*                                                                       */
 /*=======================================================================*/
-#include <stdio.h>
+#include <cstdio>
 #include "EST_viterbi.h"
 
 static void init_paths_array(EST_VTPoint *n,int num_states);
@@ -273,7 +273,7 @@ void EST_Viterbi_Decoder::search(void)
 		if(trace)
 		{
 		    cerr << "Considered " << cands_considered << " of ";
-		    cerr << cand_count*cand_count << " candidate paths" << endl;
+		    cerr << cand_count*p->num_states << " candidate paths" << endl;
 		    cerr << "FRAME: best score " << best_score;
 		    cerr << "  score cutoff " << score_cutoff << endl;
 		    cerr << "       best candidate score " << best_candidate_score;
@@ -380,7 +380,6 @@ void EST_Viterbi_Decoder::vit_add_path(EST_VTPoint *p, EST_VTPath *np)
 
     if ((np->state < 0) || (np->state > p->num_states))
     {
-	printf("awb pos debug\n");
 	cerr << "EST_Viterbi: state too big (" << np->state << ")" << endl;
     }
     else if ((p->st_paths[np->state] == 0) ||

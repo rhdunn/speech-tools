@@ -73,8 +73,8 @@ public:
     /// Fill entire array with 0 bits. 
     void zero(void);
 
-    /// Fill vector with default value
-    void empty(void) { if (*this->def_val == 0) zero(); else fill(*this->def_val); }
+    //    /// Fill vector with default value
+    //    void empty(void) { if (*this->def_val == 0) zero(); else fill(*this->def_val); }
 };
 
 #endif

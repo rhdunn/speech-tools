@@ -37,13 +37,13 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "EST_system.h"
 #include "EST_FMatrix.h"
 #include "EST_cluster.h"
-#include <fstream.h>
+#include <fstream>
 #include "EST_string_aux.h"
-#include <float.h>
+#include <cfloat>
 
 int fn_cluster(EST_FMatrix &m, EST_CBK &cbk, float d);
 int nn_cluster(EST_FMatrix &m, EST_CBK &cbk, float d);

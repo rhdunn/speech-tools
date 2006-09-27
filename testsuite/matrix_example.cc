@@ -48,8 +48,8 @@
   */
 //@{
 
-#include <stdlib.h>
-#include <iostream.h>
+#include <cstdlib>
+#include <iostream>
 
 //@{ code
 
