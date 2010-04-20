@@ -100,13 +100,22 @@ extern "C" {
 
 /* Apple OSX */
 #if defined(__APPLE__)
-#define isnanf(X) isnan(X)
-#define isnan(X) __isnan(X)
+#define isnanf(X) isnan((double)(X))
+/* on some previous versions of OSX we seemed to need the following */
+/* but not on 10.4 */
+/* #define isnan(X) __isnan(X) */
 #endif
 
 /* FreeBSD *and other 4.4 based systems require anything, isnanf is defined */
 #if defined(__FreeBSD__)
 
+#endif
+
+/* Cygwin (at least cygwin 1.7 with gcc 4.3.4) */ 
+#if defined(__CYGWIN__)
+#if __GNUG__ > 3
+#define isnanf(X) isnan(X)
+#endif
 #endif
 
 /* WIN32 has stupid names for things */

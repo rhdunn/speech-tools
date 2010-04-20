@@ -165,7 +165,7 @@ const int EST_Viterbi_Decoder::betterthan(const float a,const float b) const
 	return (a < b);
 }
 
-static void init_dynamic_states(EST_VTPoint *p, EST_VTCandidate *cands)
+static int init_dynamic_states(EST_VTPoint *p, EST_VTCandidate *cands)
 {
     // In a special (hmm maybe not so special), the number of "states"
     // is the number of candidates
@@ -175,6 +175,8 @@ static void init_dynamic_states(EST_VTPoint *p, EST_VTCandidate *cands)
     for (i=0, c=cands; c != 0; c=c->next,i++)
 	c->pos = i;
     init_paths_array(p,i);
+    
+    return i;
 }
 
 void EST_Viterbi_Decoder::set_pruning_parameters(float beam, float
@@ -206,8 +208,8 @@ void EST_Viterbi_Decoder::search(void)
     EST_VTCandidate *c;
     int i=0;
 
-    double best_score,score_cutoff;
-    double best_candidate_score,candidate_cutoff=0;
+    double best_score=0.0,score_cutoff=0.0;
+    double best_candidate_score=0.0,candidate_cutoff=0;
     int dcount,pcount;
     int cand_count=0, cands_considered=0;
 

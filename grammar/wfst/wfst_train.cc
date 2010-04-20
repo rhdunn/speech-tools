@@ -315,7 +315,8 @@ static LISP find_best_split(EST_WFST &wfst,
     LISP *ssplits;
     gc_protect(&splits);
     EST_String sname;
-    int b,best_b,i;
+    int b,best_b;
+    EST_Litem *i;
     int num_pdfs;
     double best_score, score, sfreq;
 
@@ -390,7 +391,7 @@ static double score_pdf_combine(EST_DiscreteProbDistribution &a,
     // Find score of (a+b) vs (all-(a+b))
     EST_DiscreteProbDistribution ab(a);
     EST_DiscreteProbDistribution all_but_ab(all);
-    int i;
+    EST_Litem *i;
     EST_String sname;
     double sfreq, score;
     for (i=b.item_start(); !b.item_end(i);
@@ -522,7 +523,7 @@ static double find_score_if_split(EST_WFST &wfst,
     EST_DiscreteProbDistribution pdf_split(&wfst.in_symbols());
     EST_DiscreteProbDistribution pdf_remain(&wfst.in_symbols());
     int in, tostate, id;
-    int i;
+    EST_Litem *i;
     double sfreq;
     EST_String sname;
 

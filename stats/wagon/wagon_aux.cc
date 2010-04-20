@@ -155,6 +155,25 @@ ostream & operator <<(ostream &s, WNode &n)
     return s;
 }
 
+void WDataSet::ignore_non_numbers()
+{
+    /* For ols we want to ignore anything that is categorial */
+    int i;
+
+    for (i=0; i<dlength; i++)
+    {
+        if ((p_type[i] == wndt_binary) ||
+            (p_type[i] == wndt_float))
+            continue;
+        else
+        {
+            p_ignore[i] = TRUE;
+        }
+    }
+             
+    return;
+}
+
 void WDataSet::load_description(const EST_String &fname, LISP ignores)
 {
     // Initialise a dataset with sizes and types
@@ -382,7 +401,7 @@ WImpurity::WImpurity(const WVectorVector &ds)
     {
 	if (wgn_count_field == -1)
 	    cumulate((*(ds(i)))[wgn_predictee],1);
-	else
+        else
 	    cumulate((*(ds(i)))[wgn_predictee],
 		     (*(ds(i)))[wgn_count_field]);
     }
@@ -422,16 +441,19 @@ float WImpurity::vector_impurity()
 
 #if 1
     /* simple distance */
-    for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
+    for (j=0; j<wgn_VertexFeats.num_channels(); j++)
     {
-        b.reset();
-        for (pp=members.head(); pp != 0; pp=next(pp))
+        if (wgn_VertexFeats.a(0,j) > 0.0)
         {
-            i = members.item(pp);
-            b += wgn_VertexTrack.a(i,j);
+            b.reset();
+            for (pp=members.head(); pp != 0; pp=next(pp))
+            {
+                i = members.item(pp);
+                b += wgn_VertexTrack.a(i,j);
+            }
+            a += b.stddev();
+            count = b.samples();
         }
-        a += b.stddev();
-        count = b.samples();
     }
 #endif
 
@@ -440,26 +462,37 @@ float WImpurity::vector_impurity()
     /* worse in listening experiments */
     EST_SuffStats **cs;
     int mmm;
-    cs = new EST_SuffStats *[wgn_VertexTrack_end+1];
-    for (j=0; j<=wgn_VertexTrack_end; j++)
-        cs[j] = new EST_SuffStats[wgn_VertexTrack_end+1];
+    cs = new EST_SuffStats *[wgn_VertexTrack.num_channels()+1];
+    for (j=0; j<=wgn_VertexTrack.num_channels(); j++)
+        cs[j] = new EST_SuffStats[wgn_VertexTrack.num_channels()+1];
     /* Find means for diagonal */
-    for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
+    for (j=0; j<wgn_VertexFeats.num_channels(); j++)
     {
-        for (pp=members.head(); pp != 0; pp=next(pp))
-            cs[j][j] += wgn_VertexTrack.a(members.item(pp),j);
-    }
-    for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-        for (i=j+1; i<wgn_VertexTrack_end; i++)
+        if (wgn_VertexFeats.a(0,j) > 0.0)
+        {
             for (pp=members.head(); pp != 0; pp=next(pp))
+                cs[j][j] += wgn_VertexTrack.a(members.item(pp),j);
+        }
+    }
+    for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+    {
+        for (i=j+1; i<wgn_VertexFeats.num_channels(); i++)
+            if (wgn_VertexFeats.a(0,j) > 0.0)
             {
-                mmm = members.item(pp);
-                cs[i][j] += (wgn_VertexTrack.a(mmm,i)-cs[j][j].mean())*
-                    (wgn_VertexTrack.a(mmm,j)-cs[j][j].mean());
+                for (pp=members.head(); pp != 0; pp=next(pp))
+                {
+                    mmm = members.item(pp);
+                    cs[i][j] += (wgn_VertexTrack.a(mmm,i)-cs[j][j].mean())*
+                        (wgn_VertexTrack.a(mmm,j)-cs[j][j].mean());
+                }
             }
-    for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-        for (i=j+1; i<wgn_VertexTrack_end; i++)
-            a += cs[i][j].stddev();
+    }
+    for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+    {
+        for (i=j+1; i<wgn_VertexFeats.num_channels(); i++)
+            if (wgn_VertexFeats.a(0,j) > 0.0)
+                a += cs[i][j].stddev();
+    }
     count = cs[0][0].samples();
 #endif
 
@@ -476,11 +509,12 @@ float WImpurity::vector_impurity()
         for (qq=next(pp); qq != 0; qq=next(qq))
         {
             y = members.item(qq);
-            for (q=0.0,j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-            {
-                d = wgn_VertexTrack(x,j)-wgn_VertexTrack(y,j);
-                q += d*d;
-            }
+            for (q=0.0,j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
+                {
+                    d = wgn_VertexTrack(x,j)-wgn_VertexTrack(y,j);
+                    q += d*d;
+                }
             a += sqrt(q);
         }
 
@@ -562,7 +596,7 @@ float WImpurity::trajectory_impurity()
 
         /* a list of SuffStats on for each point in the trajectory */
         trajectory = new EST_SuffStats *[l];
-        width = wgn_VertexTrack_end+1;
+        width = wgn_VertexTrack.num_channels()+1;
         for (j=0; j<l; j++)
             trajectory[j] = new EST_SuffStats[width];
 
@@ -574,16 +608,22 @@ float WImpurity::trajectory_impurity()
             for (ti=0,n=0.0; ti<l; ti++,n+=m)
             {
                 ni = (int)n;  // hmm floor or nint ??
-                for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                    trajectory[ti][j] += wgn_VertexTrack.a(s+ni,j);
+                for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                {
+                    if (wgn_VertexFeats.a(0,j) > 0.0)
+                        trajectory[ti][j] += wgn_VertexTrack.a(s+ni,j);
+                }
             }
         }
 
         /* find sum of sum of stddev for all coefs of all traj points */
         stdss.reset();
         for (ti=0; ti<l; ti++)
-            for (j=wgn_VertexTrack_start+1; j<=wgn_VertexTrack_end; j++)
-                stdss += trajectory[ti][j].stddev();
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+            {
+                if (wgn_VertexFeats.a(0,j) > 0.0)
+                    stdss += trajectory[ti][j].stddev();
+            }
 
         // This is sum of all stddev * samples
         score = stdss.mean() * members.length();
@@ -597,7 +637,7 @@ float WImpurity::trajectory_impurity()
         /* a list of SuffStats on for each point in the trajectory */
         trajectory = new EST_SuffStats *[l];
         for (j=0; j<l; j++)
-            trajectory[j] = new EST_SuffStats[wgn_VertexTrack_end+1];
+            trajectory[j] = new EST_SuffStats[wgn_VertexTrack.num_channels()+1];
 
         for (pp=members.head(); pp != 0; pp=next(pp))
         {   /* for each unit */
@@ -617,22 +657,26 @@ float WImpurity::trajectory_impurity()
             for (ti=0,n=0.0; s1l > 0 && ti<l1; ti++,n+=m1)
             {
                 ni = s + (((int)n < s1l) ? (int)n : s1l - 1);
-                for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                    trajectory[ti][j] += wgn_VertexTrack.a(ni,j);
+                for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                    if (wgn_VertexFeats.a(0,j) > 0.0)
+                        trajectory[ti][j] += wgn_VertexTrack.a(ni,j);
             }
             ti = l1; /* do it explicitly in case s1l < 1 */
-            for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                trajectory[ti][j] += -1;
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
+                    trajectory[ti][j] += -1;
             /* Second half */
             s += s1l+1;
             for (ti++,n=0.0; s2l > 0 && ti<l-1; ti++,n+=m2)
             {
                 ni = s + (((int)n < s2l) ? (int)n : s2l - 1);
-                for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                    trajectory[ti][j] += wgn_VertexTrack.a(ni,j);
+                for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                    if (wgn_VertexFeats.a(0,j) > 0.0)
+                        trajectory[ti][j] += wgn_VertexTrack.a(ni,j);
             }
-            for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                trajectory[ti][j] += -2;
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
+                    trajectory[ti][j] += -2;
         }
 
         /* find sum of sum of stddev for all coefs of all traj points */
@@ -640,12 +684,14 @@ float WImpurity::trajectory_impurity()
         stdss.reset();
         m = 1.0/(float)l1;
         for (w=0.0,ti=0; ti<l1; ti++,w+=m)
-            for (j=wgn_VertexTrack_start+1; j<=wgn_VertexTrack_end; j++)
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
                 stdss += trajectory[ti][j].stddev() * w;
         m = 1.0/(float)l2;
         for (w=1.0,ti++; ti<l-1; ti++,w-=m)
-            for (j=wgn_VertexTrack_start+1; j<=wgn_VertexTrack_end; j++)
-                stdss += trajectory[ti][j].stddev() * w;
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
+                    stdss += trajectory[ti][j].stddev() * w;
     
         // This is sum of all stddev * samples
         score = stdss.mean() * members.length();
@@ -678,7 +724,10 @@ float WImpurity::cluster_impurity()
 
     // This is sum distance between cross product of members
 //    return a.sum();
-    return a.stddev() * a.samples();
+    if (a.samples() > 1)
+        return a.stddev() * a.samples();
+    else
+        return 0.0;
 }
 
 float WImpurity::cluster_distance(int i)
@@ -824,25 +873,27 @@ ostream & operator <<(ostream &s, WImpurity &imp)
             int bestp = 0;
             EST_SuffStats *cs;
 
-            cs = new EST_SuffStats [wgn_VertexTrack_end+1];
+            cs = new EST_SuffStats [wgn_VertexTrack.num_channels()+1];
             
-            for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-            {
-                cs[j].reset();
-                for (p=imp.members.head(); p != 0; p=next(p))
+            for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+                if (wgn_VertexFeats.a(0,j) > 0.0)
                 {
-                    cs[j] += wgn_VertexTrack.a(imp.members.item(p),j);
+                    cs[j].reset();
+                    for (p=imp.members.head(); p != 0; p=next(p))
+                    {
+                        cs[j] += wgn_VertexTrack.a(imp.members.item(p),j);
+                    }
                 }
-            }
 
             for (p=imp.members.head(); p != 0; p=next(p))
             {
-                for (x=0,j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-                {
-                    d = (wgn_VertexTrack.a(imp.members.item(p),j)-cs[j].mean())
-                        /* / b.stddev() */ ;
-                    x += d*d;
-                }
+                for (x=0.0,j=0; j<wgn_VertexFeats.num_channels(); j++)
+                    if (wgn_VertexFeats.a(0,j) > 0.0)
+                    {
+                        d = (wgn_VertexTrack.a(imp.members.item(p),j)-cs[j].mean())
+                            /* / cs[j].stddev() */ ; /* seems worse 061218 */
+                        x += d*d;
+                    }
                 if (x < best)
                 {
                     bestp = imp.members.item(p);
@@ -853,7 +904,12 @@ ostream & operator <<(ostream &s, WImpurity &imp)
             {
                 s << "( ";
                 s << wgn_VertexTrack.a(bestp,j);
-                s << " 0 "; // fake stddev
+                //                s << " 0 "; // fake stddev
+                s << " ";
+                if (finite(cs[j].stddev()))
+                    s << cs[j].stddev();
+                else
+                    s << "0";
                 s << " ) ";
                 if (j+1<wgn_VertexTrack.num_channels())
                     s << " ";
@@ -900,7 +956,7 @@ ostream & operator <<(ostream &s, WImpurity &imp)
     }
     else if (imp.t == wnim_class)
     {
-	int i;
+	EST_Litem *i;
 	EST_String name;
 	double prob;
 

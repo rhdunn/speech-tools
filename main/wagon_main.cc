@@ -2,7 +2,7 @@
 /*                                                                       */
 /*                Centre for Speech Technology Research                  */
 /*                     University of Edinburgh, UK                       */
-/*                     Copyright (c) 1996-2005                           */
+/*                     Copyright (c) 1996-2006                           */
 /*                        All Rights Reserved.                           */
 /*                                                                       */
 /*  Permission is hereby granted, free of charge, to use and distribute  */
@@ -38,6 +38,8 @@
 /*  Briemen et al. 1984                                                  */
 /*                                                                       */
 /*  Added decision list support, Feb 1997                                */
+/*                                                                       */
+/*  Added vector support for Clustergen 2005/2006                        */
 /*                                                                       */
 /*=======================================================================*/
 #include <cstdlib>
@@ -111,6 +113,54 @@ int main(int argc, char **argv)
     return 0;
 }
 
+static int set_Vertex_Feats(EST_Track &wgn_VertexFeats,
+                            EST_String &wagon_track_features)
+{
+    int i,s=0,e;
+    EST_TokenStream ts;
+
+    for (i=0; i<wgn_VertexFeats.num_channels(); i++)
+        wgn_VertexFeats.a(0,i) = 0.0;
+
+    ts.open_string(wagon_track_features);
+    ts.set_WhiteSpaceChars(",- ");
+    ts.set_PunctuationSymbols("");
+    ts.set_PrePunctuationSymbols("");
+    ts.set_SingleCharSymbols("");
+
+    while (!ts.eof())
+    {
+        EST_Token &token = ts.get();
+        const EST_String ws = (const char *)token.whitespace();
+        if (token == "all")
+        {
+            for (i=0; i<wgn_VertexFeats.num_channels(); i++)
+                wgn_VertexFeats.a(0,i) = 1.0;
+            break;
+        } else if ((ws == ",") || (ws == ""))
+        {
+            s = atoi(token.string());
+            wgn_VertexFeats.a(0,s) = 1.0;
+        } else if (ws == "-")
+        {
+            if (token == "")
+                e = wgn_VertexFeats.num_channels()-1;
+            else
+                e = atoi(token.string());
+            for (i=s; i<=e && i<wgn_VertexFeats.num_channels(); i++)
+                wgn_VertexFeats.a(0,i) = 1.0;
+        } else
+        {
+            printf("wagon: track_feats invalid: %s at position %d\n",
+                   (const char *)wagon_track_features,
+                   ts.filepos());
+            exit(-1);
+        }
+    }
+
+    return 0;
+}
+
 static int wagon_main(int argc, char **argv)
 {
     // Top level function sets up data and creates a tree
@@ -119,6 +169,8 @@ static int wagon_main(int argc, char **argv)
     EST_String wgn_oname;
     ostream *wgn_coutput = 0;
     float stepwise_limit = 0;
+    int feats_start=0, feats_end=0;
+    int i;
 
     parse_command_line
 	(argc, argv,
@@ -142,6 +194,9 @@ static int wagon_main(int argc, char **argv)
          "                  start channel vertex indices\n"+
 	 "-track_end <int>\n"+
          "                  end (inclusive) channel for vertex indices\n"+
+	 "-track_feats <string>\n"+
+         "                  Track features to use, comma separated list\n"+
+         "                  with feature numbers and/or ranges, 0 start\n"+
 	 "-unittrack <ifile>\n"+
          "                  track for unit start and length in vertex track\n"+
 	 "-quiet            No questions printed during building\n"+
@@ -154,7 +209,8 @@ static int wagon_main(int argc, char **argv)
 	 "                  Name of field containing count weight for samples\n"+
 	 "-stepwise         Incrementally find best features\n"+
 	 "-swlimit <float> {0.0}\n"+
-	 "                  Percentage necessary improvement for stepwise\n"+
+	 "                  Percentage necessary improvement for stepwise,\n"+
+	 "                  may be negative.\n"+
 	 "-swopt <string>   Parameter to optimize for stepwise, for \n"+
 	 "                  classification options are correct or entropy\n"+
 	 "                  for regression options are rmse or correlation\n"+
@@ -256,36 +312,53 @@ static int wagon_main(int argc, char **argv)
     else if (al.present("-track"))
     {
         wgn_VertexTrack.load(al.val("-track"));
-        wgn_VertexTrack_start = 0;
-        wgn_VertexTrack_end = wgn_VertexTrack.num_channels()-1;
+        wgn_VertexFeats.resize(1,wgn_VertexTrack.num_channels());
+        for (i=0; i<wgn_VertexFeats.num_channels(); i++)
+            wgn_VertexFeats.a(0,i) = 1.0;
     }
 
     if (al.present("-track_start"))
     {
-        wgn_VertexTrack_start = al.ival("-track_start");
-        if ((wgn_VertexTrack_start < 0) ||
-            (wgn_VertexTrack_start > wgn_VertexTrack.num_channels()))
+        feats_start = al.ival("-track_start");
+        if ((feats_start < 0) ||
+            (feats_start > wgn_VertexTrack.num_channels()))
         {
             printf("wagon: track_start invalid: %d out of %d channels\n",
-                   wgn_VertexTrack_start,
+                   feats_start,
                    wgn_VertexTrack.num_channels());
             exit(-1);
         }
+        for (i=0; i<feats_start; i++)
+            wgn_VertexFeats.a(0,i) = 0.0; /* don't do feats up to start */
+            
     }
 
     if (al.present("-track_end"))
     {
-        wgn_VertexTrack_end = al.ival("-track_end");
-        if ((wgn_VertexTrack_end < wgn_VertexTrack_start) ||
-            (wgn_VertexTrack_end > wgn_VertexTrack.num_channels()))
+        feats_end = al.ival("-track_end");
+        if ((feats_end < feats_start) ||
+            (feats_end > wgn_VertexTrack.num_channels()))
         {
             printf("wagon: track_end invalid: %d between start %d out of %d channels\n",
-                   wgn_VertexTrack_end,
-                   wgn_VertexTrack_start,
+                   feats_end,
+                   feats_start,
                    wgn_VertexTrack.num_channels());
             exit(-1);
         }
+        for (i=feats_end+1; i<wgn_VertexTrack.num_channels(); i++)
+            wgn_VertexFeats.a(0,i) = 0.0; /* don't do feats after end */
     }
+    if (al.present("-track_feats"))
+    {   /* overrides start and end numbers */
+        EST_String wagon_track_features = al.val("-track_feats");
+        set_Vertex_Feats(wgn_VertexFeats,wagon_track_features);
+    }
+
+    //    printf("Track feats\n");
+    //    for (i=0; i<wgn_VertexTrack.num_channels(); i++)
+    //        if (wgn_VertexFeats.a(0,i) > 0.0)
+    //            printf("%d ",i);
+    //    printf("\n");
 
     if (al.present("-unittrack"))
     {   /* contains two features, a start and length.  start indexes */

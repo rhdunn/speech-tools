@@ -263,8 +263,7 @@ void EST_ServiceTable::list(ostream &s, const EST_String type)
       s << buff;
       sprintf(buff,"%20s",(const char *)entry.address);
       s << buff;
-      sprintf(buff,"%5s\n",(const char *)entry.port);
-      s << buff;
+      s << entry.port << "\n";
     }
 
   // s.flags(old);

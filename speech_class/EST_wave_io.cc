@@ -68,7 +68,7 @@ static const char *NIST_END_SIG = "end_head\n";
 
 int nist_get_param_int(const char *hdr, const char *field, int def_val)
 {
-    char *p;
+    const char *p;
     int val;
 
     if (((p=strstr(hdr,field)) != NULL) &&
@@ -84,7 +84,8 @@ int nist_get_param_int(const char *hdr, const char *field, int def_val)
 
 char *nist_get_param_str(const char *hdr, const char *field, const char *def_val)
 {
-    char *p,*val;
+    const char *p;
+    char *val;
     int size;
 
     if (((p=strstr(hdr,field)) != NULL) &&
@@ -173,7 +174,7 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 
     current_pos = ts.tell();
     if (ts.fread(header,NIST_HDR_SIZE,1) != 1)
-	return misc_read_error;
+	return wrong_format;
 
     if (strncmp(header,NIST_SIG,sizeof(NIST_SIG)) != 0)
 	return wrong_format;

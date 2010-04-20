@@ -65,14 +65,6 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
     char *quality;
     char *sr;
 
-    if (inwave.num_channels() > 1)
-    {
-	wave_combine_channels(wtmp,inwave);
-	toplay = &wtmp;
-    }
-    else
-	toplay = &inwave;
-
     if ((sr = getenv("NA_PLAY_HOST")) != NULL)
 	if  (!al.present("-display"))
 	    al.add_item("-display", sr);
@@ -100,7 +92,7 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 	else if (irix_supported)
 	    protocol = "irixaudio";
 	else if (macosx_supported)
-            protocol = "macosxaudio";
+      protocol = "macosxaudio";
 	else if (win32audio_supported)
 	    protocol = "win32audio";
 	else if (mplayer_supported)
@@ -108,6 +100,15 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 	else
 	    protocol = "sunaudio";
     }
+
+  // OS X can handle multichannel audio, don't know about other systems.
+  if (inwave.num_channels() > 1 && upcase(protocol) != "MACOSXAUDIO" )
+    {
+  	  wave_combine_channels(wtmp,inwave);
+  	  toplay = &wtmp;
+    }
+  else
+  	toplay = &inwave;
 
     if (upcase(protocol) == "NETAUDIO")
 	return play_nas_wave(*toplay,al);
@@ -119,7 +120,7 @@ int play_wave(EST_Wave &inwave, EST_Option &al)
 	return play_sun16_wave(*toplay,al);
     else if ((upcase(protocol) == "FREEBSD16AUDIO") ||
 	     (upcase(protocol) == "LINUX16AUDIO"))
-	return play_voxware_wave(*toplay,al);
+	return play_linux_wave(*toplay,al);
     else if (upcase(protocol) == "IRIXAUDIO")
 	return play_irix_wave(*toplay,al);
     else if (upcase(protocol) == "MACOSXAUDIO")
@@ -217,7 +218,7 @@ static int play_sunau_wave(EST_Wave &inwave, EST_Option &al)
     // Play wave through /dev/audio using 8K ulaw encoding
     // works for Suns as well as Linux and FreeBSD machines
     int rcode;
-    char *audiodevice;
+    const char *audiodevice;
 
     inwave.resample(8000);
 
@@ -312,7 +313,7 @@ int record_wave(EST_Wave &wave, EST_Option &al)
 	return record_sun16_wave(wave,al);
     else if ((upcase(protocol) == "FREEBSD16AUDIO") ||
 	     (upcase(protocol) == "LINUX16AUDIO"))
-	return record_voxware_wave(wave,al);
+	return record_linux_wave(wave,al);
     else if (upcase(protocol) == "SUNAUDIO")
 	return record_sunau_wave(wave,al);
     else
@@ -330,7 +331,7 @@ static int record_sunau_wave(EST_Wave &wave, EST_Option &al)
     unsigned char *ulawwave;
     short *waveform;
     const int AUDIOBUFFSIZE = 256;
-    char *audiodevice;
+    const char *audiodevice;
 
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");

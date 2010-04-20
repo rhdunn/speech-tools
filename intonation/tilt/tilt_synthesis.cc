@@ -92,7 +92,7 @@ void synthesize_rf_event(EST_Track &fz, EST_Features &ev, float peak_f0)
 void fill_connection_values(EST_Track &fz, float start_f0, float start_pos,
 		 float end_f0, float end_pos)
 {
-    float f_shift, a, m;
+    float f_shift, m;
     int j;
     f_shift = fz.shift();
     if ((end_pos - start_pos) == 0)

@@ -64,7 +64,7 @@ extern "C" void abort(void);
   * @see string_example
   * @author Alan W Black <awb@cstr.ed.ac.uk>
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_String.h,v 1.6 2006/07/08 13:03:36 awb Exp $
+  * @version $Id: EST_String.h,v 1.7 2009/07/03 17:13:56 awb Exp $
   */
 
 class EST_String {
@@ -346,7 +346,7 @@ public:
 
     /// Find a match of the regular expression.
     int search(EST_Regex &re, int &mlen, int pos=0, int *starts=NULL, int *ends=NULL) const
-	{ int start, end;
+	{ int start=0, end=0;
 	if (locate(re, pos, start, end, starts, ends))
 	{ mlen=end-start; return start; }
 	return -1;

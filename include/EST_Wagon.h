@@ -82,6 +82,7 @@ class WDataSet : public WVectorList {
     EST_StrVector p_name;
   public:
     void load_description(const EST_String& descfname,LISP ignores);
+    void ignore_non_numbers();
 
     int ftype(const int &i) const {return p_type(i);}
     int ignore(int i) const {return p_ignore(i); }
@@ -239,8 +240,7 @@ extern WDataSet wgn_test_dataset;
 extern EST_FMatrix wgn_DistMatrix;
 extern EST_Track wgn_VertexTrack;
 extern EST_Track wgn_UnitTrack;
-extern int wgn_VertexTrack_start;
-extern int wgn_VertexTrack_end;
+extern EST_Track wgn_VertexFeats;
 
 void wgn_load_datadescription(EST_String fname,LISP ignores);
 void wgn_load_dataset(WDataSet &ds,EST_String fname);

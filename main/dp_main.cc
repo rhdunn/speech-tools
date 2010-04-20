@@ -330,6 +330,7 @@ float local_cost(const EST_Item *s1, const EST_Item *s2)
 
     // otherwise cost is either insertion cost, or cost_matrix value
     if(distance_measure == "simple")
+    {
 	if(s1->name() == s2->name())
 	    return 0;
 	else
@@ -341,6 +342,7 @@ float local_cost(const EST_Item *s1, const EST_Item *s2)
 	    else
 		return substitution_cost;
 	}
+    }
 
     //cerr << "Cost of replacing " << s1 << " with " << s2 << " is ";
     //cerr <<  cost_matrix(StrVector_index(vocab,s1),StrVector_index(vocab,s2)) << endl;

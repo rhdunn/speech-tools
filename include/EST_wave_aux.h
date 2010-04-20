@@ -101,7 +101,7 @@ void short_to_ulaw(const short *data,unsigned char *ulaw,int length);
 // Used when setting Waves in Features
 VAL_REGISTER_CLASS_DCLS(wave,EST_Wave)
 
-typedef enum EST_sample_type_t {
+enum EST_sample_type_t {
   st_unknown, 
   st_schar, 
   st_uchar, 

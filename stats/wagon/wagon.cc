@@ -58,8 +58,7 @@ WDataSet wgn_dataset;
 WDataSet wgn_test_dataset;
 EST_FMatrix wgn_DistMatrix;
 EST_Track wgn_VertexTrack;
-int wgn_VertexTrack_start=0;
-int wgn_VertexTrack_end=24;
+EST_Track wgn_VertexFeats;
 EST_Track wgn_UnitTrack;
 
 int wgn_min_cluster_size = 50;
@@ -349,34 +348,35 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
     {
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
-        for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-        {
-            b.reset();
-            for (pp=leaf->get_impurity().members.head(); pp != 0; pp=next(pp))
+        for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+            if (wgn_VertexFeats.a(0,j) > 0.0)
             {
-                i = leaf->get_impurity().members.item(pp);
-                b += wgn_VertexTrack.a(i,j);
+                b.reset();
+                for (pp=leaf->get_impurity().members.head(); pp != 0; pp=next(pp))
+                {
+                    i = leaf->get_impurity().members.item(pp);
+                    b += wgn_VertexTrack.a(i,j);
+                }
+                predict = b.mean();
+                actual = wgn_VertexTrack.a(pos,j);
+                if (wgn_count_field == -1)
+                    count = 1.0;
+                else
+                    count = dataset(p)->get_flt_val(wgn_count_field);
+                x.cumulate(predict,count);
+                y.cumulate(actual,count);
+                /* Normalized the error by the standard deviation */
+                if (b.stddev() == 0)
+                    error = predict-actual;
+                else
+                    error = (predict-actual)/b.stddev();
+                error = predict-actual; /* awb_debug */
+                se.cumulate((error*error),count);
+                e.cumulate(fabs(error),count);
+                xx.cumulate(predict*predict,count);
+                yy.cumulate(actual*actual,count);
+                xy.cumulate(predict*actual,count);
             }
-            predict = b.mean();
-            actual = wgn_VertexTrack.a(pos,j);
-            if (wgn_count_field == -1)
-                count = 1.0;
-            else
-                count = dataset(p)->get_flt_val(wgn_count_field);
-            x.cumulate(predict,count);
-            y.cumulate(actual,count);
-            /* Normalized the error by the standard deviation */
-            if (b.stddev() == 0)
-                error = predict-actual;
-            else
-                error = (predict-actual)/b.stddev();
-            error = predict-actual; /* awb_debug */
-            se.cumulate((error*error),count);
-            e.cumulate(fabs(error),count);
-            xx.cumulate(predict*predict,count);
-            yy.cumulate(actual*actual,count);
-            xy.cumulate(predict*actual,count);
-        }
     }
 
     // Pearson's product moment correlation coefficient
@@ -437,34 +437,35 @@ static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output)
     {
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
-        for (j=wgn_VertexTrack_start; j<=wgn_VertexTrack_end; j++)
-        {
-            b.reset();
-            for (pp=leaf->get_impurity().members.head(); pp != 0; pp=next(pp))
+        for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+            if (wgn_VertexFeats.a(0,j) > 0.0)
             {
-                i = leaf->get_impurity().members.item(pp);
-                b += wgn_VertexTrack.a(i,j);
+                b.reset();
+                for (pp=leaf->get_impurity().members.head(); pp != 0; pp=next(pp))
+                {
+                    i = leaf->get_impurity().members.item(pp);
+                    b += wgn_VertexTrack.a(i,j);
+                }
+                predict = b.mean();
+                actual = wgn_VertexTrack.a(pos,j);
+                if (wgn_count_field == -1)
+                    count = 1.0;
+                else
+                    count = dataset(p)->get_flt_val(wgn_count_field);
+                x.cumulate(predict,count);
+                y.cumulate(actual,count);
+                /* Normalized the error by the standard deviation */
+                if (b.stddev() == 0)
+                    error = predict-actual;
+                else
+                    error = (predict-actual)/b.stddev();
+                error = predict-actual; /* awb_debug */
+                se.cumulate((error*error),count);
+                e.cumulate(fabs(error),count);
+                xx.cumulate(predict*predict,count);
+                yy.cumulate(actual*actual,count);
+                xy.cumulate(predict*actual,count);
             }
-            predict = b.mean();
-            actual = wgn_VertexTrack.a(pos,j);
-            if (wgn_count_field == -1)
-                count = 1.0;
-            else
-                count = dataset(p)->get_flt_val(wgn_count_field);
-            x.cumulate(predict,count);
-            y.cumulate(actual,count);
-            /* Normalized the error by the standard deviation */
-            if (b.stddev() == 0)
-                error = predict-actual;
-            else
-                error = (predict-actual)/b.stddev();
-            error = predict-actual; /* awb_debug */
-            se.cumulate((error*error),count);
-            e.cumulate(fabs(error),count);
-            xx.cumulate(predict*predict,count);
-            yy.cumulate(actual*actual,count);
-            xy.cumulate(predict*actual,count);
-        }
     }
 
     // Pearson's product moment correlation coefficient

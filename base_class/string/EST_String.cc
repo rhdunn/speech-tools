@@ -245,7 +245,7 @@ EST_String EST_String::chop_internal(const char *it, int len, int from, EST_chop
 
 EST_String EST_String::chop_internal (EST_Regex &it, int from, EST_chop_direction mode) const
 {
-  int start, end;
+  int start=0, end=0;
   
   if (locate(it, from, start, end))
     switch (mode)
@@ -1001,7 +1001,7 @@ EST_String::freq(EST_Regex &ex) const
 {
   int pos=0;
   int n=0;
-  int start, end;
+  int start, end=0;
 
   while (locate(ex, pos, start, end))
     {
@@ -1268,6 +1268,7 @@ long EST_String::Long(bool *valid) const
   long val = strtol(str(), &end, 10);
 
   if (end==NULL|| *end != '\0')
+  {
     if (valid != NULL)
       {
 	*valid=0;
@@ -1279,6 +1280,7 @@ long EST_String::Long(bool *valid) const
 		(const char *)str());
 	exit(0);
       }
+  }
 
   if (valid)
     *valid=1;
@@ -1294,6 +1296,7 @@ int EST_String::Int(bool *valid) const
     return 0L;
 
   if (val > INT_MAX || val < INT_MIN)
+  {
     if (valid != NULL)
       {
 	*valid=0;
@@ -1305,6 +1308,7 @@ int EST_String::Int(bool *valid) const
 	       val);
 	exit(0);
       }
+  }
 
   return val;
 }
@@ -1316,6 +1320,7 @@ double EST_String::Double(bool *valid) const
   double val = strtod(str(), &end);
 
   if (end==NULL|| *end != '\0')
+  {
     if (valid != NULL)
       {
 	*valid=0;
@@ -1327,6 +1332,7 @@ double EST_String::Double(bool *valid) const
 		(const char *)str());
 	exit(0);
       }
+  }
 
   if (valid)
     *valid=1;
@@ -1342,6 +1348,7 @@ float EST_String::Float(bool *valid) const
     return 0.0;
 
   if (val > FLT_MAX || val < -FLT_MAX) 
+  {
     if (valid != NULL)
       {
 	*valid=0;
@@ -1353,6 +1360,7 @@ float EST_String::Float(bool *valid) const
 	       val);
 	exit(0);
       }
+  }
 
   return val;
 }
