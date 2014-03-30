@@ -15,6 +15,7 @@ Build system improvements:
   * Don't perform dependency calculations when running the `clean` target.
   * Fix not building shared libraries when `SHARED` is 0.
   * Support using the `gcov` code coverage tool.
+  * Add a `clang.mak` configuration file for the clang compiler.
 
 Improved configure script:
 
