@@ -12,7 +12,9 @@ Support the GNU standard project layout:
 
 Add autotools support:
 
+  * Added an autogen.sh script to setup the configure script.
   * Backport configure.in from 1.2.2 as configure.ac.
+  * Use `autoconf` to generate the configure script.
 
 ## [1.2.1]
 
