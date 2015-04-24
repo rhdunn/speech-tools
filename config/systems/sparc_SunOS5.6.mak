@@ -38,5 +38,7 @@
  ##                                                                       ##
  ###########################################################################
 
+CC_OTHER_FLAGS += -Dolder_solaris
+
 include $(EST)/config/systems/sparc_SunOS5.mak
 

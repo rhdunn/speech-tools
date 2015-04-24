@@ -74,9 +74,41 @@ ifneq ($(origin STATIC_$(DIRNAME_AS_FILE)),undefined)
 endif
 
 ###########################################################################
+## Normalise
+
+ifndef WARN
+	WARN = 0
+endif
+
+ifndef DEBUG
+	DEBUG = 0
+endif
+
+ifndef PROFILE
+	PROFILE = 0
+endif
+
+ifndef OPTIMISE
+	OPTIMISE = 0
+endif
+
+ifndef SHARED
+	SHARED = 0
+endif
+
+ifndef STATIC
+	STATIC = 0
+endif
+
+ifndef VERBOSE
+	VERBOSE = 0
+endif
+
+
+
+###########################################################################
 ## Now set the compile options as requested
 
-ifdef DEBUG
 ifneq ($(DEBUG),0)
 ifneq ($(OPTIMISE),4)
     CFLAGS    += $(DEBUG_CCFLAGS)
@@ -87,9 +119,7 @@ ifneq ($(OPTIMISE),4)
     LINKFLAGS += $(DEBUG_LINKFLAGS)
 endif
 endif
-endif
 
-ifdef PROFILE
 ifneq ($(PROFILE),0)
 ifndef PROFILE_$(PROFILE)_CCFLAGS
     PROFILE := $(PROFILE_DEFAULT)
@@ -98,18 +128,14 @@ endif
     CXXFLAGS  += $(PROFILE_$(PROFILE)_CXXFLAGS)
     LINKFLAGS += $(PROFILE_$(PROFILE)_LINKFLAGS)
 endif
-endif
 
-ifdef OPTIMISE
 ifneq ($(OPTIMISE),0)
     CFLAGS    += $(OPTIMISE_CCFLAGS)
     CXXFLAGS  += $(OPTIMISE_CXXFLAGS)
     JAVAFLAGS += $(OPTIMISE_JAVAFLAGS)
     LINKFLAGS += $(OPTIMISE_LINKFLAGS)
 endif
-endif
 
-ifdef SHARED
 ifneq ($(SHARED),0)
     CFLAGS    += $(SHARED_CCFLAGS)
     CXXFLAGS  += $(SHARED_CXXFLAGS)
@@ -118,33 +144,31 @@ ifneq ($(SHARED),0)
 else
     CXXDLFLAGS   += $(SHARED_CXXFLAGS)
 endif
-else
-    CXXDLFLAGS   += $(SHARED_CXXFLAGS)
-endif
 
-ifdef WARN
+
 ifneq ($(WARN),0)
     CFLAGS    += $(WARN_CCFLAGS)
     CXXFLAGS  += $(WARN_CXXFLAGS)
     JAVAFLAGS += $(WARN_JAVAFLAGS)
     LINKFLAGS += $(WARN_LINKFLAGS)
-endif
+else
+    CFLAGS    += $(NOWARN_CCFLAGS)
+    CXXFLAGS  += $(NOWARN_CXXFLAGS)
+    JAVAFLAGS += $(NOWARN_JAVAFLAGS)
+    LINKFLAGS += $(NOWARN_LINKFLAGS)
 endif
 
-ifdef VERBOSE
+
 ifneq ($(VERBOSE),0)
     CFLAGS    += $(VERBOSE_CCFLAGS)
     CXXFLAGS  += $(VERBOSE_CXXFLAGS)
     JAVAFLAGS += $(VERBOSE_JAVAFLAGS)
     LINKFLAGS += $(VERBOSE_LINKFLAGS)
 endif
-endif
 
-ifdef STATIC
 ifneq ($(STATIC),0)
     CFLAGS    += $(STATIC_CCFLAGS)
     CXXFLAGS  += $(STATIC_CXXFLAGS)
     LINKFLAGS += $(STATIC_LINKFLAGS)
-endif
 endif
 

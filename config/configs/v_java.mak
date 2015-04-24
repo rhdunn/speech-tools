@@ -43,10 +43,10 @@ include $(EST)/config/configs/cstr.mak
 ## Run time settings.
 
 
-SYSTEM_LD_LIBRARY_PATH:=/home/festival/versions/v_java/lib
+SYSTEM_LD_LIBRARY_PATH:=/projects/festival/versions/v_java/lib
 
-CONFIG_LIBS = -L/home/festival/versions/v_java/lib
-NAS_LIB = $(EST)/home/festival/versions/v_java/lib
+CONFIG_LIBS = -L/projects/festival/versions/v_java/lib
+NAS_LIB = /projects/festival/versions/v_java/lib
 
 ###########################################################################
 ## make sure we get the correct java

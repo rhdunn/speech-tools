@@ -33,13 +33,16 @@
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux distributions.                             ##
+ ## Settings for Red Hat Linux on Alpha.                                  ##
  ##                                                                       ##
  ###########################################################################
 
-include  $(EST)/config/systems/RedHatLinux.mak
+include $(EST)/config/systems/alpha_Linux.mak
 
-GCC_SYSTEM_OPTIONS = -mieee
-
+ifndef GCC
+    GCC=egcs
+endif
+EGCS_CC=gcc
+EGCS_CXX=g++
 
 

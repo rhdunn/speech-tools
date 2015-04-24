@@ -37,56 +37,66 @@
 TOP=../..
 DIRNAME=config/systems
 
-SYSTEMS = Linux.mak Linux2.0.mak \
-	ix86_Linux.mak ix86_Linux2.0.mak ix86_Linux2.2.mak ppc_Linux2.0.mak\
-	RedHatLinux.mak \
-	ix86_RedHatLinux5.0.mak \
-        ix86_RedHatLinux5.1.mak ix86_RedHatLinux5.2.mak \
-        ix86_RedHatLinux6.0.mak ix86_RedHatLinux6.1.mak \
-        ix86_RedHatLinux6.2.mak \
-	ix86_RedHatLinux4.0.mak ix86_RedHatLinux4.1.mak \
-	ix86_RedHatLinux4.2.mak \
-	\
-	ix86_OS22.mak \
-	\
-	sparc_SunOS4.mak \
-	sparc_SunOS4.1.mak \
-	sparc_SunOS5.mak \
-	sparc_SunOS5.5.mak sparc_SunOS5.6.mak sparc_SunOS5.7.mak \
-	\
-	ix86_SunOS5.mak \
-        ix86_SunOS5.6.mak ix86_SunOS5.5.mak \
-        ix86_SunOS5.7.mak \
-	\
-	ix86_FreeBSD.mak  \
-	ix86_FreeBSD2.1.mak ix86_FreeBSD2.2.mak \
-	ix86_FreeBSD3.0.mak ix86_FreeBSD3.1.mak \
-	ix86_FreeBSD3.2.mak ix86_FreeBSD3.3.mak \
-	ix86_FreeBSD4.0.mak \
-	\
-	ix86_CYGWIN32.mak ix86_CYGWIN324.0.mak \
-	ix86_CYGWIN20.1.mak \
-	\
-        ip_IRIX.mak ip_IRIX5.3.mak ip_IRIX6.3.mak ip_IRIX6.4.mak \
-        ip_IRIX646.4.mak \
-	\
-	alpha_OSF1V4.0.mak \
-	alpha_Linux.mak alpha_Linux2.0.mak alpha_Linux2.2.mak \
-	alpha_RedHatLinux.mak \
-	alpha_RedHatLinux5.2.mak \
-        alpha_RedHatLinux6.0.mak alpha_RedHatLinux6.1.mak \
-	alpha_RedHatLinux6.2.mak \
-	\
-	ppc_RedHatLinux4.2.mak ppc_RedHatLinux6.0.mak ppc_RedHatLinux6.1.mak \
-	\
-	hp9000_HP-UX.mak hp9000_HP-UXB.10.mak \
-	\
-	rs6000_AIX4.1.mak \
-	\
-        unknown_unknown.mak
-
+SYSTEMS =					\
+	Linux.mak				\
+	RedHatLinux.mak				\
+	DebianGNULinux.mak			\
+	alpha_Linux.mak				\
+	alpha_OSF1V4.0.mak			\
+	alpha_RedHatLinux.mak			\
+	hp9000_HP-UX.mak			\
+	hp9000_HP-UXB.10.mak			\
+	ip_IRIX.mak				\
+	ip_IRIX5.3.mak				\
+	ip_IRIX6.3.mak				\
+	ip_IRIX6.4.mak				\
+	ip_IRIX646.4.mak			\
+	ix86_CYGWIN1.0.mak			\
+	ix86_CYGWIN1.1.mak			\
+	ix86_CYGWIN1.3.mak                      \
+	ix86_CYGWIN20.1.mak			\
+	ix86_CYGWIN32.mak			\
+	ix86_CYGWIN324.0.mak			\
+	ix86_FreeBSD.mak			\
+	ix86_FreeBSD2.1.mak			\
+	ix86_FreeBSD2.2.mak			\
+	ix86_FreeBSD3.0.mak			\
+	ix86_FreeBSD3.1.mak			\
+	ix86_FreeBSD3.2.mak			\
+	ix86_FreeBSD3.3.mak			\
+	ix86_FreeBSD4.0.mak			\
+	ix86_OS22.mak				\
+	ix86_RedHatLinux4.0.mak			\
+	ix86_RedHatLinux4.1.mak			\
+	ix86_RedHatLinux4.2.mak			\
+	ix86_RedHatLinux5.0.mak			\
+	ix86_RedHatLinux5.1.mak			\
+	ix86_RedHatLinux5.2.mak			\
+	ix86_RedHatLinux6.0.mak			\
+	ix86_RedHatLinux6.1.mak			\
+	ix86_RedHatLinux6.2.mak			\
+	ix86_RedHatLinux7.0.mak			\
+	ix86_SunOS5.5.mak			\
+	ix86_SunOS5.6.mak			\
+	ix86_SunOS5.7.mak			\
+	ix86_SunOS5.8.mak			\
+	ix86_SunOS5.mak				\
+	rs6000_AIX4.1.mak			\
+	sparc_SunOS4.1.mak			\
+	sparc_SunOS4.mak			\
+	sparc_SunOS5.5.mak			\
+	sparc_SunOS5.6.mak			\
+	sparc_SunOS5.7.mak			\
+	sparc_SunOS5.8.mak			\
+	sparc_SunOS5.mak			\
+	unknown_DebianGNULinux.mak		\
+	unknown_Linux.mak			\
+	unknown_RedHatLinux.mak			\
+	unknown_unknown.mak
 
 FILES = Makefile default.mak $(SYSTEMS) 
 
 include $(TOP)/config/common_make_rules
+
+
 

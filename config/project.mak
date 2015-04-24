@@ -41,8 +41,8 @@
 
 PROJECT_NAME = Edinburgh Speech Tools Library
 PROJECT_PREFIX = EST
-PROJECT_VERSION = 1.2.1
-PROJECT_DATE = November 1999
+PROJECT_VERSION = 1.2.2
+PROJECT_DATE = July 2001
 PROJECT_STATE = release
 
 # Speech tools knows where speech_tools is. Probably.

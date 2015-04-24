@@ -48,6 +48,13 @@ ECHO_N = /usr/bin/printf "%s"
 
 NAWK=awk
 
-GCC_MAKE_SHARED_LIB = ld -Bshareable -x -o XXX
+# GCC_MAKE_SHARED_LIB = ld -Bshareable -x -o XXX
+
+DEFAULT_JAVA_HOME=/usr/local/jdk
+
+JAVA=$(JAVA_HOME)/bin/java
+JAVAC=$(JAVA_HOME)/bin/javac
+JAVAH=$(JAVA_HOME)/bin/javah -jni
+JAR=$(JAVA_HOME)/bin/jar cf0v 
 
 

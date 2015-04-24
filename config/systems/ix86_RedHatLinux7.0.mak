@@ -32,14 +32,12 @@
  ###########################################################################
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux 2.0                                                ##
+ ## Settings for Red Hat Linux 7.0. (guess)                               ##
  ##                                                                       ##
  ###########################################################################
 
-
-include $(EST)/config/systems/Linux2.0.mak
-
+include $(EST)/config/systems/ix86_RedHatLinux6.1.mak
+GCC=gcc296
 
 

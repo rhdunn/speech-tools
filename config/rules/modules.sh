@@ -66,7 +66,7 @@ echo ''
 for M in $*
 	do
 	echo "	$M" >&2
-	m=`echo "$M" | tr A-Z a-z`
+	m=`echo "$M" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz`
 	fl=false
 
         eval "listed_desc=\"\$desc_$m\""

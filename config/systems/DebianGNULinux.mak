@@ -31,15 +31,11 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
+ ##                 Author: David Huggins-Daines <dhd@debian.org>         ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux 2.2                                                ##
+ ## Settings for Debian GNU/Linux distributions.                          ##
  ##                                                                       ##
  ###########################################################################
 
-
-include $(EST)/config/systems/Linux2.0.mak
-
-
-
+# Debian does not use termcap
+OS_LIBS = -ldl -lncurses

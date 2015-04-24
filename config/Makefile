@@ -39,7 +39,7 @@ DIRNAME=config
 
 FILES = Makefile ReadMe example.Makefile example.module.mak\
 	 common_make_rules test_make_rules vc_common_make_rules  \
-	config-dist vc_config_make_rules-dist \
+	config.in vc_config_make_rules-dist \
 	project.mak system.sh make_system.mak
 
 #LOCAL_CLEAN = modinclude*.inc system.mak

@@ -16,6 +16,7 @@ Add autotools support:
   * Backport configure.in from 1.2.2 as configure.ac.
   * Link to the automake files needed to run the configure script.
   * Use `autoconf` to generate the configure script.
+  * Backport the `config/` changes from 1.2.2 to support more systems.
 
 ## [1.2.1]
 

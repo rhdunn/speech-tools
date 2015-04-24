@@ -32,12 +32,16 @@
  ###########################################################################
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux on intel.                                          ##
+ ## Settings for Cygnus gnuwin1.0
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/Linux.mak
+
+include $(EST)/config/systems/ix86_CYGWIN32.mak
+
+## Cygwin version of egcs has optimisatin problems with some files.
+
+HONOUR_NOOPT=1
 
 

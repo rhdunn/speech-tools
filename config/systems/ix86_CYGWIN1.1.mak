@@ -33,17 +33,15 @@
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 5.2.                                       ##
+ ## Settings for Cygnus gnuwin1.1
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/alpha_Linux2.0.mak
-include $(EST)/config/systems/alpha_RedHatLinux.mak
 
-ifndef GCC
-    GCC=egcs
-endif
-EGCS_CC=gcc
-EGCS_CXX=g++
+include $(EST)/config/systems/ix86_CYGWIN32.mak
+
+## Cygwin version of egcs has optimisatin problems with some files.
+
+HONOUR_NOOPT=1
 
 

@@ -31,12 +31,15 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Robert Clark (robert@cstr.ed.ac.uk)           ##
+ ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Red Hat Linux 4.2 PPC (educated guess)                   ##
+ ## Settings for Cygnus gnuwin1.3
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/ppc_Linux2.0.mak
-include $(EST)/config/systems/RedHatLinux.mak
 
+include $(EST)/config/systems/ix86_CYGWIN32.mak
+
+## Cygwin version of egcs has optimisatin problems with some files.
+
+HONOUR_NOOPT=1
