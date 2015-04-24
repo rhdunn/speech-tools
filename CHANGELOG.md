@@ -10,6 +10,7 @@ Add and modernize the standard project files:
 Support the GNU standard project layout:
 
   * Move the license and copying information from README into a COPYING file.
+  * Link NEWS to another file in the project.
 
 Add autotools support:
 
