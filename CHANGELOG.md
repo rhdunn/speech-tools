@@ -14,6 +14,7 @@ Add autotools support:
 
   * Added an autogen.sh script to setup the configure script.
   * Backport configure.in from 1.2.2 as configure.ac.
+  * Link to the automake files needed to run the configure script.
   * Use `autoconf` to generate the configure script.
 
 ## [1.2.1]
