@@ -6,6 +6,8 @@
   * Backport the `strstr` return value build fix from 2.0.95.
   * Backport building `EST_DiscreteProbDistribution` on 64-bit platforms from
     2.0.95.
+  * Use `this->` for template member functions to fix building with modern
+    compilers, backported from 2.3.
 
 ## [1.2.96]
 
