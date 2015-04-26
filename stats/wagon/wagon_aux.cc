@@ -900,7 +900,7 @@ ostream & operator <<(ostream &s, WImpurity &imp)
     }
     else if (imp.t == wnim_class)
     {
-	int i;
+	EST_Litem *i;
 	EST_String name;
 	double prob;
 
