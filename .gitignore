@@ -62,4 +62,5 @@ main/wagon
 main/wagon_test
 main/wfst_build
 main/wfst_run
+main/wfst_train
 main/xml_parser
