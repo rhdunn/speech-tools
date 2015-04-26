@@ -120,3 +120,16 @@ a recognition system.
     University of Edinburgh
     80 South Bridge
     Edinburgh EH1 1HN, UK
+
+## License
+
+The `speech_tools` project is released under a [4-clause BSD license](COPYING)
+with the following copyright:
+
+    Centre for Speech Technology Research
+    University of Edinburgh, UK
+    Copyright (c) 1994-1999
+    All Rights Reserved.
+
+The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)
+file in order to comply with clause 2 of the BSD license.
