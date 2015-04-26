@@ -5,6 +5,7 @@
 Add and modernize the standard project files:
 
   * Added a CHANGELOG.md file to track the project changes.
+  * Converted the README file to markdown.
   * Added a .gitignore file to ignore the build output.
   * Support building HTML versions of the markdown files with `kramdown`.
 
@@ -12,7 +13,7 @@ Support the GNU standard project layout:
 
   * Move the license and copying information from README into a COPYING file.
   * Add an AUTHORS file.
-  * Link NEWS to another file in the project.
+  * Link NEWS and README to other files in the project.
 
 Add autotools support:
 
