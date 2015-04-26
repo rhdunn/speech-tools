@@ -8,6 +8,8 @@
     2.0.95.
   * Use `this->` for template member functions to fix building with modern
     compilers, backported from 2.3.
+  * Include `string.h` for the memory functions to fix building on modern
+    systems, backported from 2.3.
 
 ## [1.2.96]
 

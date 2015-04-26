@@ -45,6 +45,7 @@
 #include <fstream>
 #include <iostream>
 #include "EST_cutils.h"
+#include <string.h>
 
 template<class T> 
 void EST_TSimpleMatrix<T>::copy_data(const EST_TSimpleMatrix<T> &a)
