@@ -103,5 +103,10 @@ rebuild_and_test:
 		exit 2 ;\
 	fi
 
+%.html: %.md _layouts/webpage.html
+	kramdown --template _layouts/webpage.html $< > $@
+
+docs: CHANGELOG.html
+
 include $(TOP)/config/rules/top_level.mak
 include $(TOP)/config/rules/install.mak
