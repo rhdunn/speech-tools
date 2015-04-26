@@ -1,5 +1,15 @@
 # Edinburgh Speech Tools
 
+- [Compilation](#compilation)
+- [Acknowledgements](#acknowledgements)
+- [File/Directory Structure](#filedirectory-structure)
+- [Documentation](#documentation)
+- [Bugs/Comments Etc](#bugscomments-etc)
+- [Additional Software](#additional-software)
+- [License](#license)
+
+----------
+
 The [Edinburgh speech tools](http://www.cstr.ed.ac.uk/projects/speech_tools.html)
 system is a library of C++ classes, functions and utility programs that are
 frequently used in speech software. The system compiles to a single unix
