@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.2.2-1]
+
+  * Remove the derivable autoconf and automake files: config.{guess,sub},
+    configure, install-sh, missing and mkinstalldirs.
+  * Remove configure.in as this was added as configure.ac in [1.2.1-1](#1.2.1-1).
+
+## [1.2.2]
+
+Upsteam version 1.2.2.
+
 ## [1.2.1-1]
 
 Add and modernize the standard project files:
