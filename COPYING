@@ -35,6 +35,9 @@ However none have any commercial restrictions, and no files fall under
 the GPL.  Specifically files that have different licences are as
 follows:
 
+grammar/wfst/wfst_train.cc
+        Copyright Carnegie Mellon University (under the same
+        open licences as much of the rest of the code.
 siod/ 
 include/siod*.h
 lib/siod/siod.scm

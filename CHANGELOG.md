@@ -1,7 +1,16 @@
 # Change Log
 
+## [1.2.3-1]
+
+  * Build improvements from [1.2.1-1](#1.2.1-1).
+
+## [1.2.3]
+
+Upstream version 1.2.3.
+
 ## [1.2.2-1]
 
+  * Build improvements from [1.2.1-1](#1.2.1-1).
   * Remove the derivable autoconf and automake files: config.{guess,sub},
     configure, install-sh, missing and mkinstalldirs.
   * Remove configure.in as this was added as configure.ac in [1.2.1-1](#1.2.1-1).

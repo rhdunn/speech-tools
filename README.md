@@ -10,7 +10,7 @@
 
 ----------
 
-The [Edinburgh speech tools](http://www.cstr.ed.ac.uk/projects/speech_tools.html)
+The [Edinburgh speech tools](http://www.cstr.ed.ac.uk/projects/speech_tools)
 system is a library of C++ classes, functions and utility programs that are
 frequently used in speech software. The system compiles to a single unix
 library `.a` file which can be linked with software. At present, C++ classes
@@ -77,6 +77,7 @@ be properly understood.
 | Henry Spencer                               | For regex code. |
 | The Regents of the University of California | Some string comparison code. |
 | Richard Tobin                               | RXP, XML parser. |
+| Arthur Toth                                 | Windows server code. |
 
 ## File/Directory Structure
 
@@ -112,7 +113,7 @@ described at the overview, theorectical, practical and code level.
 The build process for the documentation is still dependent on some
 more obscure packages so it is recommended that you take the
 pre-built documentation.  Or access it
-[on-line](http://www.cstr.ed.ac.uk/projects/speech_tools.html).
+[on-line](http://www.cstr.ed.ac.uk/projects/speech_tools).
 
 The library documentation is in texinfo format which can be converted
 into GNU info HTML and postscript, see `Makefile` in `doc/`.
@@ -152,7 +153,7 @@ with the following copyright:
 
     Centre for Speech Technology Research
     University of Edinburgh, UK
-    Copyright (c) 1994-1999
+    Copyright (c) 1994-2003
     All Rights Reserved.
 
 The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)
