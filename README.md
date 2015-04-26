@@ -154,7 +154,7 @@ with the following copyright:
 
     Centre for Speech Technology Research
     University of Edinburgh, UK
-    Copyright (c) 1994-2004
+    Copyright (c) 1994-2006
     All Rights Reserved.
 
 The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)
