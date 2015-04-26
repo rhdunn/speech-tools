@@ -58,11 +58,11 @@ a Debian Woody chroot environment.
 
 ## Acknowledgements
 
-Most of the software was written by Paul Taylor, Alan W Black, Simon King
-and Richard Caley additional contributions have been made by the
-following people.  Slightly different licence agreements accompany
-these pieces of code, so it is important that the various agreements
-be properly understood.
+Most of the software was written by Paul Taylor, Alan W Black, Simon
+King, Richard Caley, Rob Clark and Korin Richmond. Additional
+contributions have been made by the following people.  Slightly
+different licence agreements accompany these pieces of code, so it is
+important that the various agreements be properly understood.
 
 | Authors                                     | Acknowledgement |
 |---------------------------------------------|-----------------|
@@ -118,7 +118,8 @@ pre-built documentation.  Or access it
 The library documentation is in texinfo format which can be converted
 into GNU info HTML and postscript, see `Makefile` in `doc/`.
 
-Note the documentation is not up to date.
+Note the documentation is not up to date. We are in the process of
+moving the documentation to Doxygen.
 
 ## Bugs/Comments Etc
 
@@ -143,8 +144,8 @@ a recognition system.
 
     Centre for Speech Technology
     University of Edinburgh
-    80 South Bridge
-    Edinburgh EH1 1HN, UK
+    2 Buccleuch Place
+    Edinburgh EH8 9LW, UK
 
 ## License
 
@@ -153,7 +154,7 @@ with the following copyright:
 
     Centre for Speech Technology Research
     University of Edinburgh, UK
-    Copyright (c) 1994-2003
+    Copyright (c) 1994-2004
     All Rights Reserved.
 
 The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)

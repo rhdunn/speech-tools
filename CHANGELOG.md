@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.2.95-1]
+
+  * Build improvements from [1.2.1-1](#1.2.1-1).
+
+## [1.2.95]
+
+Upstream version 1.2.95.
+
 ## [1.2.3-1]
 
   * Build improvements from [1.2.1-1](#1.2.1-1).
