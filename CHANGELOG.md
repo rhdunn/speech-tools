@@ -5,7 +5,7 @@
 Add and modernize the standard project files:
 
   * Added a CHANGELOG.md file to track the project changes.
-  * Converted the README file to markdown.
+  * Converted the README file to markdown and added a "Compilation" section.
   * Added a .gitignore file to ignore the build output.
   * Support building HTML versions of the markdown files with `kramdown`.
 

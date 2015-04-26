@@ -32,6 +32,20 @@ The following C++ sub-libraries are available:
 | `sigpr`        | Signal processing. |
 | `utils`        | Various utilities. |
 
+## Compilation
+
+The `speech_tools` project uses a standard autogen-based build system. It
+can be built using the following commands:
+
+    ./autogen.sh
+    ./configure --prefix=/usr
+    make
+    sudo make install
+
+__NOTE:__ This project was written for an older C++ compiler and as such
+requires the gcc 2.95 compiler to build. It has been successfully built in
+a Debian Woody chroot environment.
+
 ## Acknowledgements
 
 Most of the software was written by Paul Taylor, Alan W Black, Simon King
