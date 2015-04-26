@@ -3,6 +3,7 @@
 ## [1.2.96-1]
 
   * Build improvements from [1.2.1-1](#1.2.1-1).
+  * Backport the `strstr` return value build fix from 2.0.95.
 
 ## [1.2.96]
 

@@ -68,7 +68,7 @@ static const char *NIST_END_SIG = "end_head\n";
 
 int nist_get_param_int(const char *hdr, const char *field, int def_val)
 {
-    char *p;
+    const char *p;
     int val;
 
     if (((p=strstr(hdr,field)) != NULL) &&
@@ -84,7 +84,8 @@ int nist_get_param_int(const char *hdr, const char *field, int def_val)
 
 char *nist_get_param_str(const char *hdr, const char *field, const char *def_val)
 {
-    char *p,*val;
+    const char *p;
+    char *val;
     int size;
 
     if (((p=strstr(hdr,field)) != NULL) &&
