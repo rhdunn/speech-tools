@@ -23,6 +23,11 @@ Add autotools support:
   * Use `autoconf` to generate the configure script.
   * Backport the `config/` changes from 1.2.2 to support more systems.
 
+Other changes:
+
+  * Removed the advertising clause for Berkeley BSD code as per
+    [README.Impt.License.Change](ftp://ftp.cs.berkeley.edu/pub/4bsd/README.Impt.License.Change).
+
 ## [1.2.1]
 
 Upstream version 1.2.1.
