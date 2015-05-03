@@ -295,9 +295,6 @@ public:
   /// Fill vector with default value
   void empty() { fill(*def_val); }
 
-  /// Save vector to file <parameter>filename</parameter>.
-  EST_write_status save(const EST_String &filename);
-
   /// is true if vectors are equal size and all elements are equal.
   int operator == (const EST_TVector &v) const;
   /// is true if vectors are not equal size or a single elements isn't equal.

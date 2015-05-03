@@ -132,10 +132,10 @@ public:
     bool relation_present(EST_StrList &names) const;
 
     /// get relation by name
-    EST_Relation *relation(const char *name,int err_on_not_found=1);
+    EST_Relation *relation(const char *name,int err_on_not_found=1) const;
 
     /// return EST_Item whose id is <parameter>n</parameter>.
-    EST_Item *id(const EST_String &n);
+    EST_Item *id(const EST_String &n) const;
 
     /// create a new relation called <parameter>n</parameter>.
     EST_Relation *create_relation(const EST_String &relname);

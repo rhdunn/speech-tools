@@ -404,7 +404,10 @@ void sig2coef(EST_Wave &sig, EST_Track &tr, EST_String type,
 
     for (int k = 0; k < tr.num_frames(); ++k)
     {
-	size = irint(get_frame_size(tr, k, sig.sample_rate())* factor);
+	if (factor < 0)  // want fixed frame rate 
+	    size = (int)(-1.0 * factor * (float)sig.sample_rate());
+	else
+	    size = irint(get_frame_size(tr, k, sig.sample_rate())* factor);
 	start = (irint(tr.t(k) * sig.sample_rate()) - (size/2));
 
 	EST_Window::window_signal(sig, wf, start, size, frame, 1);
@@ -424,8 +427,11 @@ void power(EST_Wave &sig, EST_Track &pow, float factor)
     for (k = 0; k < pow.num_frames(); ++k)
     {
 	pos = irint(pow.t(k) * sig.sample_rate());
-	window_size = irint(get_frame_size(pow, k, sig.sample_rate())
-						 * factor);
+	if (factor < 0)  // want fixed frame rate 
+	    window_size = (int)(-1.0 * factor * (float)sig.sample_rate());
+	else
+	    window_size = irint(get_frame_size(pow, k, sig.sample_rate())
+				* factor);
 	window_start = pos - window_size/2;
 	EST_Window::window_signal(sig, wf, window_start, window_size,frame, 1);
 
@@ -443,8 +449,11 @@ void energy(EST_Wave &sig, EST_Track &pow, float factor)
     for (k = 0; k < pow.num_frames(); ++k)
     {
 	pos = irint(pow.t(k) * sig.sample_rate());
-	window_size = irint(get_frame_size(pow, k, sig.sample_rate())
-						 * factor);
+	if (factor < 0)  // want fixed frame rate 
+	    window_size = (int)(-1.0 * factor * (float)sig.sample_rate());
+	else
+	    window_size = irint(get_frame_size(pow, k, sig.sample_rate())
+				* factor);
 	window_start = pos - window_size/2;
 	EST_Window::window_signal(sig, wf, window_start, window_size,frame,1);
 
@@ -505,8 +514,11 @@ void fbank(EST_Wave &sig,
 
     for (k = 0; k < fbank_track.num_frames(); ++k)
     {
-	window_size = irint(get_frame_size(fbank_track, k, sig.sample_rate())
-			    * factor);
+	if (factor < 0)  // want fixed frame rate 
+	    window_size = (int)(-1.0 * factor * (float)sig.sample_rate());
+	else
+	    window_size = irint(get_frame_size(fbank_track, k, sig.sample_rate())
+				* factor);
 	pos = irint(fbank_track.t(k) * sig.sample_rate());
 	window_start = pos - window_size/2;
 	EST_Window::window_signal(sig, wf, window_start, window_size,frame, 1);

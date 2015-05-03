@@ -53,6 +53,7 @@ endif
 	    do \
 	    case "$$i" in \
 		Makefile ) : ;; \
+		VCLocalRules ) : ;; \
 		RCS|CVS ) : ;; \
 		* ) $(ECHO_N) " $$i"; $(RM) -f "$$i";; \
 	    esac \

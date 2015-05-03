@@ -52,4 +52,30 @@ Declare_TSimpleMatrix(float)
 Instantiate_TMatrix(float)
 Instantiate_TSimpleMatrix(float)
 
+EST_write_status save(const EST_String &filename, const EST_TMatrix<float> &a)
+{
+    int i,j;
+    ostream *outf;
+    EST_String s;
+    if (filename == "-")
+	outf = &cout;
+    else
+	outf = new ofstream(filename);
+    
+    if (!(*outf)) return misc_write_error;
+
+    for (i=0; i < a.num_rows(); i++)
+    {
+        for (j = 0; j < a.num_columns(); ++j)
+	{
+	    *outf << a(i,j) << "\t";
+	}
+	*outf << endl;
+    }
+    
+    if (outf != &cout)
+	delete outf;
+    return write_ok;
+}
+
 #endif

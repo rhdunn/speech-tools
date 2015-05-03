@@ -57,10 +57,10 @@
 #if defined(__sun__) && defined(__sparc__) && defined(__svr4__)
 /* Solaris */
 extern "C" {
-int gethostname(char *name, int namelen);
 long random();
 #if defined(older_solaris)
 int srandom( unsigned seed);
+int gethostname(char *name, int namelen);
 #endif
 }
 #endif

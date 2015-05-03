@@ -170,7 +170,7 @@ EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &
     if (ishift < NEARLY_ZERO)
     {
       cerr<<
-	"Error: Frame spacing must be specified for ascii track input\n";
+	"Error: Frame spacing must be specified (or apparent frame shift nearly zero)\n";
       return misc_read_error;
     }
     // first read in as list
@@ -345,6 +345,7 @@ EST_read_status EST_TrackFile::load_est(const EST_String filename,
 					EST_Track &tr, float ishift)
 {
     EST_TokenStream ts;
+    EST_read_status r;
     
     if (((filename == "-") ? ts.open(cin) : ts.open(filename)) != 0)
     {
@@ -354,7 +355,15 @@ EST_read_status EST_TrackFile::load_est(const EST_String filename,
     // set up the character constant values for this stream
     ts.set_SingleCharSymbols(";");
     tr.set_name(filename);
-    return load_est_ts(ts, tr, ishift);
+    r = load_est_ts(ts, tr, ishift);
+
+    if ((r == format_ok) && (!ts.eof()))
+    {
+	cerr << "Not end of file, but expected it\n";
+	return misc_read_error;
+    }
+    else
+	return r;
 }
 
 static float get_float(EST_TokenStream &ts,int swap)
@@ -445,13 +454,19 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
     for (i = 0; i < num_frames; ++i)
     {
         bool ok;
+
 	// Read Times
 	if (ascii)
-	  {
+	{
+	    if (ts.eof())
+	    {
+		cerr << "unexpected end of file when looking for " << num_frames-i << " more frame(s)" << endl;
+		return misc_read_error;
+	    }
 	    tr.t(i) = ts.get().Float(ok);
 	    if (!ok)
 	      	return misc_read_error;
-	  }
+	}
 	else
 	    tr.t(i) = get_float(ts,swap);
 
@@ -532,7 +547,7 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
     if (ishift < NEARLY_ZERO)
     {
 	cerr<<
-	    "Error: Frame spacing must be specified for ascii track input\n";
+	    "Error: Frame spacing must be specified (or apparent frame shift nearly zero)\n";
 	return misc_read_error;
     }
     

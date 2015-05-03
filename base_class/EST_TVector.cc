@@ -228,28 +228,6 @@ void EST_TVector<T>::resize(int new_cols, int set)
 }
 
 template<class T>
-EST_write_status EST_TVector<T>::save(const EST_String &file)
-{
-    int i;
-    ostream *outf;
-    if (file == "-")
-	outf = &cout;
-    else
-	outf = new ofstream(file);
-    
-    if (!(*outf))
-      return misc_write_error;
-    
-    for (i = 0; i < n(); ++i)
-      *outf << fast_a_v(i) << "\t";
-    *outf << endl;
-    
-    if (outf != &cout)
-	delete outf;
-    return write_ok;
-}
-
-template<class T>
 EST_TVector<T> &EST_TVector<T>::operator=(const EST_TVector<T> &in)
 {
     copy(in);

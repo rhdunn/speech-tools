@@ -60,7 +60,7 @@ EXTRASRCS = wagon_main.cc wagon_test_main.cc \
             ols_main.cc ols_test_main.cc \
             scfg_make_main.cc scfg_train_main.cc scfg_test_main.cc \
             scfg_parse_main.cc \
-            wfst_build_main.cc wfst_run_main.cc \
+            wfst_build_main.cc wfst_run_main.cc wfst_train_main.cc \
             siod_main.cc \
             xml_parser_main.cc
 

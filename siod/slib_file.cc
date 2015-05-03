@@ -173,7 +173,7 @@ static void siod_string_print(LISP exp, ostrstream &sd)
 	sd << ">";
 	break;
       case tc_c_file:
-	sprintf(tkbuffer,"#<FILE %p ",exp->storage_as.c_file.f);
+	sprintf(tkbuffer,"#<FILE %p ",(void *)exp->storage_as.c_file.f);
 	sd << tkbuffer;
 	if (exp->storage_as.c_file.name)
 	    sd << exp->storage_as.c_file.name;
@@ -194,9 +194,9 @@ static void siod_string_print(LISP exp, ostrstream &sd)
 	else
 	{
 	    if (p->name)
-		sprintf(tkbuffer,"#<%s %p>",p->name,exp);
+		sprintf(tkbuffer,"#<%s %p>",p->name,(void *)exp);
 	    else
-		sprintf(tkbuffer,"#<UNKNOWN %d %p>",TYPE(exp),exp);
+		sprintf(tkbuffer,"#<UNKNOWN %d %p>",TYPE(exp),(void *)exp);
 	}
 	sd << tkbuffer;
     }
@@ -345,7 +345,7 @@ static void file_prin1(LISP ptr,FILE *f)
 {char *name;
  name = ptr->storage_as.c_file.name;
  fput_st(f,"#<FILE ");
- sprintf(tkbuffer," %p",ptr->storage_as.c_file.f);
+ sprintf(tkbuffer," %p",(void *)ptr->storage_as.c_file.f);
  fput_st(f,tkbuffer);
  if (name)
    {fput_st(f," ");
@@ -533,7 +533,7 @@ LISP lprin1f(LISP exp,FILE *f)
 	  if (p->name) 
 	      sprintf(tkbuffer,"#<%s %p>",p->name,USERVAL(exp));
 	  else
-	      sprintf(tkbuffer,"#<UNKNOWN %d %p>",TYPE(exp),exp);
+	      sprintf(tkbuffer,"#<UNKNOWN %d %p>",TYPE(exp),(void *)exp);
 	  fput_st(f,tkbuffer);}}
  return(NIL);}
 

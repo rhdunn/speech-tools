@@ -42,7 +42,11 @@ int unix_access(const char *file, int mode)
   DWORD flags = GetFileAttributes(file);
 
   if (flags == 0xffffffff)
-    return 1;
+  {
+      if (ERROR_FILE_NOT_FOUND == GetLastError())
+	  return -1;
+      else return 1;
+  }
 
   if (mode==F_OK)
     return 0;
@@ -51,7 +55,15 @@ int unix_access(const char *file, int mode)
     return 0;
 
   if (mode==W_OK)
-    return (flags|FILE_ATTRIBUTE_READONLY) != 0;
+  {
+   /* When referring to a directory, FILE_ATTRIBUTE_READONLY means the directory can't be
+      deleted.  It does not mean a file can't be written to the directory.
+   */
+	if (flags|FILE_ATTRIBUTE_DIRECTORY)
+      return 0;
+	else 
+      return (flags|FILE_ATTRIBUTE_READONLY) != 0;
+  }
 
   return 1;
 }

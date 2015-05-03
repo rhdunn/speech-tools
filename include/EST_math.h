@@ -41,6 +41,11 @@
 #ifndef __EST_MATH_H__
 #define __EST_MATH_H__
 
+#if defined(__APPLE__)
+/* Not sure why I need this here, but I do */
+extern "C" int isnan(double);
+#endif
+
 #include <math.h>
 #include <limits.h>
 #include <float.h>
@@ -81,6 +86,11 @@ extern "C" {
 
 /* AIX */
 #if defined(_AIX)
+#define isnanf(X) isnan(X)
+#endif
+
+/* Apple OSX */
+#if defined(__APPLE__)
 #define isnanf(X) isnan(X)
 #endif
 

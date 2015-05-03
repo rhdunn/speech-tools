@@ -81,6 +81,7 @@ int parse_url(const EST_String &url,
 	       EST_String &port, 
 	       EST_String &path)
 {
+  EST_String bitpath;
   int start_of_bracket[EST_Regex_max_subexpressions];
   int end_of_bracket[EST_Regex_max_subexpressions];
 
@@ -98,7 +99,12 @@ int parse_url(const EST_String &url,
   protocol = url.at(start_of_bracket[1], end_of_bracket[1]-start_of_bracket[1]);
   host = url.at(start_of_bracket[2], end_of_bracket[2]-start_of_bracket[2]);
   port = url.at(start_of_bracket[4], end_of_bracket[4]-start_of_bracket[4]);
-  path = url.at(start_of_bracket[5], end_of_bracket[5]-start_of_bracket[5]);
+  bitpath = url.at(start_of_bracket[5], end_of_bracket[5]-start_of_bracket[5]);
+
+  if (protocol == "http")
+      path = protocol + "://" + host + bitpath;
+  else
+      path = bitpath;
 
   return TRUE;
 }

@@ -67,7 +67,7 @@
   *     }</programlisting>
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TIterator.h,v 1.2 2001/04/04 13:11:27 awb Exp $ 
+  * @version $Id: EST_TIterator.h,v 1.4 2002/12/26 15:48:54 awb Exp $ 
   */
 
 template <class Container, class IPointer, class Entry> 
@@ -198,6 +198,8 @@ class EST_TStructIterator
 {
 public:  
 
+  typedef EST_TIterator<Container, IPointer, Entry> Iter;
+
   /// Create an iterator not associated with any specific container.
   EST_TStructIterator() {cont=NULL;}
 
@@ -225,6 +227,9 @@ private:
   // void begin(const Container &over) { (void) over; }
 
 public:
+
+  typedef EST_TIterator<Container, IPointer, Entry> Iter;
+
   /// Create an iterator not associated with any specific container.
   EST_TRwIterator() {cont=NULL;}
 
@@ -272,6 +277,9 @@ class EST_TRwStructIterator
   : public EST_TRwIterator<Container, IPointer, Entry>
 {
 public:
+
+  typedef EST_TIterator<Container, IPointer, Entry> Iter;
+
   /// Create an iterator not associated with any specific container.
   EST_TRwStructIterator() {cont=NULL;}
 

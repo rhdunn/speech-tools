@@ -88,10 +88,13 @@ SYSTEMS =					\
 	sparc_SunOS5.6.mak			\
 	sparc_SunOS5.7.mak			\
 	sparc_SunOS5.8.mak			\
+	sparc_SunOS5.9.mak			\
 	sparc_SunOS5.mak			\
+	sparc_unknown.mak			\
 	unknown_DebianGNULinux.mak		\
 	unknown_Linux.mak			\
 	unknown_RedHatLinux.mak			\
+        power_macintosh_Darwin.mak              \
 	unknown_unknown.mak
 
 FILES = Makefile default.mak $(SYSTEMS) 

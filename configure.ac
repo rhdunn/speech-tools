@@ -42,6 +42,12 @@ AC_CHECK_TOOL(AR, ar)
 
 AC_C_BIGENDIAN
 
+AC_CHECK_LIB(termcap, tputs, [TERMCAPLIB=-ltermcap], [TERMCAPLIB=-lncurses])
+if test "$TERMCAPLIB" != "-ltermcap"; then
+	AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
+fi
+AC_SUBST(TERMCAPLIB)
+
 dnl Which version of GCC do we have here
 COMPILERTYPE=gcc
 AC_TRY_COMPILE([#include <stdio.h>],
@@ -52,10 +58,10 @@ AC_TRY_COMPILE([#include <stdio.h>],
                [COMPILERTYPE=gcc295])
 AC_TRY_COMPILE([#include <stdio.h>],
                [int j= 
-                #if __GNUC__ == 3
+                #if __GNUC__ == 3 
                 3;
                 #endif ],
-               [COMPILERTYPE=gcc30])
+               [COMPILERTYPE=gcc32])
 AC_TRY_COMPILE([#include <stdio.h>],
                [ int j=
                 #if __GNUC__ == 2 && __GNUC_MINOR__ == 96

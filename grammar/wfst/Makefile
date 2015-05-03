@@ -37,7 +37,8 @@ DIRNAME=grammar/wfst
 H = wfst_aux.h
 CSRCS =
 TSRCS = EST_WFST.cc wfst_regex.cc wfst_ops.cc wfst_transduce.cc kkcompile.cc
-CPPSRCS = $(TSRCS) wfst_aux.cc ltscompile.cc rgcompile.cc
+CPPSRCS = $(TSRCS) wfst_aux.cc ltscompile.cc rgcompile.cc tlcompile.cc \
+          wfst_train.cc 
 SRCS = $(CPPSRCS) $(CSRCS)
 OBJS = $(CPPSRCS:.cc=.o) $(CSRCS:.c=.o)
 FILES = $(SRCS) $(H) Makefile wfst.mak

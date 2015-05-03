@@ -70,8 +70,13 @@ int compress_file(const EST_String &filename,
 		  
 #define numeric_char(in) (((in < '9' ) && (in > '0')) ? TRUE : FALSE)
 
-int socket_receive_file(int fd, const EST_String &filename);
-int socket_send_file(int fd, const EST_String &filename);
-
+#ifdef WIN32
+#include "Winsock2.h"
+typedef SOCKET SOCKET_FD;
+#else
+typedef int SOCKET_FD;
+#endif
+int socket_receive_file(SOCKET_FD fd, const EST_String &filename);
+int socket_send_file(SOCKET_FD fd, const EST_String &filename);
 
 #endif /*__EST_IO_AUX_H__ */

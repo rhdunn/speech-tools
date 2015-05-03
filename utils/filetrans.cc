@@ -41,6 +41,7 @@
 #include "EST_unix.h"
 #include <stdio.h>
 #include "EST_String.h"
+#include "EST_io_aux.h"
 
 // The following key is used when stuffing files down a socket.
 // This key in when received denotes the end of file.  Any occurrence
@@ -50,13 +51,17 @@
 // This allows transfer of files even if they include the stuff key.
 const char *file_stuff_key = "ft_StUfF_key";
 
-static int getc_unbuffered(int fd)
+static int getc_unbuffered(SOCKET_FD fd)
 {
     // An attempted to get rid of the buffering
     char c;
     int n;
 
+#ifdef WIN32
+    n = recv(fd,&c,1,0);
+#else
     n = read(fd,&c,1);
+#endif
 
     if (n == 0)      // this isn't necessarily eof
 	return EOF;
@@ -64,7 +69,7 @@ static int getc_unbuffered(int fd)
 	return c;    // and this might be -1 (EOF) 
 }
 
-int socket_receive_file(int fd,const EST_String &filename)
+int socket_receive_file(SOCKET_FD fd,const EST_String &filename)
 {
     // Copy the file from fd to filename using the 7E stuff key
     // mechanism so binary files may pass through the socket
@@ -83,6 +88,7 @@ int socket_receive_file(int fd,const EST_String &filename)
     while (file_stuff_key[k] != '\0')
     {
 	c = getc_unbuffered(fd);
+	fprintf(stderr,"%c",c);
 	if (file_stuff_key[k] == c)
 	    k++;
 	else if ((c == 'X') && (file_stuff_key[k+1] == '\0'))
@@ -102,12 +108,14 @@ int socket_receive_file(int fd,const EST_String &filename)
     return 0;
 }
 
-int socket_send_file(int fd,const EST_String &filename)
+int socket_send_file(SOCKET_FD fd,const EST_String &filename)
 {
     // Send file down fd using the 7E end stuffing technique.
     // This guarantees the binary transfer without any other
     // signals eof etc
+#ifndef WIN32
     FILE *ffd = fdopen(dup(fd),"wb");   // use some buffering
+#endif
     FILE *infd;
     int k,c;
 
@@ -127,16 +135,29 @@ int socket_send_file(int fd,const EST_String &filename)
 	    k=0;
 	if (file_stuff_key[k] == '\0')
 	{
+#ifdef WIN32
+	    const char filler='X';
+	    send(fd,&filler,1,0);
+#else
 	    putc('X',ffd);   // stuff filler
+#endif
 	    k=0;
 	}
+#ifdef WIN32
+	send(fd,(const char *)&c,1,0);
+#else
 	putc(c,ffd);
+#endif
     }
     for (k=0; file_stuff_key[k] != '\0'; k++)
+#ifdef WIN32
+	send(fd,file_stuff_key+k,1,0);
+#else
 	putc(file_stuff_key[k],ffd);      // stuff whole key as its the end
 
     fflush(ffd);
     fclose(ffd);
+#endif
     fclose(infd);
     return 0;
 }

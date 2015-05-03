@@ -38,11 +38,11 @@ DIRNAME=ling_class
 
 LOCAL_DEFAULT_LIBRARY = estbase
 
-H = EST_UtteranceFile.h genxml.h solexml.h relation_io.h ling_class_init.h \
+H = EST_UtteranceFile.h genxml.h apml.h solexml.h relation_io.h ling_class_init.h \
 	  EST_FeatureFunctionContext.h
 
 TSRCS =   ling_t.cc EST_Utterance.cc \
-          item_feats.cc solexml.cc  EST_FeatureFunctionPackage.cc \
+          item_feats.cc apml.cc solexml.cc  EST_FeatureFunctionPackage.cc \
 	  EST_FeatureFunctionContext.cc
 
 LOCAL_TSRCS = EST_UtteranceFile.cc genxml.cc EST_utterance_aux.cc ling_class_init.cc 

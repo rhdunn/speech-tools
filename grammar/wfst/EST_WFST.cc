@@ -301,7 +301,53 @@ int EST_WFST::transition(int state,int in, int out,float &prob) const
     }
 }
 
-EST_write_status EST_WFST::save(const EST_String &filename)
+EST_write_status EST_WFST::save_binary(FILE *fd)
+{
+    int i;
+    EST_Litem *j;
+    int num_transitions, type, in, out, next_state;
+    float weight;
+    
+    for (i=0; i<p_num_states; i++)
+    {
+	num_transitions = p_states[i]->num_transitions();
+	fwrite(&num_transitions,4,1,fd);
+	if (p_states[i]->type() == wfst_final)
+	    type = WFST_FINAL;
+	else if (p_states[i]->type() == wfst_nonfinal)
+	    type = WFST_NONFINAL;
+	else if (p_states[i]->type() == wfst_licence)
+	    type = WFST_LICENCE;
+	else
+	    type = WFST_ERROR;
+	fwrite(&type,4,1,fd);
+	for (j=p_states[i]->transitions.head(); j != 0; j=next(j))
+	{
+	    in = p_states[i]->transitions(j)->in_symbol();
+	    out = p_states[i]->transitions(j)->out_symbol();
+	    next_state = p_states[i]->transitions(j)->state();
+	    weight = p_states[i]->transitions(j)->weight();
+
+	    if (in == out)
+	    {
+		in *= -1;
+		fwrite(&in,4,1,fd);
+	    }
+	    else
+	    {
+		fwrite(&in,4,1,fd);
+		fwrite(&out,4,1,fd);
+	    }
+	    fwrite(&next_state,4,1,fd);
+	    fwrite(&weight,4,1,fd);
+	}
+    }
+
+    return write_ok;
+}
+
+EST_write_status EST_WFST::save(const EST_String &filename,
+				const EST_String type)
 {
     FILE *ofd;
     int i;
@@ -317,7 +363,7 @@ EST_write_status EST_WFST::save(const EST_String &filename)
     }
     
     fprintf(ofd,"EST_File fst\n");
-    fprintf(ofd,"DataType ascii\n");
+    fprintf(ofd,"DataType %s\n",(const char *)type);
     fprintf(ofd,"in %s\n",
       (const char *)quote_string(EST_String("(")+
 				 p_in_symbols.print_to_string(TRUE)+")",
@@ -327,50 +373,137 @@ EST_write_status EST_WFST::save(const EST_String &filename)
 				 p_out_symbols.print_to_string(TRUE)+")",
 				 "\"","\\",1));
     fprintf(ofd,"NumStates %d\n",p_num_states);
+    fprintf(ofd, "ByteOrder %s\n", ((EST_NATIVE_BO == bo_big) ? "10" : "01"));
     fprintf(ofd,"EST_Header_End\n");
 
-    for (i=0; i < p_num_states; i++)
+    if (type == "binary")
+	save_binary(ofd);
+    else
     {
-	EST_WFST_State *s=p_states[i];
-	fprintf(ofd,"((%d ",s->name());
-	switch(s->type())
+	for (i=0; i < p_num_states; i++)
 	{
-	  case wfst_final: 
-	    fprintf(ofd,"final ");
-	    break;
-	  case wfst_nonfinal: 
-	    fprintf(ofd,"nonfinal ");
-	    break;
-	  case wfst_licence: 
-	    fprintf(ofd,"licence ");
-	    break;
-	  default: 
-	    fprintf(ofd,"error ");
+	    EST_WFST_State *s=p_states[i];
+	    fprintf(ofd,"((%d ",s->name());
+	    switch(s->type())
+	    {
+	    case wfst_final: 
+		fprintf(ofd,"final ");
+		break;
+	    case wfst_nonfinal: 
+		fprintf(ofd,"nonfinal ");
+		break;
+	    case wfst_licence: 
+		fprintf(ofd,"licence ");
+		break;
+	    default: 
+		fprintf(ofd,"error ");
+	    }
+	    fprintf(ofd,"%d)\n",s->num_transitions());
+	    for (j=s->transitions.head(); j != 0; j=next(j))
+	    {
+		EST_String in = p_in_symbols.name(s->transitions(j)->in_symbol());
+		EST_String out=p_out_symbols.name(s->transitions(j)->out_symbol());
+		if (in.matches(needquotes))
+		    fprintf(ofd,"  (%s ",(const char *)quote_string(in,"\"","\\",1));
+		else
+		    fprintf(ofd,"  (%s ",(const char *)in);
+		if (out.matches(needquotes))
+		    fprintf(ofd," %s ",(const char *)quote_string(out,"\"","\\",1));
+		else
+		    fprintf(ofd," %s ",(const char *)out);
+		fprintf(ofd,"%d %g)\n",
+			s->transitions(j)->state(),
+			s->transitions(j)->weight());
+	    }
+	    fprintf(ofd,")\n");
 	}
-	fprintf(ofd,"%d)\n",s->num_transitions());
-	for (j=s->transitions.head(); j != 0; j=next(j))
-	{
-	    EST_String in = p_in_symbols.name(s->transitions(j)->in_symbol());
-	    EST_String out=p_out_symbols.name(s->transitions(j)->out_symbol());
-	    if (in.matches(needquotes))
-		fprintf(ofd,"  (%s ",(const char *)quote_string(in,"\"","\\",1));
-	    else
-		fprintf(ofd,"  (%s ",(const char *)in);
-	    if (out.matches(needquotes))
-		fprintf(ofd," %s ",(const char *)quote_string(out,"\"","\\",1));
-	    else
-		fprintf(ofd," %s ",(const char *)out);
-	    fprintf(ofd,"%d %g)\n",
-		    s->transitions(j)->state(),
-		    s->transitions(j)->weight());
-	}
-	fprintf(ofd,")\n");
     }
     if (ofd != stdout)
 	fclose(ofd);
 
     return write_ok;
 }
+
+static float get_float(FILE *fd,int swap)
+{
+    float f;
+    fread(&f,4,1,fd);
+    if (swap) swapfloat(&f);
+    return f;
+}
+
+static int get_int(FILE *fd,int swap)
+{
+    int i;
+    fread(&i,4,1,fd);
+    if (swap) 
+	return SWAPINT(i);
+    else
+	return i;
+}
+
+EST_read_status EST_WFST::load_binary(FILE *fd,
+				      EST_Option &hinfo,
+				      int num_states,
+				      int swap)
+{
+    EST_read_status r;
+    int i,j, s;
+    int num_trans, state_type;
+    int in_sym, out_sym, next_state;
+    float trans_cost;
+
+    r = format_ok;
+
+    for (i=0; i < num_states; i++)
+    {
+	num_trans = get_int(fd,swap);
+	state_type = get_int(fd,swap);
+	
+	if (state_type == WFST_FINAL)
+	    s = add_state(wfst_final);
+	else if (state_type == WFST_NONFINAL)
+	    s = add_state(wfst_nonfinal);
+	else if (state_type == WFST_LICENCE)
+	    s = add_state(wfst_licence);
+	else if (state_type == WFST_ERROR)
+	    s = add_state(wfst_error);
+	else
+	{
+	    cerr << "WFST load: unknown state type \"" << 
+		state_type << "\"" << endl;
+	    r = read_format_error;
+	    break;
+	}
+
+	if (s != i)
+	{
+	    cerr << "WFST load: internal error: unexpected state misalignment"
+		 << endl;
+	    r = read_format_error;
+	    break;
+	}
+
+	for (j=0; j < num_trans; j++)
+	{
+	    in_sym = get_int(fd,swap);
+	    if (in_sym < 0)
+	    {
+		in_sym *= -1;
+		out_sym = in_sym;
+	    }
+	    else
+		out_sym = get_int(fd,swap);
+	    next_state = get_int(fd,swap);
+	    trans_cost = get_float(fd,swap);
+
+	    p_states[i]->add_transition(trans_cost,next_state,in_sym,out_sym);
+	}
+    }
+
+    return r;
+}
+
 
 EST_read_status EST_WFST::load(const EST_String &filename)
 {
@@ -382,6 +515,7 @@ EST_read_status EST_WFST::load(const EST_String &filename)
     EST_EstFileType t;
     EST_read_status r;
     int i,s;
+    int swap;
 
     if ((fd=fopen(filename,"r")) == NULL)
     {
@@ -411,42 +545,63 @@ EST_read_status EST_WFST::load(const EST_String &filename)
     init(inalpha,outalpha);
 
     int num_states = hinfo.ival("NumStates");
-    
-    for (i=0; i < num_states; i++)
-    {
-	LISP sd = lreadf(fd);
-	if (i != get_c_int(car(car(sd))))
-	{
-	    cerr << "WFST load: expected description of state " << i <<
-		" but found \"" << siod_sprint(sd) << "\"" << endl;
-	    return read_format_error;
-	}
-	if (streq("final",get_c_string(car(cdr(car(sd))))))
-	    s = add_state(wfst_final);
-	else if (streq("nonfinal",get_c_string(car(cdr(car(sd))))))
-	    s = add_state(wfst_nonfinal);
-	else if (streq("licence",get_c_string(car(cdr(car(sd))))))
-	    s = add_state(wfst_licence);
-	else
-	{
-	    cerr << "WFST load: unknown state type \"" << 
-		siod_sprint(car(cdr(car(sd)))) << "\"" << endl;
-	    return read_format_error;
-	}
+    r = format_ok;
 
-	if (s != i)
+    if (!ascii)
+    {
+	if (!hinfo.present("ByteOrder"))
+	    swap = FALSE;  // ascii or not there for some reason
+	else if (((hinfo.val("ByteOrder") == "01") ? bo_little : bo_big) 
+		 != EST_NATIVE_BO)
+	    swap = TRUE;
+	else
+	    swap = FALSE;
+	r = load_binary(fd,hinfo,num_states,swap);
+    }
+    else
+    {
+	for (i=0; i < num_states; i++)
 	{
-	    cerr << "WFST load: internal error: unexpected state misalignment"
-		<< endl;
-	    return read_format_error;
+	    LISP sd = lreadf(fd);
+	    if (i != get_c_int(car(car(sd))))
+	    {
+		cerr << "WFST load: expected description of state " << i <<
+		    " but found \"" << siod_sprint(sd) << "\"" << endl;
+		r = read_format_error;
+		break;
+	    }
+	    if (streq("final",get_c_string(car(cdr(car(sd))))))
+		s = add_state(wfst_final);
+	    else if (streq("nonfinal",get_c_string(car(cdr(car(sd))))))
+		s = add_state(wfst_nonfinal);
+	    else if (streq("licence",get_c_string(car(cdr(car(sd))))))
+		s = add_state(wfst_licence);
+	    else
+	    {
+		cerr << "WFST load: unknown state type \"" << 
+		    siod_sprint(car(cdr(car(sd)))) << "\"" << endl;
+		r = read_format_error;
+		break;
+	    }
+	    
+	    if (s != i)
+	    {
+		cerr << "WFST load: internal error: unexpected state misalignment"
+		     << endl;
+		r = read_format_error;
+		break;
+	    }
+	    if (load_transitions_from_lisp(s,cdr(sd)) != format_ok)
+	    {
+		r = read_format_error;
+		break;
+	    }
 	}
-	if (load_transitions_from_lisp(s,cdr(sd)) != format_ok)
-	    return read_format_error;
     }
 
     fclose(fd);
     
-    return format_ok;
+    return r;
 }
 
 EST_read_status EST_WFST::load_transitions_from_lisp(int s, LISP trans)

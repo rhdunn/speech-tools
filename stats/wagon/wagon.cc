@@ -57,6 +57,7 @@ Discretes wgn_discretes;
 WDataSet wgn_dataset;
 WDataSet wgn_test_dataset;
 EST_FMatrix wgn_DistMatrix;
+EST_Track *wgn_UnitTracks = 0;
 
 int wgn_min_cluster_size = 50;
 int wgn_held_out = 0;
@@ -417,6 +418,10 @@ static int wagon_split(int margin, WNode &node)
     node.set_impurity(WImpurity(node.get_data()));
     q = find_best_question(node.get_data());
 
+/*    printf("q.score() %f impurity %f\n",
+	   q.get_score(),
+	   node.get_impurity().measure()); */
+
     if ((q.get_score() < WGN_HUGE_VAL) &&
 	(q.get_score() < node.get_impurity().measure()))
     {
@@ -746,7 +751,16 @@ static float score_question_set(WQuestion &q, WVectorVector &ds, int ignorenth)
 	(n.samples() < min_cluster))
 	return WGN_HUGE_VAL;
 
-    return (y.measure() + n.measure());
+    float ym,nm,bm;
+    ym = y.measure();
+    nm = n.measure();
+    bm = ym + nm;
+
+/*    cout << q << endl;
+    printf("test question y %f n %f b %f\n",
+    ym, nm, bm); */
+
+    return bm/2.0;
 }
 
 float wgn_score_question(WQuestion &q, WVectorVector &ds)

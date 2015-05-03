@@ -42,9 +42,10 @@
 
 #include "EST_simplestats.h"
 #include "EST_rw_status.h"
+#include "EST_Option.h"
 #include "EST_TList.h"
 #include "EST_TVector.h"
-#include "EST_StringTrie.h"
+#include "EST_THash.h"
 #include "siod.h"
 #define wfst_error_msg(WMESS) (cerr << WMESS << endl,siod_error())
 
@@ -75,11 +76,19 @@ class EST_WFST_Transition {
     int in_symbol() const { return p_in_symbol; }
     int out_symbol() const { return p_out_symbol; }
     void set_weight(float f) { p_weight = f; }
+    void set_state(int s) { p_state = s; }
     
 };
 typedef EST_TList<EST_WFST_Transition *> wfst_translist;
 
 enum wfst_state_type {wfst_final, wfst_nonfinal, wfst_error, wfst_licence};
+/** I'd like to use the enums but I need to binary read/write them **/
+/** I don't believe that's portable so we need to have ints for these **/
+#define WFST_FINAL    0
+#define WFST_NONFINAL 1
+#define WFST_ERROR    2
+#define WFST_LICENCE  3
+
 
 /** an internal class for \Ref{EST_WFST} used to represent a 
     state in a WFST 
@@ -109,7 +118,7 @@ class EST_WFST_State {
 };
 typedef EST_TVector<EST_WFST_State *> wfst_state_vector;
 
-typedef EST_StringTrie EST_WFST_MultiStateIndex;
+typedef EST_TStringHash<int> EST_WFST_MultiStateIndex;
 enum wfst_mstate_type {wfst_ms_set, wfst_ms_list};
 
 /** an internal class to \Ref{EST_WFST} used in holding multi-states
@@ -168,7 +177,9 @@ class EST_WFST {
   public:
     /**@name Constructor and initialisation functions */
     //@{
+    /// ?
     EST_WFST();
+    /// ?
     EST_WFST(const EST_WFST &wfst) { p_num_states = 0; copy(wfst); }
     ~EST_WFST();
     //@}
@@ -209,16 +220,31 @@ class EST_WFST {
     int out_epsilon() const { return p_out_symbols.name("__epsilon__"); }
     /// Return internal state information
     const EST_WFST_State *state(int i) const { return p_states(i); }
+    /// Return internal state information (non-const)
+    EST_WFST_State *state_non_const(int i) { return p_states(i); }
     /// True if state {\tt i} is final
     int final(int i) const 
        { return ((i != WFST_ERROR_STATE) && (state(i)->type() == wfst_final));}
+    /// Accessing the input alphabet
+    const EST_Discrete &in_symbols() const { return p_in_symbols; }
+    /// Accessing the output alphabet
+    const EST_Discrete &out_symbols() const { return p_out_symbols; }
 
     //@}
 
     /**@name file i/o */
     //@{
-    EST_write_status save(const EST_String &filename);
+    /// ?
+    EST_write_status save(const EST_String &filename,
+			  const EST_String type = "ascii");
+    EST_write_status save_binary(FILE *fd);
+    /// ?
     EST_read_status load(const EST_String &filename);
+
+    EST_read_status load_binary(FILE *fd, 
+				EST_Option &hinfo, 
+				int num_states,
+				int swap);
     //@}
 
     /**@name transduction functions */
@@ -279,6 +305,9 @@ class EST_WFST {
 		       LISP distinguished, LISP rewrites,
 		       LISP sets, LISP terms,
 		       int max_depth);
+    // Build simple tree lexicon
+    void build_tree_lex(LISP inalpha, LISP outalpha, 
+			 LISP wlist);
     //@}
 
     /**@name Basic WFST operators */
@@ -331,7 +360,7 @@ class EST_WFST {
     void remove_error_states(const EST_WFST &a);
     
     EST_String summary() const;
-    ///
+    /// ?
     EST_WFST & operator = (const EST_WFST &a) { copy(a); return *this; }
 };
 typedef EST_TList<EST_WFST> wfst_list;
@@ -352,6 +381,8 @@ void kkcompile(LISP ruleset, EST_WFST &all_wfst);
 void ltscompile(LISP lts_rules, EST_WFST &all_wfst);
 // Compile a regular grammar 
 void rgcompile(LISP rg, EST_WFST &all_wfst);
+// Compile a tree lexicon
+void tlcompile(LISP rg, EST_WFST &all_wfst);
 
 // Transduction and recognition functions
 int transduce(const EST_WFST &wfst,const EST_StrList &in,EST_StrList &out);
@@ -359,6 +390,17 @@ int transduce(const EST_WFST &wfst,const EST_IList &in,EST_IList &out);
 int recognize(const EST_WFST &wfst,const EST_StrList &in,int quiet);
 int recognize(const EST_WFST &wfst,const EST_IList &in, 
 	      const EST_IList &out,int quite);
+int recognize_for_perplexity(const EST_WFST &wfst,
+			     const EST_StrList &in,
+			     int quiet,
+			     float &count,
+			     float &sumlogp);
+int recognize_for_perplexity(const EST_WFST &wfst,
+			     const EST_IList &in, 
+			     const EST_IList &out, 
+			     int quiet,
+			     float &count,
+			     float &sumlogp);
 
 VAL_REGISTER_CLASS_DCLS(wfst,EST_WFST)
 

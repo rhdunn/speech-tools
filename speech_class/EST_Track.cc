@@ -1272,6 +1272,8 @@ EST_read_status EST_Track::load(const EST_String filename, float ishift)
 	    set_file_type(t);
 	    break;
 	}
+	else if (stat == read_error)
+	    break;
     }
     
     return stat;

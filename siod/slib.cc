@@ -88,6 +88,10 @@ Cambridge, MA 02138
 #include "siod.h"
 #include "siodp.h"
 
+#ifdef WIN32
+#include "winsock2.h"
+#endif
+
 static int restricted_function_call(LISP l);
 static long repl(struct repl_hooks *h);
 static void gc_mark_and_sweep(void);
@@ -232,9 +236,9 @@ void print_hs_1(void)
 
 void print_hs_2(void)
 {if (gc_kind_copying == 1)
-   printf("heap_1 at %p, heap_2 at %p\n",heap_1,heap_2);
+   printf("heap_1 at %p, heap_2 at %p\n",(void *)heap_1,(void *)heap_2);
  else
-   printf("heap_1 at %p\n",heap_1);}
+   printf("heap_1 at %p\n",(void *)heap_1);}
 
 /* I don't have a clean way to do this but need to reset this if */
 /* ctrl-c occurs. */
@@ -604,7 +608,7 @@ LISP stack_limit(LISP amount,LISP silent)
     stack_limit_ptr = STACK_LIMIT(stack_start_ptr,stack_size);}
  if NULLP(silent)
    {sprintf(tkbuffer,"Stack_size = %ld bytes, [%p,%p]\n",
-	    stack_size,stack_start_ptr,stack_limit_ptr);
+	    stack_size,(void *)stack_start_ptr,(void *)stack_limit_ptr);
     put_st(tkbuffer);
     return(NIL);}
  else
@@ -1492,6 +1496,45 @@ int f_getc(FILE *f)
 void f_ungetc(int c, FILE *f)
 {ungetc(c,f);}
 
+#ifdef WIN32
+int winsock_unget_buffer;
+bool winsock_unget_buffer_unused=true;
+bool use_winsock_unget_buffer;
+
+int f_getc_winsock(HANDLE h)
+{long iflag,dflag;
+ char c;
+ DWORD lpNumberOfBytesRead;
+ iflag = no_interrupt(1);
+ if (use_winsock_unget_buffer)
+ {
+	use_winsock_unget_buffer = false;
+	return winsock_unget_buffer;
+ }
+
+ if (SOCKET_ERROR == recv((SOCKET)h,&c,1,0))
+ {
+    if (WSAECONNRESET == GetLastError()) // The connection was closed.
+        c=EOF;
+    else
+        cerr << "f_getc_winsock(): error reading from socket\n";
+ }
+
+ winsock_unget_buffer=c;
+ winsock_unget_buffer_unused = false;
+
+ no_interrupt(iflag);
+ return(c);}
+
+void f_ungetc_winsock(int c, HANDLE h)
+{
+ if (winsock_unget_buffer_unused)
+ {
+  cerr << "f_ungetc_winsock: tried to unget before reading socket\n";
+ }
+use_winsock_unget_buffer = true;}
+#endif
+
 int flush_ws(struct gen_readio *f,const char *eoferr)
 {int c,commentp;
  commentp = 0;
@@ -1517,6 +1560,16 @@ LISP lreadf(FILE *f)
      s.cb_argument = (char *) f;
  }
  return(readtl(&s));}
+
+#ifdef WIN32
+LISP lreadwinsock(void)
+{
+	struct gen_readio s;
+	s.getc_fcn = (int (*)(char *))f_getc_winsock;
+	s.ungetc_fcn = (void (*)(int, char *))f_ungetc_winsock;
+	s.cb_argument = (char *) siod_server_socket;
+	return(readtl(&s));}
+#endif
 
 LISP readtl(struct gen_readio *f)
 {int c;

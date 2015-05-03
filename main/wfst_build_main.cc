@@ -135,11 +135,13 @@ static int wfst_build_main(int argc, char **argv)
 	(argc, argv,
 	 EST_String("[option] [rulefile0] [rulefile1] ...\n")+
 	 "Summary: Build a weighted finite state transducer from rules/wfsts\n"+
-	 "-type <string> {kk} Input rule type: kk, lts, rg, compose, regex\n"+
+	 "-type <string> {kk} Input rule type: kk, lts, rg, tl, compose, regex\n"+
 	 "                    union, intersect, concat, asis\n"+
 	 "-determinize        Determinize WFST before saving it\n"+
 	 "-detmin             Determinize and minimize WFST before saving it\n"+
 	 "-o <ofile>          Output file for saved WFST (default stdout)\n"+
+	 "-otype <string> {ascii}\n"+
+         "                    Output type, ascii or binary\n"+
 	 "-heap <int> {210000}\n"+
 	 "                    Set size of Lisp heap, needed for large rulesets\n"+
 	 "-q                  Quiet mode, no summary generated\n",
@@ -171,6 +173,11 @@ static int wfst_build_main(int argc, char **argv)
     {
 	ruleset = car(vload(files(files.head()),1));
 	rgcompile(ruleset,*wfst);
+    }
+    else if (al.val("-type") == "tl")
+    {
+	ruleset = car(vload(files(files.head()),1));
+	tlcompile(ruleset,*wfst);
     }
     else if (al.val("-type") == "asis")
     {
@@ -290,7 +297,7 @@ static int wfst_build_main(int argc, char **argv)
 	    cout << "wfst_build: " << wfst->summary() << endl;
     }
 
-    wfst->save(outfile);
+    wfst->save(outfile,al.val("-otype"));
     delete wfst;
     gc_unprotect(&ruleset);
 

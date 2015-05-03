@@ -173,9 +173,9 @@ enum EST_error_behaviour
 
 #include "EST_String.h"
 
-// These are used to pass values into error functions inside
-// templates. For classes we can define a function cast to EST_String,
-// but we need the basic versions.
+/* These are used to pass values into error functions inside             */
+/* templates. For classes we can define a function cast to EST_String,   */
+/* but we need the basic versions.                                       */
 
 inline const char *error_name(const EST_String val) {return val;}
 inline const char *error_name(const void *val) {return EST_String::cat("<<ptr:", EST_String::Number((long)val, 16), ">>");}

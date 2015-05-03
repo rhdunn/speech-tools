@@ -99,6 +99,14 @@ int play_sun16_wave(EST_Wave &inwave, EST_Option &al)
 	else 
 	    inwave.resample(16000);
     }
+    if ((audiodevice = getenv("AUDIODEV")) == NULL) 
+    {
+        if (al.present("-audiodevice"))
+             audiodevice = al.val("-audiodevice");
+	else
+             audiodevice = "/dev/audio";
+    }
+ 
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");
     else
@@ -274,7 +282,7 @@ int record_sun16_wave(EST_Wave &wave, EST_Option &al)
 	return -1;
     }
 
-    wave.resize(actual_sample_rate*al.ival("-time"));
+    wave.resize((int)(actual_sample_rate*al.fval("-time")));
     wave.set_sample_rate(actual_sample_rate);
     num_samples = wave.num_samples();
     waveform = wave.values().memory();

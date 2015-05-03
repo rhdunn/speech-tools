@@ -52,7 +52,7 @@ endif
 
 ifeq ($(DIRNAME),main)
     MAINSRCS := $(MAINSRCS) \
-	wfst_build_main.cc wfst_run_main.cc
+	wfst_build_main.cc wfst_run_main.cc wfst_train_main.cc
 endif
 
 # check scheme is available.

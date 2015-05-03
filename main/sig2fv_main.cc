@@ -169,7 +169,10 @@ int main(int argc, char *argv[])
 	 "    specify the positions of the analysis frames for pitch \n"
 	 "    synchronous analysis. Pitchmark files are just standard \n"
 	 "    track files, but the channel information is ignored and \n"
-	 "    only the time positions are used\n\n"
+	 "    only the time positions are used\n"
+	 "-size <float> If specified with pm, size is used as the \n"
+         "    fixed window size (times factor) rather than size within \n"
+         "    each the pms.\n\n"
 
 	 "-coefs <string> list of basic types of processing required. \n"
 	 "    Permissable types are: \n" + sigpr_options_supported()+" \n"
@@ -306,6 +309,8 @@ void set_options(EST_Features &op, EST_Option &al)
 	op.set("frame_shift", al.fval("-shift", 1));
     if (al.present("-factor"))
 	op.set("frame_factor", al.fval("-factor", 1));
+    if (al.present("-size"))
+	op.set("frame_factor", op.F("frame_factor")*-1.0*al.fval("-size"));
     if (al.present("-length"))
 	op.set("frame_factor", 
 			 al.fval("-length", est_errors_allowed)/op.F("frame_shift",est_errors_allowed));
