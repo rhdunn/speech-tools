@@ -89,7 +89,11 @@ EST_Pathname EST_Pathname::as_directory(void) const
     return *this;
 
   if (length() > 0)
-    return ::operator +(EST_String(*this), "/");
+  {
+      EST_String xx;
+      xx = EST_String(*this) + "/";
+      return xx;
+  }
   
   return "./";
 }

@@ -42,7 +42,7 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <iostream.h>
+#include <iostream>
 #include "EST_Pathname.h"
 #include "EST_cutils.h"
 #include "EST_Token.h"

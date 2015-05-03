@@ -39,8 +39,8 @@
  /*************************************************************************/
 
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include "EST_TVector.h"
 #include "EST_matrix_support.h"
 #include "EST_cutils.h"
@@ -303,15 +303,6 @@ void EST_TVector<T>::sub_vector(EST_TVector<T> &sv,
   sv.p_memory = p_memory - p_offset + sv.p_offset;
   sv.p_column_step=p_column_step;
   sv.p_num_columns = len;
-}
-
-template<class T>
-ostream& operator << (ostream &st, const EST_TVector< T > &a) \
-{
-int i; 
- for (i = 0; i < a.n(); ++i) 
-   st << a(i) << " "; st << endl; 
- return st;
 }
 
 template<class T>

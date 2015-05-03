@@ -36,7 +36,7 @@
  /* Wave file input and output.                                           */
  /*                                                                       */
  /*************************************************************************/
-#include <stdlib.h>
+#include <cstdlib>
 #include "EST_Wave.h"
 #include "EST_WaveFile.h"
 #include "waveP.h"

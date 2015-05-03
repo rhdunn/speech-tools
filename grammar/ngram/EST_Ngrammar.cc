@@ -37,16 +37,20 @@
 /* An EST_Ngram class for building and manipulating bigrams trigrams etc */
 /*                                                                       */
 /*=======================================================================*/
-#include <iostream.h>
-#include <fstream.h>
-#include <string.h>
-#include <math.h>
-#include <limits.h>
-#include <float.h>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <cmath>
+#include <climits>
+#include <cfloat>
+
+using namespace std;
+
 #include "EST_Ngrammar.h"
 #include "EST_Pathname.h"
 #include "EST_Token.h"
 #include "EST_io_aux.h"
+
 
 const EST_DiscreteProbDistribution PSTnullProbDistribution;
 static EST_String NOVOCAB("NOVOCAB");
@@ -579,7 +583,7 @@ bool EST_Ngrammar::init_dense_representation()
 	return false;
     }
     
-    p_num_states = (int)pow(vocab->length(),p_order-1);
+    p_num_states = (int)pow(float(vocab->length()),float(p_order-1));
     p_states = new EST_NgrammarState[p_num_states];
     for (i=0; i < p_num_states; i++)
 	p_states[i].init(i,pred_vocab);
@@ -597,7 +601,7 @@ bool EST_Ngrammar::init_sparse_representation()
 	return false;
     }
     
-    p_num_states = (int)pow(vocab->length(),p_order-1);
+    p_num_states = (int)pow(float(vocab->length()),float(p_order-1));
     p_states = new EST_NgrammarState[p_num_states];
     
     return (bool)(p_states != NULL);

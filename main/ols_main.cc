@@ -36,10 +36,10 @@
 /*  Ordinary least squares                                               */
 /*                                                                       */
 /*=======================================================================*/
-#include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <string.h>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 #include "EST_Wagon.h"
 #include "EST_multistats.h"
 #include "EST_cmd_line.h"
@@ -90,6 +90,7 @@ static int ols_main(int argc, char **argv)
     WDataSet dataset,test_dataset;
     EST_FMatrix coeffs;
     EST_FMatrix X,Y,Xtest,Ytest;
+    LISP ignores = NIL;
 
     parse_command_line
 	(argc, argv,
@@ -104,15 +105,27 @@ static int ols_main(int argc, char **argv)
 	 "-swlimit <float> {0.0}\n"+
 	 "                  Percentage necessary improvement for stepwise\n"+
 	 "-quiet            No summary\n"+
+	 "-o      <ofile>   \n"+
 	 "-output <ofile>   Output file for coefficients\n"+
-	 "-otype <string>   Output types: festival or raw\n",
+	 "-ignore <string>  Filename or bracket list of fields to ignore\n",
 	 files, al);
 
 
     if (al.present("-output"))
 	ofile = al.val("-output");
+    if (al.present("-o"))
+	ofile = al.val("-o");
 
     siod_init();
+
+    if (al.present("-ignore"))
+    {
+        EST_String ig = al.val("-ignore");
+        if (ig[0] == '(')
+            ignores = read_from_string(ig);
+        else
+            ignores = vload(ig,1);
+    }
 
     // Load in the data
     if (!al.present("-desc"))
@@ -121,7 +134,7 @@ static int ols_main(int argc, char **argv)
 	return -1;
     }
     else
-	dataset.load_description(al.val("-desc"),NIL);
+	dataset.load_description(al.val("-desc"),ignores);
     if (!al.present("-data"))
     {
 	cerr << "ols: no data file specified\n";
@@ -131,7 +144,7 @@ static int ols_main(int argc, char **argv)
 	wgn_load_dataset(dataset,al.val("-data"));
     if (al.present("-test"))
     {
-	test_dataset.load_description(al.val("-desc"),NIL);
+	test_dataset.load_description(al.val("-desc"),ignores);
 	wgn_load_dataset(test_dataset,al.val("-test"));
 	load_ols_data(Xtest,Ytest,test_dataset);
     }

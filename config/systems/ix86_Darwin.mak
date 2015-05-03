@@ -2,7 +2,7 @@
  ##                                                                       ##
  ##                Centre for Speech Technology Research                  ##
  ##                     University of Edinburgh, UK                       ##
- ##                         Copyright (c) 1996-2003                       ##
+ ##                         Copyright (c) 1996                            ##
  ##                        All Rights Reserved.                           ##
  ##                                                                       ##
  ##  Permission is hereby granted, free of charge, to use and distribute  ##
@@ -31,53 +31,27 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                       Author: Korin Richmond                          ##
- ##                         Date: 15 Apr 2003                             ##
+ ##                 Author: Alan W Black (awb@cstr.ed.ac.uk)              ##
+ ##                   Date: Aug 3 2006                                    ##
  ## --------------------------------------------------------------------  ##
- ##                                                                       ##
- ## Make definitions for the module which builds bindings for high level  ##
- ## script languages, such as Perl, for selected EST classes and          ##
- ## functionality.  This makes use of SWIG                                ##
- ##                                                                       ##
+ ## Settings for Apple Darwin.                                            ##
+ ## Thanks to Brian West                                                  ##
  ###########################################################################
 
+include $(EST)/config/systems/default.mak
 
-INCLUDE_WRAPPERS = 1
+## the native audio module for this type of system
+NATIVE_AUDIO_MODULE = MACOSX
 
-MOD_DESC_WRAPPERS = Script language bindings for EST libraries 
+## echo -n doesn't work (well only sometimes ?)
+ECHO_N = /usr/bin/printf "%s"
 
-# not sure what magic it would take to put the contents of the
-# following ifeq block into $(TOP)/wrappers/Makefile, but in some
-# ways it would be nicer...
-ifeq ($(DIRNAME),wrappers)
-    ifndef CONFIG_SWIG_COMPILER
-     .config_error:: FORCE
-	    @echo "+--------------------------------------------------"
-	    @echo "| Please specify path to swig binary in config/config"
-	    @echo "+--------------------------------------------------"
-	    @exit 1
-    endif
+NAWK=awk
 
-    ifeq ($(CONFIG_SWIG_COMPILER),none)
-    .config_error:: FORCE
-	    @echo "+--------------------------------------------------"
-	    @echo "|  Please specify path to swig binary in config/config"
-	    @echo "+--------------------------------------------------"
-	    @exit 1
-    endif
+GCC295=cc
 
-    ifneq ($(findstring PYTHON,$(CONFIG_WRAPPER_LANGUAGES)),)
-        BUILD_DIRS+=python
-    endif
+CXX=g++
 
-    ifneq ($(findstring PERL5,$(CONFIG_WRAPPER_LANGUAGES)),)
-        BUILD_DIRS+=perl5
-    endif
-endif
-
-ifeq ($(DIRNAME),.)
-    EXTRA_LIB_BUILD_DIRS := $(EXTRA_LIB_BUILD_DIRS) wrappers
-endif
-
+# GCC_MAKE_SHARED_LIB = ld -Bshareable -x -o XXX
 
 

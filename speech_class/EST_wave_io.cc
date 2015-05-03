@@ -40,10 +40,10 @@
 /*   or encodings happend at read/write time                             */
 /*                                                                       */
 /*=======================================================================*/
-#include <stdlib.h> 
-#include <stdio.h>
+#include <cstdlib> 
+#include <cstdio>
 #include "EST_unix.h"
-#include <string.h>
+#include <cstring>
 #include "EST_wave_aux.h"
 #include "EST_wave_utils.h"
 #include "EST_strcasecmp.h"
@@ -140,6 +140,8 @@ enum EST_sample_type_t nist_to_sample_type(char *type)
 	     (EST_strcasecmp(type,"mu-law",NULL) == 0) ||
 	     (EST_strcasecmp(type,"mulaw",NULL) == 0))
 	return st_mulaw;
+    else if (strcmp(type,"alaw") == 0)
+	return st_alaw;
     else if (strcmp(type,"PCM-1") == 0)
 	return st_schar;
     else if (strcmp(type,"PCM-4") == 0)
@@ -521,9 +523,12 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	}
 	else
 	{
-	    fprintf(stderr,"Unsupported chunk type \"%s\" in RIFF file\n",
-		    info);
-	    return misc_read_error;
+            //	    fprintf(stderr,"Ignoring unsupported chunk type \"%c%c%c%c\" in RIFF file\n",
+            //    info[0],info[1],info[2],info[3]);
+	    //return misc_read_error;
+	    ts.fread(&dsize,4,1);
+	    if (EST_BIG_ENDIAN) dsize = SWAPINT(dsize);
+	    ts.seek(dsize+ts.tell());     /* skip this chunk */
 	}
     }
     if (length == 0)

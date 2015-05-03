@@ -39,8 +39,8 @@
  /*************************************************************************/
 
 #include "EST_TMatrix.h"
-#include <fstream.h>
-#include <iostream.h>
+#include <fstream>
+#include <iostream>
 #include "EST_bool.h"
 #include "EST_matrix_support.h"
 #include "EST_TVector.h"
@@ -585,12 +585,3 @@ void EST_TMatrix<T>::sub_matrix(EST_TMatrix<T> &sm,
   
 }
 
-template<class T>
-ostream& operator << (ostream &st, const EST_TMatrix< T > &a)
-{int i, j; 
- for (i = 0; i < a.num_rows(); ++i) {
-   for (j = 0; j < a.num_columns(); ++j) 
-     st << a.a_no_check(i, j) << " "; st << endl;
- } 
- return st;
-}

@@ -42,7 +42,7 @@
 
 #include "EST_TSimpleVector.h"
 #include "EST_matrix_support.h"
-#include <fstream.h>
+#include <fstream>
 #include "EST_cutils.h"
 
 template<class T> void EST_TSimpleVector<T>::copy(const EST_TSimpleVector<T> &a)
@@ -134,4 +134,5 @@ template<class T> void EST_TSimpleVector<T>::zero()
   else
     ((EST_TVector<T> *)this)->fill(*this->def_val);
 }
+
 

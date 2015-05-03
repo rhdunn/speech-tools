@@ -42,11 +42,11 @@
 /*        F(ngram) = !n-1gram|*(P(n-1gram))                              */
 /*                                                                       */
 /*=======================================================================*/
-#include <iostream.h>
-#include <string.h>
-#include <math.h>
-#include <limits.h>
-#include <float.h>
+#include <iostream>
+#include <cstring>
+#include <cmath>
+#include <climits>
+#include <cfloat>
 #include "EST_Ngrammar.h"
 
 static double fs_find_backoff_prob(EST_Ngrammar *backoff_ngrams,

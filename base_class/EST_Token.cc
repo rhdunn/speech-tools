@@ -38,12 +38,12 @@
 /* EST_TokenStream for strings, FILE *, files, pipes etc                 */
 /*                                                                       */
 /*=======================================================================*/
-#include <stdio.h>
-#include <iostream.h>
+#include <cstdio>
+#include <iostream>
 #include "EST_unix.h"
-#include <stdlib.h>
-#include <limits.h>
-#include <string.h>
+#include <cstdlib>
+#include <climits>
+#include <cstring>
 #include "EST_math.h"
 #include "EST_Token.h"
 #include "EST_string_aux.h"

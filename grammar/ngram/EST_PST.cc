@@ -38,10 +38,10 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <string.h>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 #include "EST_String.h"
 #include "EST_types.h"
 #include "EST_Token.h"

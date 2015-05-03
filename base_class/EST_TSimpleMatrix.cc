@@ -42,8 +42,8 @@
 
 #include "EST_TSimpleMatrix.h"
 #include "EST_TVector.h"
-#include <fstream.h>
-#include <iostream.h>
+#include <fstream>
+#include <iostream>
 #include "EST_cutils.h"
 
 template<class T> 

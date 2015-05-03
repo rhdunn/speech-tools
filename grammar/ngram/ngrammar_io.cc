@@ -38,13 +38,13 @@
 /*                                                                       */
 /*=======================================================================*/
 
-#include <stdlib.h>
-#include <fstream.h>
-#include <iostream.h>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 #include "EST_unix.h"
-#include <string.h>
-#include <limits.h>
-#include <float.h>
+#include <cstring>
+#include <climits>
+#include <cfloat>
 #include "EST_String.h"
 #include "EST_Ngrammar.h"
 #include "EST_Token.h"
@@ -756,7 +756,7 @@ save_ngram_cstr_ascii(const EST_String filename, EST_Ngrammar &n,
 	n.print_freqs(*ost,floor);
     else if (n.representation() == EST_Ngrammar::backoff)
     {
-	int total_ngrams = (int)pow(n.get_vocab_length(),n.order()-1);
+      int total_ngrams = (int)pow(float(n.get_vocab_length()),float(n.order()-1));
 	
 	for(i=0;i<total_ngrams;i++)
 	{
@@ -903,7 +903,7 @@ save_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n,
 	// word in the ngram is the least significant 'bit'
 	
 	// number of ngrams, excluding last word, is
-	int total_ngrams = (int)pow(n.get_vocab_length(),n.order()-1);
+      int total_ngrams = (int)pow(float(n.get_vocab_length()),float(n.order()-1));
 	
 	for(i=0;i<total_ngrams;i++)
 	{
