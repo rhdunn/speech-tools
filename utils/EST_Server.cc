@@ -383,6 +383,7 @@ EST_connect_status EST_Server::disconnect(void)
     EST_error("Not Connected");
 
   if (p_trace)
+  {
     if (p_mode == sm_client)
       *p_trace << "Disconnect from  "
 	       << p_entry.name
@@ -391,6 +392,7 @@ EST_connect_status EST_Server::disconnect(void)
       *p_trace << "Close down service "
 	       << p_entry.name
 	       << "\n";
+  }
 
   if (p_buffered_socket)
     {

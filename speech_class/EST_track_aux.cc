@@ -675,7 +675,7 @@ void move_to_frame_ends(EST_Track &tr,
     int ie = tr.index(end_t-offset);
 
     int start_s, start_c, start_e;
-    int end_s, end_c, end_e;
+    int end_s, end_c, end_e=0;
 
     if (tr.has_channel(channel_length))
     {

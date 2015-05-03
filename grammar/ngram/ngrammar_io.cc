@@ -370,7 +370,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
 	    return misc_read_error;	
 	}
 	for (k=n.p_states[i].pdf().item_start();
-	     !n.p_states[i].pdf().item_end(k);
+	     (!n.p_states[i].pdf().item_end(k)) && (j < num_entries) ;
 	     k = n.p_states[i].pdf().item_next(k))
 	{
 	    n.p_states[i].pdf().set_frequency(k,dd[j]);

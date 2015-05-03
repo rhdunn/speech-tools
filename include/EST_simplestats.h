@@ -47,6 +47,8 @@
 #include "EST_TKVL.h"
 #include "EST_types.h"
 
+typedef size_t int_iter; 
+
 /** A class for managing mapping string names to integers and back again,
     mainly used for representing alphabets in n-grams and grammars etc.
 
@@ -271,6 +273,7 @@ public:
     EST_Litem *item_next(EST_Litem *idx) const;
     /// Used for iterating through members of the distribution
     int item_end(EST_Litem *idx) const;
+
     /// During iteration returns name given index 
     const EST_String &item_name(EST_Litem *idx) const;
     /// During iteration returns name and frequency given index  

@@ -50,6 +50,7 @@
 template<class T> 
 void EST_TSimpleMatrix<T>::copy_data(const EST_TSimpleMatrix<T> &a)
 {
+    
   if (!a.p_sub_matrix && !this->p_sub_matrix)
     memcpy((void *)&this->a_no_check(0,0),
 	   (const void *)&a.a_no_check(0,0),
@@ -85,6 +86,7 @@ void EST_TSimpleMatrix<T>::resize(int new_rows,
 {
   T* old_vals=NULL;
   int old_offset = this->p_offset;
+  unsigned int q;
 
   if (new_rows<0)
     new_rows = this->num_rows();
@@ -99,18 +101,17 @@ void EST_TSimpleMatrix<T>::resize(int new_rows,
 
 	  this->just_resize(new_rows, new_cols, &old_vals);
 
-	  memcpy((void *)this->p_memory, 
-		 (const void *)old_vals,
-		 copy_r*new_cols*sizeof(T));
-	  
+          for (q=0; q<(copy_r*new_cols*sizeof(T)); q++) /* memcpy */
+              ((char *)this->p_memory)[q] = ((char *)old_vals)[q];
+
 	  int i,j;
 	  
 	  if (new_rows > copy_r)
+          {
 	    if (*this->def_val == 0)
 	      {
-		memset((void *)(this->p_memory + copy_r*this->p_row_step),
-		       0,
-		       (new_rows-copy_r)*new_cols*sizeof(T));
+                  for (q=0; q<(new_rows-copy_r)*new_cols*sizeof(T); q++) /* memset */
+                ((char *)(this->p_memory + copy_r*this->p_row_step))[q] = 0;
 	      }
 	    else
 	      {
@@ -118,6 +119,7 @@ void EST_TSimpleMatrix<T>::resize(int new_rows,
 		  for(i=copy_r; i<new_rows; i++)
 		    this->a_no_check(i,j) = *this->def_val;
 	      }
+          }
 	}
       else if (!this->p_sub_matrix)
 	{
@@ -140,11 +142,11 @@ void EST_TSimpleMatrix<T>::resize(int new_rows,
 	      this->a_no_check(i,j) =  *this->def_val;
 	  
 	  if (new_rows > copy_r)
+          {
 	    if (*this->def_val == 0)
 	      {
-		memset((void *)(this->p_memory + copy_r*this->p_row_step),
-		       0,
-		       (new_rows-copy_r)*new_cols*sizeof(T));
+                  for (q=0; q<((new_rows-copy_r)*new_cols*sizeof(T)); q++) /* memset */
+                ((char *)(this->p_memory + copy_r*this->p_row_step))[q] = 0;
 	      }
 	    else
 	      {
@@ -152,6 +154,7 @@ void EST_TSimpleMatrix<T>::resize(int new_rows,
 		  for(i=copy_r; i<new_rows; i++)
 		    this->a_no_check(i,j) = *this->def_val;
 	      }
+          }
 	}
       else
 	EST_TMatrix<T>::resize(new_rows, new_cols, 1);

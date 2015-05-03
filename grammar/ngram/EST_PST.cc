@@ -71,7 +71,8 @@ EST_PredictionSuffixTree_tree_node::print_freqs(ostream &os)
 	// Base -- print from pd 
 	EST_String s;
 	double freq;
-	for (EST_Litem *i = pd.item_start(); 
+        EST_Litem *i;
+	for (i = pd.item_start(); 
 	     !pd.item_end(i); 
 	     i=pd.item_next(i))
 	{

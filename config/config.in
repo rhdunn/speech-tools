@@ -76,7 +76,7 @@ OPTIMISE_sigpr = 3
 ## various audio devices are supported directly but you can always
 ## specify a program to play files in a desired format.
 
-## NCD's network audio system, This is recommended.
+## NCD's network audio system.
 # INCLUDE_MODULES += NAS_AUDIO
 
 ## Elightenment Sound Demon, for KDE etc.
@@ -87,6 +87,10 @@ INCLUDE_MODULES += NATIVE_AUDIO
 
 ## Special code to run Windows MPLAYER
 # INCLUDE_MODULES += MPLAYER_AUDIO
+
+## Under Linux there may be a choice of audio support
+## This is only used if we are under Linux (or a linux like system)
+LINUXAUDIO = @LINUXAUDIO@
 
 ## USER INTERFACE
 

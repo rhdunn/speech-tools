@@ -78,6 +78,7 @@ const int est_64to32(void *c)
 /* #define tprob_int(X) ((sizeof(void *) != 8) ? est_64to32(X) : (int)X) */
 #define tprob_int(X) (est_64to32(X))
 
+
 EST_DiscreteProbDistribution::EST_DiscreteProbDistribution(const EST_Discrete *d,
 		 const double n_samples, const EST_DVector &counts)
 {

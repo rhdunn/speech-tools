@@ -148,10 +148,12 @@ EST_Pathname operator + (const EST_Pathname p, const EST_Pathname addition)
 EST_Pathname operator + (const char *p, const EST_Pathname addition) 
 {return EST_Pathname::append(p, addition); }
 
-EST_Pathname &operator += (EST_Pathname p, const EST_Pathname addition)
-{ p = EST_Pathname::append(p, addition); return p; }
-EST_Pathname &operator += (EST_Pathname p, const EST_String addition)
-{ p = EST_Pathname::append(p, addition); return p; }
+#if 0
+EST_Pathname operator += (EST_Pathname p, const EST_Pathname addition)
+{ EST_String q = EST_Pathname::append(p, addition); return q; }
+EST_Pathname operator += (EST_Pathname p, const EST_String addition)
+{ EST_String q = EST_Pathname::append(p, addition); return q; }
+#endif
 
 EST_Pathname EST_Pathname::append(EST_Pathname directory, EST_Pathname addition)
 {

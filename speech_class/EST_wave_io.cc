@@ -174,7 +174,7 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 
     current_pos = ts.tell();
     if (ts.fread(header,NIST_HDR_SIZE,1) != 1)
-	return misc_read_error;
+	return wrong_format;
 
     if (strncmp(header,NIST_SIG,sizeof(NIST_SIG)) != 0)
 	return wrong_format;

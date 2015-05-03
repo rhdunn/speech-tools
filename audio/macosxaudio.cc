@@ -2,7 +2,7 @@
 /*                                                                       */
 /*                Centre for Speech Technology Research                  */
 /*                     University of Edinburgh, UK                       */
-/*                         Copyright (c) 1996                            */
+/*                         Copyright (c) 1996-2009                       */
 /*                        All Rights Reserved.                           */
 /*                                                                       */
 /*  Permission is hereby granted, free of charge, to use and distribute  */
@@ -33,6 +33,11 @@
 /*                       Author :  Brian Foley                           */
 /*                                 bfoley@compsoc.nuigalway.ie           */
 /*                       Date   :  February 2004                         */
+/*************************************************************************/
+/*                       OSX 10.6 updates                                */
+/*                       Author :  Rob Clark                             */
+/*                                 robert@cstr.ed.ac.uk                  */
+/*                       Date   :  Jan 2009                              */
 /*=======================================================================*/
 #include "EST_unix.h"
 #include "EST_cutils.h"
@@ -42,48 +47,88 @@
 
 #if defined (SUPPORT_MACOSX_AUDIO)
 
+#include <CoreServices/CoreServices.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <CoreAudio/CoreAudio.h>
 #include <AudioUnit/AudioUnit.h>
-#include <AudioToolbox/AudioConverter.h>
-#include <AudioToolbox/DefaultAudioOutput.h>
 
 int macosx_supported = TRUE;
+
 AudioUnit outau;
-AudioConverterRef outconv;
+EST_SMatrix *waveMatrix;
+UInt32 waveSize;
+UInt32 waveIndex;
+bool done;
 
-short *wave;
-UInt32 wavesize;
-
-// The audio conversion callback is trivial: we just point it at our
-// buffer of samples and ask it to convert it at its convenience.
-OSStatus conv_inproc(AudioConverterRef inAC, UInt32 *size, void **data, void *indata)
+OSStatus render_callback(void *inref,                            
+                        AudioUnitRenderActionFlags *inflags,
+                        const AudioTimeStamp *instamp,
+                        UInt32 inbus,
+                        UInt32 inframes,
+                        AudioBufferList *ioData)
 {
-    if (wavesize > 0) {
-        *size = wavesize;
-        *data = wave;
-        wavesize = 0;
+
+  // fill each channel with available audio data  
+
+  UInt32 channels = ioData->mNumberBuffers;
+  int totalNumberOfBytes = waveSize;
+  int channelBytesLeft = totalNumberOfBytes - waveIndex;
+  int bufferSize = ioData->mBuffers[0].mDataByteSize;
+
+  if(channelBytesLeft > 0) {
+    if(channelBytesLeft < bufferSize) {
+      for(UInt32 i = 0; i < channels; ++i) {
+        waveMatrix->copy_column((int)i, (int short*)ioData->mBuffers[i].mData, waveIndex/2, channelBytesLeft/2);
+        memset((char*)ioData->mBuffers[i].mData + channelBytesLeft, 0, bufferSize - channelBytesLeft) ;
+      }
+      waveIndex += channelBytesLeft;
     } else {
-        *size = 0;
+      for(UInt32 i = 0; i < channels; ++i)
+        waveMatrix->copy_column((int)i, (int short*)ioData->mBuffers[i].mData, waveIndex/2, bufferSize/2);
+      waveIndex += bufferSize;
     }
+  } else {
+  	for(UInt32 i = 0; i < channels; ++i)
+  		memset(ioData->mBuffers[i].mData, 0, ioData->mBuffers[i].mDataByteSize);
+    done = TRUE;
+  }
+
     return noErr;
 }
 
-// The audio 'rendering' is easy: we get AudioConverterFillBuffer to do all the
-// heavy lifting of sample rate conversion, filling out extra channels, changing
-// formats, and slicing the result up into nice buffer sized frames. 
-OSStatus render_callback(void *inref, AudioUnitRenderActionFlags inflags,
-    const AudioTimeStamp *instamp, UInt32 inbus, AudioBuffer *iodata)
+
+void  CreateDefaultAU()
 {
-    UInt32 size = iodata->mDataByteSize;
-    OSStatus err;
+    OSStatus err = noErr;
+
+    // Open the default output unit
+    ComponentDescription desc;
+    desc.componentType = kAudioUnitType_Output;
+    desc.componentSubType = kAudioUnitSubType_DefaultOutput;
+    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+    desc.componentFlags = 0;
+    desc.componentFlagsMask = 0;
     
-    err = AudioConverterFillBuffer (outconv, conv_inproc, inref, &size, iodata->mData);
+    Component comp = FindNextComponent(NULL, &desc);
+    if (comp == NULL) { printf ("FindNextComponent\n"); return; }
     
-    if (err != noErr || size == 0) {
-        AudioOutputUnitStop(outau);        
-    }
+    err = OpenAComponent(comp, &outau);
+    if (comp == NULL) { printf ("OpenAComponent=%ld\n", long(err)); return; }
+
+    // Set up render callback
+    AURenderCallbackStruct input;
+    input.inputProc = render_callback;
+    input.inputProcRefCon = NULL;
+
+    err = AudioUnitSetProperty (outau, 
+                                kAudioUnitProperty_SetRenderCallback, 
+                                kAudioUnitScope_Input,
+                                0, 
+                                &input, 
+                                sizeof(input));
+    if (err) { printf ("AudioUnitSetProperty-CB=%ld\n", long(err)); return; }
     
-    return noErr;
 }
 
 int play_macosx_wave(EST_Wave &inwave, EST_Option &al)
@@ -92,108 +137,81 @@ int play_macosx_wave(EST_Wave &inwave, EST_Option &al)
     AudioStreamBasicDescription waveformat, outformat;
     UInt32 size = sizeof(AudioStreamBasicDescription);
     UInt32 running;
-    AudioUnitInputCallback input = {
-        inputProc: render_callback, inputProcRefCon: NULL
-    };
     
-    wavesize = inwave.num_samples() * sizeof(short);
-    wave = inwave.values().memory();
-    
-    // Open the default audio output, set it up, and attach
-    // our audio 'rendering' callback to it.
-    err = OpenDefaultAudioOutput(&outau);
-    if (err != noErr) {
-        cerr << "Couldn't open default audio ouput." << endl;
-        return -1;
-    }
-    
-    err = AudioUnitInitialize(outau);
-    if (err != noErr) {
-        cerr << "Couldn't initialize default audio ouput." << endl;
-        CloseComponent(outau);
-        return -1;
-    }
-    
-    err = AudioUnitSetProperty(outau, kAudioUnitProperty_SetInputCallback,
-        kAudioUnitScope_Global, 0, &input, sizeof(input));
-    if (err != noErr) {
-        cerr << "Couldn't set up callback." << endl;
-        CloseComponent(outau);
-        return -1;
-    }
-
-    
-    // Set up our converter -- map our sample format
-    // onto the hardware output format.
-    waveformat.mSampleRate = (Float64) inwave.sample_rate();
+    CreateDefaultAU();
+         
+    // The EST_Wave structure will allow us to access individula channels 
+    // so this is set up using kAudioFormatFlagIsNonInterleaved format.
+    // Here the per packet and per frame info is per channel.
+    waveformat.mSampleRate = (Float64)inwave.sample_rate();
     waveformat.mFormatID = kAudioFormatLinearPCM;
-    waveformat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger
-        | kLinearPCMFormatFlagIsPacked | kLinearPCMFormatFlagIsBigEndian;
-    waveformat.mBytesPerPacket = 2;
+    waveformat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger 
+                                    | kAudioFormatFlagsNativeEndian
+                                    | kLinearPCMFormatFlagIsPacked
+                                    | kAudioFormatFlagIsNonInterleaved;
     waveformat.mFramesPerPacket = 1;
+    waveformat.mChannelsPerFrame = inwave.num_channels();
+    waveformat.mBytesPerPacket = 2;
     waveformat.mBytesPerFrame = 2;
-    waveformat.mChannelsPerFrame = 1;
     waveformat.mBitsPerChannel = 16;
     
-    err = AudioUnitGetProperty(outau, kAudioUnitProperty_StreamFormat,
-        kAudioUnitScope_Output, 0, &outformat, &size);
+    err = AudioUnitSetProperty(outau, 
+    				                   kAudioUnitProperty_StreamFormat, 
+    				                   kAudioUnitScope_Input, 
+    				                   0, 
+    				                   &waveformat, 
+    				                   size);
+    if (err != noErr) {
+                cerr << "Error setting input audio stream format." << endl;
+                CloseComponent(outau);
+                return -1;
+    }
+    
+    err = AudioUnitGetProperty(outau, 
+                               kAudioUnitProperty_StreamFormat,
+                               kAudioUnitScope_Output,
+                               0,
+                               &outformat,
+                               &size);
     if (err != noErr) {
         cerr << "Error getting output audio stream format." << endl;
         CloseComponent(outau);
         return -1;
     }
-    
-    err = AudioConverterNew(&waveformat, &outformat, &outconv);
-    if (err != noErr) {
-        cerr << "Error creating audio converter." << endl;
-        CloseComponent(outau);
-        return -1;
-    }
-    
-    // If the output has multiple channels (eg stereo or 5.1), map
-    // our single channel onto all the output channels.
-    if (outformat.mChannelsPerFrame > 1) {
-        SInt32 *map = new SInt32[outformat.mChannelsPerFrame];
-        for(UInt32 i = 0; i < outformat.mChannelsPerFrame; i++) {
-            map[i] = 0;
-        }
-        
-        err = AudioConverterSetProperty(outconv, kAudioConverterChannelMap,
-            sizeof(SInt32) * outformat.mChannelsPerFrame, map);
-        if (err != noErr) {
-            cerr << "Error settomg up channel map." << endl;
-            delete [] map;
-            AudioConverterDispose(outconv);
-            CloseComponent(outau);
+            
+    err = AudioUnitInitialize(outau);
+        if (err) { 
+            printf ("AudioUnitInitialize=%ld\n", long(err)); 
             return -1;
         }
     
-        delete [] map;
-    }
+    // set up for playing
+    waveSize = inwave.num_samples()*sizeof(short); 
+    waveMatrix = &inwave.values();
+    done = FALSE;
+    waveIndex = 0;
     
     err = AudioOutputUnitStart(outau);
     if (err != noErr) {
-        cerr << "Error starting audio outup." << endl;
-        AudioConverterDispose(outconv);
+        cerr << "Error starting audio outup: " << err << endl;
         CloseComponent(outau);
         return -1;
     }
     
     // Poll every 50ms whether the sound has stopped playing yet.
-    // Probably not the best way of doing things, but the overhead
-    // should be minimal.
+    // Probably not the best way of doing things.
     size = sizeof(UInt32);
     do {
         usleep(50 * 1000);
         err = AudioUnitGetProperty(outau, kAudioOutputUnitProperty_IsRunning,
-            kAudioUnitScope_Global, 0, &running, &size);
-    } while (err == noErr && running);
-    
-    AudioConverterDispose(outconv);
-    CloseComponent(outau);
+                    kAudioUnitScope_Global, 0, &running, &size);
+    } while (err == noErr && running && !done);
+        
+    CloseComponent (outau);
     
     return 1;
 }
+
 #else
 
 int macosx_supported = FALSE;
@@ -202,7 +220,8 @@ int play_macosx_wave(EST_Wave &inwave, EST_Option &al)
 {
     (void)inwave;
     (void)al;
-    cerr << "MacOS X audio support not compiled." << endl;
+    cerr << "OS X Core Audio in not supported in this configuration." << endl;
     return -1;
 }
+
 #endif
