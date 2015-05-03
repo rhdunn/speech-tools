@@ -2,7 +2,7 @@
 ##                                                                       ##
 ##                Centre for Speech Technology Research                  ##
 ##                     University of Edinburgh, UK                       ##
-##                       Copyright (c) 1996-1999                         ##
+##                       Copyright (c) 1996-2001                         ##
 ##                        All Rights Reserved.                           ##
 ##                                                                       ##
 ##  Permission is hereby granted, free of charge, to use and distribute  ##
@@ -34,7 +34,7 @@
 ##     Top level Makefile for Edinburgh Speech tools library             ##
 ##     Authors: Paul Taylor, Simon King, Alan W Black, Richard Caley     ##
 ##                 and others (see ACKNOWLEDGEMENTS)                     ##
-##     Version: 1.2.1 release November 1999                              ##
+##     Version: 1.2.2 beta March 2001                                    ##
 ##                                                                       ##
 ###########################################################################
 
@@ -50,14 +50,16 @@ TEMPLATE_DIRS=include audio utils base_class base_class/string \
 EXTRA_DIRS=siod java rxp
 ALL_DIRS = include $(BUILD_DIRS) $(EXTRA_DIRS) config doc 
 VERSION=$(PROJECT_VERSION)
-FILES=Makefile README INSTALL
+CONFIG=configure configure.in config.sub config.guess \
+       missing install-sh mkinstalldirs
+FILES=Makefile README INSTALL $(CONFIG)
 
 LOCAL_CLEAN= Build.trace Test.trace Templates.DB
 
 ALL = .config_error .sub_directories
 
 # Try and say if config hasn't been created
-config_dummy := $(shell test -f config/config || { echo '*** '; echo '*** Please Copy config/config-dist to config and edit to set options ***'; echo '*** '; }  >&2)
+config_dummy := $(shell test -f config/config || ( echo '*** '; echo '*** Making default config file ***'; echo '*** '; ./configure; )  >&2)
 
 # force a check on the system file
 system_dummy := $(shell $(MAKE) -C $(TOP)/config -f make_system.mak TOP=.. system.mak)
@@ -68,9 +70,9 @@ dist:	backup
 backup:  time-stamp
 	 @ $(MAKE) file-list
 	 @ sed 's/^\.\///' <FileList | sed 's/^/speech_tools\//' >FileList.all
-	 @ (cd ..; tar cvf - `cat speech_tools/FileList.all` speech_tools/.time-stamp | gzip > speech_tools/speech_tools-$(VERSION).tar.gz)
+	 @ (cd ..; tar cvf - `cat speech_tools/FileList.all` speech_tools/.time-stamp | gzip > speech_tools/speech_tools-$(VERSION)-$(PROJECT_STATE).tar.gz)
 	 @ $(RM) -f $(TOP)/FileList.all
-	 @ ls -l speech_tools-$(VERSION).tar.gz
+	 @ ls -l speech_tools-$(VERSION)-$(PROJECT_STATE).tar.gz
 
 time-stamp :
 	@ echo speech_tools $(VERSION) >.time-stamp
@@ -102,6 +104,12 @@ rebuild_and_test:
 		echo warnings found ;\
 		exit 2 ;\
 	fi
+
+config/config: config/config.in config.status
+	./config.status
+
+configure: configure.in
+	autoconf
 
 %.html: %.md _layouts/webpage.html
 	kramdown --template _layouts/webpage.html $< > $@

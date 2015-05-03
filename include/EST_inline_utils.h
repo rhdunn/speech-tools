@@ -35,7 +35,7 @@
   * Some simple inline functions gatherred together in one place.
   * <p>
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_inline_utils.h,v 1.4 1999/05/30 13:51:58 awb release $
+  * @version $Id: EST_inline_utils.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 //@{

@@ -66,7 +66,7 @@ extern "C"
 
 bool esd_supported = TRUE;
 
-int endian_int = 1;
+static int endian_int = 1;
 #define ESD_BIG_ENDIAN (((char *)&endian_int)[0] == 0)
 
 EST_String server;

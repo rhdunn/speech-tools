@@ -60,7 +60,7 @@
   * @see EST_THandle:example
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_THandle.h,v 1.8 1999/05/30 13:51:49 awb release $
+  * @version $Id: EST_THandle.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 

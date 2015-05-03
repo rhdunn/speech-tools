@@ -210,6 +210,29 @@ Java_cstr_est_Relation_cpp_1tail(JNIEnv *env, jobject self)
 }
 
 JNIEXPORT jlong JNICALL
+Java_cstr_est_Relation_cpp_1append(JNIEnv *env, jobject self)
+{
+  EST_Relation *relation = (EST_Relation *) env->GetLongField(self, handle_field);
+
+  EST_Item * item = relation->append();
+
+  return (long)item;
+}
+
+JNIEXPORT void JNICALL 
+Java_cstr_est_Relation_cpp_1removeItemList(JNIEnv *env, 
+					   jobject self,
+					   jlong ihandle
+					   )
+{  
+  EST_Relation *relation = (EST_Relation *) env->GetLongField(self, handle_field);
+  EST_Item * item = (EST_Item *)ihandle;
+
+  remove_item_list(relation, item);
+}
+
+
+JNIEXPORT jlong JNICALL
 Java_cstr_est_Relation_cpp_1findItem(JNIEnv *env, jobject self, jfloat time)
 {
   EST_Relation *relation = (EST_Relation *) env->GetLongField(self, handle_field);

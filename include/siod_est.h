@@ -47,11 +47,11 @@ class EST_Val &val(LISP x);
 int val_p(LISP x);
 LISP siod(const class EST_Val v);
 
-SIOD_REGISTER_CLASS_DCLS(utterance,EST_Utterance)
-SIOD_REGISTER_CLASS_DCLS(item,EST_Item)
 SIOD_REGISTER_CLASS_DCLS(wave,EST_Wave)
 SIOD_REGISTER_CLASS_DCLS(track,EST_Track)
 SIOD_REGISTER_CLASS_DCLS(feats,EST_Features)
+SIOD_REGISTER_CLASS_DCLS(utterance,EST_Utterance)
+SIOD_REGISTER_CLASS_DCLS(item,EST_Item)
 SIOD_REGISTER_CLASS_DCLS(scheme,obj)
 
 #define get_c_utt(x) (utterance(x))

@@ -195,7 +195,7 @@ void simple_mean_smooth(EST_Track &c, int n, int channel)
     }
     
     for (i = 0; i < c.num_frames(); ++i)
-	c.a(i) = a[i];
+	c.a(i,channel) = a[i];
     
     delete [] a;
 }

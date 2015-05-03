@@ -39,7 +39,7 @@
 /** Instantiate rules for hash template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TStringHashI.h,v 1.5 1999/06/14 12:12:43 rjc release $
+  * @version $Id: EST_TStringHashI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 // Instantiation Macros

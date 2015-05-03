@@ -37,20 +37,19 @@
 /* A class for building EST_String (char-based) tries for indexing       */
 /* arbitrary objects by Strings                                          */
 /*                                                                       */
-/* Not this only works for 7bit strings                                  */
-/*                                                                       */
 /*=======================================================================*/
 #include "EST_String.h"
 #include "EST_StringTrie.h"
 #include <string.h>
 
-#define TRIEWIDTH 128
+#define TRIEWIDTH 256
 
 static void (* trie_delete_function)(void *n) = 0;
 
 static inline int char2idx(unsigned char k)
 {
-    return k & 0x7f;  // only seven significant bits;
+//    return k & 0x7f;  // only seven significant bits;
+    return k;
 }
 
 EST_TrieNode::EST_TrieNode(const int width)

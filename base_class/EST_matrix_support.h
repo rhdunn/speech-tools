@@ -38,7 +38,7 @@
 /** Support functions for all matricies.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_matrix_support.h,v 1.3 1999/05/30 13:50:36 awb release $
+  * @version $Id: EST_matrix_support.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 bool EST_matrix_bounds_check(int r,

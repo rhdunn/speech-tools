@@ -64,7 +64,7 @@ public class Item_Content_Window extends Container
       removeAll();
       if (content != null)
 	{
-	  String [] names = content.featureNames();
+	  String [] names = getFeatureNames(content);
 	  Label l;
 
 	  for(int i=0; i<names.length; i++)
@@ -76,4 +76,19 @@ public class Item_Content_Window extends Container
 	    }
 	}
     }
+
+  protected String [] getFeatureNames(Item_Content content)
+    {
+      Vector names = new Vector(100);
+
+      content.getFeatures().getPaths(null, names, false, true);
+
+      String [] s = new String[names.size()];
+
+      for (int i=0; i<s.length; i++)
+	s[i] = (String)names.elementAt(i);
+
+      return s;
+    }
+    
 }

@@ -203,6 +203,21 @@ void copy_relation(const EST_Relation &from, EST_Relation &to)
     }
 }
 
+EST_write_status EST_Relation::save(ostream &outf,
+				    const EST_String &type,
+				    bool evaluate_ff) const
+{
+    if (type == "esps")
+	return save_esps_label(&outf,*this,evaluate_ff);
+    else if (type == "htk")
+	return save_htk_label(&outf,*this);
+    else
+    {
+      EST_warning("EST_Relation: unsupported type: \"%s\"", (const char *)type);
+	return write_fail;
+    }
+}
+
 EST_write_status EST_Relation::save(const EST_String &filename, 
 				    const EST_String &type,
 				    bool evaluate_ff) const
@@ -262,6 +277,7 @@ EST_write_status EST_Relation::save_items(EST_Item *node,
     return write_ok;
 }
 
+#if 0
 EST_read_status EST_Relation::load(EST_TokenStream &ts,
 				   const EST_THash<int,EST_Val> &contents)
 {
@@ -286,6 +302,7 @@ EST_read_status EST_Relation::load(EST_TokenStream &ts,
 
     return format_ok;
 }
+#endif
 
 EST_read_status EST_Relation::load(EST_TokenStream &ts,
 				   const EST_TVector < EST_Item_Content * > &contents
@@ -338,6 +355,7 @@ void EST_Relation::node_tidy_up(int &k, EST_Item *node)
     delete node;
 }
 
+#if 0
 EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 					 const EST_THash<int,EST_Val> &contents)
 {
@@ -348,6 +366,8 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
     EST_THash<int,EST_Val> nodenames(100);
     EST_read_status r = format_ok;
     EST_Item *node = 0;
+    EST_Relation *rel=NULL;
+//    int expect_links=0;
 
     while (ts.peek() != "End_of_Relation")
     {
@@ -355,6 +375,16 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 	int siname;
 
 	node = get_item_from_name(nodenames,name);
+	if (!node)
+	  EST_error("Unknown item %d", name);
+
+	if (rel==NULL)
+	  {
+	    rel=node->relation();
+//	    EST_String type = rel->f.S("type", "");
+//	    expect_links = (type == "ladder");
+	  }
+
 	siname = atoi(ts.get().string());
 	if (siname != 0) 
 	{
@@ -363,7 +393,7 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 	    if (!found)
 	    {
 		cerr << "load_nodes: " << ts.pos_description() << 
-		    " node's stream item " << siname << " doesn't exist\n";
+		    " node's item contents" << siname << " doesn't exist\n";
 		r = misc_read_error;
 		break;
 	    }
@@ -375,8 +405,23 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 	node->d = get_item_from_name(nodenames,atoi(ts.get().string()));
 	node->n = get_item_from_name(nodenames,atoi(ts.get().string()));
 	node->p = get_item_from_name(nodenames,atoi(ts.get().string()));
-    }
 
+	
+	// Read ladder links
+#if 0
+	if (expect_links)
+	  {
+	    int numlinks = atoi(ts.get().string());
+	    // node->link_feats.set("num_links",numlinks);
+	    for (int i=0;i<numlinks;++i)
+	      {
+		EST_Item * item = get_item_from_name(nodenames,atoi(ts.get().string()));
+		node->link_feats.set_val("link" + itoString(i),est_val(item));
+	      }
+	  }
+#endif
+    }
+    
     ts.get(); // skip End_of_Relation
 
     if (r == format_ok)
@@ -404,6 +449,7 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
     }
     return r;
 }    
+#endif
 
 EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 					 const EST_TVector < EST_Item_Content * > &contents
@@ -418,6 +464,8 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
     //    EST_THash<int,EST_Val> nodenames(100);
     EST_read_status r = format_ok;
     EST_Item *node = 0;
+    EST_Relation *rel=NULL;
+//    int expect_links=0;
 
     while (ts.peek() != "End_of_Relation")
     {
@@ -425,25 +473,49 @@ EST_read_status EST_Relation::load_items(EST_TokenStream &ts,
 	int siname;
 
 	node = get_item_from_name(nodenames,name);
+	if (!node)
+	  EST_error("Unknown item %d", name);
+
+	if (rel==NULL)
+	  {
+	    rel=node->relation();
+//	    EST_String type = rel->f.S("type", "");
+//	    expect_links = (type == "ladder");
+	  }
+
 	siname = atoi(ts.get().string());
 	if (siname != 0) 
 	{
 	  EST_Item_Content *c = contents(siname);
-	    if (c==NULL)
+	  if (c==NULL)
 	    {
-		cerr << "load_nodes: " << ts.pos_description() << 
-		    " node's stream item " << siname << " doesn't exist\n";
-		r = misc_read_error;
-		break;
+	      cerr << "load_nodes: " << ts.pos_description() << 
+		" node's stream item " << siname << " doesn't exist\n";
+	      r = misc_read_error;
+	      break;
 	    }
-	    else
-		node->set_contents(c);
+	  else
+	    node->set_contents(c);
 	}
 	// up down next previous
 	node->u = get_item_from_name(nodenames,atoi(ts.get().string()));
 	node->d = get_item_from_name(nodenames,atoi(ts.get().string()));
 	node->n = get_item_from_name(nodenames,atoi(ts.get().string()));
 	node->p = get_item_from_name(nodenames,atoi(ts.get().string()));
+
+#if 0
+	// Read ladder links
+	if (expect_links)
+	  {
+	    int numlinks = atoi(ts.get().string());
+	    // node->link_feats.set("num_links",numlinks);
+	    for (int i=0;i<numlinks;++i)
+	      {
+		EST_Item * item = get_item_from_name(nodenames,atoi(ts.get().string()));
+		// node->link_feats.set_val("link" + itoString(i),est_val(item));
+	      }
+	  }
+#endif
     }
 
     ts.get(); // skip End_of_Relation
@@ -522,18 +594,11 @@ EST_Item *EST_Relation::get_item_from_name(EST_TVector< EST_Item * > &nodenames,
 }
 
 EST_read_status EST_Relation::load(const EST_String &filename,
+				   EST_TokenStream &ts,
 				   const EST_String &type)
 {
-    // Load an isolated relation from a file, assuming Xlabel format
-    EST_TokenStream ts;
     EST_read_status r;
 
-    if (((filename == "-") ? ts.open(cin) : ts.open(filename)) != 0)
-    {
-	cerr << "load_relation: can't open relation input file " 
-	    << filename << endl;
-	return misc_read_error;
-    }
     f.set("filename",filename);
 
     if (type == "esps")
@@ -549,7 +614,26 @@ EST_read_status EST_Relation::load(const EST_String &filename,
     else   // currently esps is the default
 	r = load_esps_label(ts,*this);
 
+    return r;
+}
+
+EST_read_status EST_Relation::load(const EST_String &filename,
+				   const EST_String &type)
+{
+    // Load an isolated relation from a file, assuming Xlabel format
+    EST_TokenStream ts;
+    EST_read_status r;
+
+    if (((filename == "-") ? ts.open(cin) : ts.open(filename)) != 0)
+    {
+	cerr << "load_relation: can't open relation input file " 
+	    << filename << endl;
+	return misc_read_error;
+    }
+    r = load(filename, ts, type);
+
     ts.close();
+
     return r;
 }
 

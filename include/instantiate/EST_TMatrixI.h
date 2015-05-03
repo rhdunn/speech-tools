@@ -38,7 +38,7 @@
 /** Instantiate rules for matrix template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TMatrixI.h,v 1.4 1999/05/30 13:52:08 awb release $
+  * @version $Id: EST_TMatrixI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 

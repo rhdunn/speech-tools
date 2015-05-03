@@ -55,7 +55,7 @@
   * @see EST_ChannelType
   * @see EST_TrackMap:example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TrackMap.h,v 1.22 1999/05/30 13:51:53 awb release $
+  * @version $Id: EST_TrackMap.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 class EST_TrackMap : public EST_Handleable
 {

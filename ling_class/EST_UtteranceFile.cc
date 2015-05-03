@@ -100,10 +100,13 @@ EST_read_status EST_UtteranceFile::load_est_ascii(EST_TokenStream &ts,
 	return misc_read_error;
     if (hinfo.ival("version") != 2)
     {
-	cerr << "utt_load: " << ts.pos_description() <<
-	    " wrong version of utterance format expected 2 but found " <<
-		hinfo.ival("version") << endl;
-	return misc_read_error;
+      if (hinfo.ival("version") == 3)
+	EST_warning("Loading est utterance format version 3, ladders will not be understood");
+      else
+	{
+	  EST_error("utt_load: %s  wrong version of utterance format expected 2 (or 3) but found %d",  
+		    (const char *)ts.pos_description(), hinfo.ival("version"));
+	}
     }
 
     // Utterance features
@@ -341,48 +344,68 @@ static EST_write_status utt_save_ling_content(ostream &outf,
     return write_ok;
 }
 
+EST_read_status EST_UtteranceFile::load_xlabel(EST_TokenStream &ts,
+					       EST_Utterance &u, 
+					       int &max_id)
+{
+  (void)max_id;
+  EST_read_status status = read_ok;
+
+  u.clear();
+
+  EST_Relation *rel = u.create_relation("labels");
+
+  status = rel->load("", ts, "esps");
+
+  EST_Item *i = rel->head();
+  float t=0.0;
+
+  while (i != NULL)
+    {
+      i->set("start", t);
+      t = i->F("end");
+      i = i->next();
+    }
+
+  return status;
+}
+
+EST_write_status EST_UtteranceFile::save_xlabel(ostream &outf,
+						const EST_Utterance &utt)
+{
+  EST_write_status status = write_error;
+
+  EST_Relation *rel;
+
+  EST_Features::Entries p;
+
+  for (p.begin(utt.relations); p; p++)
+    {
+      rel = ::relation(p->v);
+
+      EST_Item * hd = rel->head();
+
+      
+      while (hd)
+	{
+	  if (hd->up() || hd->down())
+	    break;
+	  hd=hd->next();
+	}
+
+      // didn't find anything => this is linear
+      if(!hd)
+	  return rel->save(outf, "esps", 0);
+    }
+
+  // Found no linear relations
+  
+  return status;
+}
 
 #if defined(INCLUDE_XML_FORMATS)
 
-#include "solexml.h"
 #include "genxml.h"
-
-// SoleXML support
-
-EST_read_status EST_UtteranceFile::load_solexml(EST_TokenStream &ts,
-						EST_Utterance &u, 
-						int &max_id)
-{
-  FILE *stream;
-
-  if ((stream=ts.filedescriptor())==NULL)
-    return read_error;
-
-  long pos=ftell(stream);
-
-  {
-  char buf[80];
-
-  fgets(buf, 80, stream);
-
-  if (strncmp(buf, "<?xml", 5) != 0)
-    return read_format_error;
-
-  fgets(buf, 80, stream);
-
-  if (strncmp(buf, "<!DOCTYPE solexml", 17) != 0)
-    return read_format_error;
-  }
-
-  fseek(stream, pos, 0);
-
-  EST_read_status stat = solexml_read(stream, ts.filename(),u, max_id);
-
-  if (stat != read_ok)
-    fseek(stream, pos, 0);
-
-  return stat;
-}
 
 // GenXML support
 
@@ -414,6 +437,100 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
     fseek(stream, pos, 0);
 
   return stat;
+}
+
+EST_write_status EST_UtteranceFile::save_genxml(ostream &outf,
+						const EST_Utterance &utt)
+{
+  EST_write_status status=write_ok;
+
+  EST_TStringHash<int> features(20);
+
+  EST_Features::Entries p;
+
+  for (p.begin(utt.relations); p; ++p)
+    {
+      EST_Relation *rel = ::relation(p->v);
+
+      EST_Item * hd = rel->head();
+      
+      while (hd)
+	{
+	  EST_Features::Entries fp;
+	  for (fp.begin(hd->features()); fp; ++fp)
+	    features.add_item(fp->k, 1);
+	  hd=hd->next();
+	}
+    }
+
+  outf << "<?xml version='1.0'?>\n";
+
+  outf << "<!DOCTYPE utterance PUBLIC '//CSTR EST//DTD cstrutt//EN' 'cstrutt.dtd'\n\t[\n";
+
+  EST_TStringHash<int>::Entries f;
+
+  outf << "\t<!ATTLIST item\n";
+  for (f.begin(features); f; ++f)
+    {
+      if (f->k != "id")
+	{
+	  outf << "\t\t" << f->k << "\tCDATA #IMPLIED\n";
+	}
+    }
+
+  outf << "\t\t>\n";
+
+  outf << "\t]>\n";
+
+  outf << "<utterance>\n";
+
+  outf << "<language name='unknown'/>\n";
+
+  for (p.begin(utt.relations); p; ++p)
+    {
+      EST_Relation *rel = ::relation(p->v);
+
+      EST_Item * hd = rel->head();
+
+      
+      while (hd)
+	{
+	  if (hd->up() || hd->down())
+	    break;
+	  hd=hd->next();
+	}
+
+      // didn't find anything => this is linear
+      if(!hd)
+	{
+	  outf << "<relation name='"<< rel->name()<< "' structure-type='list'>\n";
+
+	  hd = rel->head();
+	  while (hd)
+	    {
+	      outf << "    <item\n";
+
+	      EST_Features::Entries p;
+	      for (p.begin(hd->features()); p; ++p)
+		if (p->k != "estContentFeature")
+		  outf << "         " << p->k << "='" << p->v << "'\n";
+
+	      outf << "         />\n";
+	      
+	      hd=hd->next();
+	    }
+	  
+	  outf << "</relation>\n";
+	}
+      else // for now give an error for non-linear relations
+	status=write_partial;
+    }
+  
+
+  outf << "</utterance>\n";
+
+  return status;
+;
 }
 #endif
 
@@ -474,13 +591,14 @@ Start_TNamedEnumI_T(EST_UtteranceFileType, EST_UtteranceFile::Info, EST_Utteranc
   { uff_est,		{ "est", "est_ascii"}, 
     { TRUE, EST_UtteranceFile::load_est_ascii,  EST_UtteranceFile::save_est_ascii, "Standard EST Utterance File" } },
 #if defined(INCLUDE_XML_FORMATS)
-  { uff_solexml,	{ "solexml"}, 
-    { TRUE, EST_UtteranceFile::load_solexml,  NULL, "Utterance in XML, solexml DTD" } },
   { uff_genxml,		{ "genxml", "xml"}, 
-    { TRUE, EST_UtteranceFile::load_genxml,  NULL, "Utterance in XML, Any DTD" } },
+    { TRUE, EST_UtteranceFile::load_genxml,  EST_UtteranceFile::save_genxml, "Utterance in XML, Any DTD" } },
 #endif
+  { uff_xlabel,	{ "xlabel"}, 
+    { TRUE, EST_UtteranceFile::load_xlabel,  EST_UtteranceFile::save_xlabel, "Xwaves Label File" } },
   { uff_none,		{NULL},
       { FALSE, NULL, NULL, "unknown utterance file type"} }
+
 End_TNamedEnumI_T(EST_UtteranceFileType, EST_UtteranceFile::Info, EST_UtteranceFile::map, utterancefile)
 
 Declare_TNamedEnumI(EST_UtteranceFileType, EST_UtteranceFile::Info)

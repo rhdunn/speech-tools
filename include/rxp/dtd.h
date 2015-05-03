@@ -201,8 +201,8 @@ XML_API const char8 *EntityBaseURL(Entity e);
 XML_API Entity DefineEntity(Dtd dtd, Entity entity, int pe);
 XML_API Entity FindEntityN(Dtd dtd, const Char *name, int namelen, int pe);
 
-#define NewExternalEntity(name, pub, sys, not, parent) \
-    NewExternalEntityN(name, name ? Strlen(name) : 0, pub, sys, not, parent)
+#define NewExternalEntity(name, pub, sys, nnot, parent) \
+    NewExternalEntityN(name, name ? Strlen(name) : 0, pub, sys, nnot, parent)
 #define NewInternalEntity(name, test, parent, l, l1, mat) \
     NewInternalEntityN(name, name ? Strlen(name) : 0, test, parent, l, l1, mat)
 #define FindEntity(dtd, name, pe) FindEntityN(dtd, name, Strlen(name), pe)

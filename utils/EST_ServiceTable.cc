@@ -54,6 +54,18 @@
 #    define get_random() random()
 #endif
 
+#if defined(__sun__) && defined(__sparc__) && defined(__svr4__)
+/* Solaris */
+extern "C" {
+int gethostname(char *name, int namelen);
+long random();
+#if defined(older_solaris)
+int srandom( unsigned seed);
+#endif
+}
+#endif
+
+
 EST_ServiceTable::EntryTable EST_ServiceTable::entries;
 bool EST_ServiceTable::random_init=FALSE;
 
@@ -292,11 +304,11 @@ const EST_ServiceTable::Entry &EST_ServiceTable::create(const EST_String name,
   long cookie = get_random();
   struct sockaddr_in sin;
 
-  int size=sizeof(struct sockaddr_in);
+  socklen_t size=sizeof(struct sockaddr_in);
 
   // This only gets the port number
 
-  if (getsockname(socket, (struct sockaddr *)&sin, SOCKLEN_CAST &size) != 0)
+  if (getsockname(socket, (struct sockaddr *)&sin, &size) != 0)
     EST_sys_error("Can't find my address");
 
 

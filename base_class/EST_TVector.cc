@@ -162,7 +162,7 @@ void EST_TVector<T>::just_resize(int new_cols, T** old_vals)
 {
   T *new_m;
   
-  if (num_columns() != new_cols)
+  if (num_columns() != new_cols || p_memory == NULL )
     {
       if (p_sub_matrix)
 	EST_error("Attempt to resize Sub-Vector");
@@ -180,6 +180,7 @@ void EST_TVector<T>::just_resize(int new_cols, T** old_vals)
 	  delete [] (p_memory-p_offset);
 
       p_memory = new_m;
+      //cout << "vr: mem: " << p_memory << " (" << (int)p_memory << ")\n";
       p_offset=0;
       p_num_columns = new_cols;
       p_column_step=1;
@@ -334,4 +335,15 @@ int i;
    st << a(i) << " "; st << endl; 
  return st;
 }
+
+template<class T>
+void EST_TVector<T>::integrity() const
+{
+  cout << "integrity: p_memory=" << p_memory << endl;
+  if(p_memory == (T *)0x00080102) 
+    {
+      cout << "fatal value!!!\n";
+    }
+}
+
 

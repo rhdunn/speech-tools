@@ -37,7 +37,7 @@
   * Privare header interfacing sole file format.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: solexml.h,v 1.3 1999/05/30 13:52:55 awb release $
+  * @version $Id: solexml.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 #ifndef __SOLEXML_H__

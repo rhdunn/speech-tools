@@ -56,12 +56,12 @@
 
 #undef TRUE
 #undef FALSE
-#include <Windows32/BASE.h>
-
-#define SND_MEMORY          0x0004  
-
-#define WAVE_FORMAT_PCM     1
-
+/*  Changed for cygwin 1
+  #include <Windows32/BASE.h>
+  #define SND_MEMORY          0x0004  
+  #define WAVE_FORMAT_PCM     1
+*/
+#include <windows.h>
 extern "C" {
 WINBOOL STDCALL PlaySoundA(LPCSTR  pszSound, HMODULE hmod, DWORD fdwSound);
 };

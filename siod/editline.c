@@ -48,7 +48,7 @@
 /*                                                                          */
 /****************************************************************************/
 
-/*  $Revision: 1.12 $
+/*  $Revision: 1.2 $
 **
 **  Main editing routines for editline library.
 */
@@ -89,7 +89,7 @@ typedef enum _CASE {
 **  Key to command mapping.
 */
 typedef struct _KEYMAP {
-    CHAR	Key;
+    ECHAR	Key;
     STATUS	(*Function)();
 } KEYMAP;
 
@@ -99,7 +99,7 @@ typedef struct _KEYMAP {
 typedef struct _HISTORY {
     int		Size;
     int		Pos;
-    CHAR	**Lines;
+    ECHAR	**Lines;
 } HISTORY;
 
 /*
@@ -110,11 +110,11 @@ int		rl_erase;
 int		rl_intr;
 int		rl_kill;
 
-CHAR		el_NIL[] = "";
-extern CONST CHAR	*el_Input;
-STATIC CHAR		*Line = NULL;
+ECHAR		el_NIL[] = "";
+extern CONST ECHAR	*el_Input;
+STATIC ECHAR		*Line = NULL;
 STATIC CONST char	*Prompt = NULL;
-STATIC CHAR		*Yanked = NULL;
+STATIC ECHAR		*Yanked = NULL;
 STATIC char		*Screen = NULL;
 /* STATIC char		NEWLINE[]= CRLF; */
 STATIC HISTORY		H;
@@ -128,17 +128,17 @@ extern int		el_PushBack;
 extern int		el_Pushed;
 FORWARD KEYMAP		Map[33];
 FORWARD KEYMAP		MetaMap[64];
-STATIC SIZE_T		Length;
-STATIC SIZE_T		ScreenCount;
-STATIC SIZE_T		ScreenSize;
-STATIC CHAR		*backspace = NULL;
-STATIC CHAR		*upline = NULL;
-STATIC CHAR		*clrpage = NULL;
-STATIC CHAR		*downline = NULL;
-STATIC CHAR		*move_right = NULL;
-STATIC CHAR             *newline = NULL;
-STATIC CHAR             *bol = NULL;
-STATIC CHAR             *nextline = NULL;
+STATIC ESIZE_T		Length;
+STATIC ESIZE_T		ScreenCount;
+STATIC ESIZE_T		ScreenSize;
+STATIC ECHAR		*backspace = NULL;
+STATIC ECHAR		*upline = NULL;
+STATIC ECHAR		*clrpage = NULL;
+STATIC ECHAR		*downline = NULL;
+STATIC ECHAR		*move_right = NULL;
+STATIC ECHAR             *newline = NULL;
+STATIC ECHAR             *bol = NULL;
+STATIC ECHAR             *nextline = NULL;
 STATIC int		TTYwidth;
 STATIC int		TTYrows;
 STATIC int              RequireNLforWrap = 1;
@@ -147,10 +147,10 @@ int                     el_no_echo = 0;  /* e.g under emacs */
 
 /* A little ansification with prototypes -- awb */
 extern void TTYflush();
-STATIC void TTYput(CHAR c);
-STATIC void TTYputs(CHAR *p);
-STATIC void TTYshow(CHAR c);
-STATIC void TTYstring(CHAR *p);
+STATIC void TTYput(ECHAR c);
+STATIC void TTYputs(ECHAR *p);
+STATIC void TTYshow(ECHAR c);
+STATIC void TTYstring(ECHAR *p);
 extern unsigned int TTYget();
 STATIC void TTYinfo();
 STATIC void print_columns(int ac, char **av);
@@ -162,22 +162,22 @@ STATIC STATUS ring_bell();
 STATIC STATUS do_macro(unsigned int c);
 #endif
 STATIC STATUS do_forward(STATUS move);
-STATIC STATUS do_case(CHAR type);
+STATIC STATUS do_case(ECHAR type);
 STATIC STATUS case_down_word();
 STATIC STATUS case_up_word();
 STATIC void ceol();
 STATIC void clear_line();
-STATIC STATUS insert_string(CHAR *p);
-STATIC CHAR *next_hist();
-STATIC CHAR *prev_hist();
-STATIC STATUS do_insert_hist(CHAR *p);
-STATIC STATUS do_hist(CHAR *(*move)());
+STATIC STATUS insert_string(ECHAR *p);
+STATIC ECHAR *next_hist();
+STATIC ECHAR *prev_hist();
+STATIC STATUS do_insert_hist(ECHAR *p);
+STATIC STATUS do_hist(ECHAR *(*move)());
 STATIC STATUS h_next();
 STATIC STATUS h_prev();
 STATIC STATUS h_first();
 STATIC STATUS h_last();
 STATIC int substrcmp(char *text, char *pat, int len);
-STATIC CHAR *search_hist(CHAR *search, CHAR *(*move)());
+STATIC ECHAR *search_hist(ECHAR *search, ECHAR *(*move)());
 STATIC STATUS h_search();
 STATIC STATUS fd_char();
 STATIC void save_yank(int begin, int i);
@@ -192,12 +192,12 @@ STATIC STATUS insert_char(int c);
 STATIC STATUS meta();
 STATIC STATUS emacs(unsigned int c);
 STATIC STATUS TTYspecial(unsigned int c);
-STATIC CHAR *editinput();
-STATIC void hist_add(CHAR *p);
+STATIC ECHAR *editinput();
+STATIC void hist_add(ECHAR *p);
 STATIC STATUS beg_line();
 STATIC STATUS del_char();
 STATIC STATUS end_line();
-STATIC CHAR *find_word();
+STATIC ECHAR *find_word();
 STATIC STATUS c_complete();
 STATIC STATUS c_possible();
 STATIC STATUS accept_line();
@@ -213,7 +213,7 @@ STATIC STATUS fd_word();
 STATIC STATUS fd_kill_word();
 STATIC STATUS bk_word();
 STATIC STATUS bk_kill_word();
-STATIC int argify(CHAR *line, CHAR ***avp);
+STATIC int argify(ECHAR *line, ECHAR ***avp);
 STATIC STATUS last_argument();
 
 /* Display print 8-bit chars as `M-x' or as the actual 8-bit char? */
@@ -222,7 +222,7 @@ int		rl_meta_chars = 0;
 /*
 **  Declarations.
 */
-STATIC CHAR	*editinput();
+STATIC ECHAR	*editinput();
 #if	defined(USE_TERMCAP)
 extern char	*getenv();
 extern char	*tgetstr();
@@ -243,7 +243,7 @@ void TTYflush()
     }
 }
 
-STATIC void TTYput(CHAR c)
+STATIC void TTYput(ECHAR c)
 {
     Screen[ScreenCount] = c;
     if (++ScreenCount >= ScreenSize - 1) {
@@ -252,13 +252,13 @@ STATIC void TTYput(CHAR c)
     }
 }
 
-STATIC void TTYputs(CHAR *p)
+STATIC void TTYputs(ECHAR *p)
 {
     while (*p)
 	TTYput(*p++);
 }
 
-STATIC void TTYshow(CHAR c)
+STATIC void TTYshow(ECHAR c)
 {
     if (c == DEL) {
 	TTYput('^');
@@ -277,7 +277,7 @@ STATIC void TTYshow(CHAR c)
 	TTYput(c);
 }
 
-STATIC void TTYstring(CHAR *p)
+STATIC void TTYstring(ECHAR *p)
 {
     while (*p)
 	TTYshow(*p++);
@@ -285,7 +285,7 @@ STATIC void TTYstring(CHAR *p)
 
 #if 0
 /* Old one line version */
-#define TTYback()	(backspace ? TTYputs((CHAR *)backspace) : TTYput('\b'))
+#define TTYback()	(backspace ? TTYputs((ECHAR *)backspace) : TTYput('\b'))
 #endif
 
 STATIC int printlen(CONST char *p)
@@ -336,7 +336,7 @@ STATIC void TTYback()
 	    TTYputs(move_right);
     }
     else if (backspace)
-	TTYputs((CHAR *)backspace);
+	TTYputs((ECHAR *)backspace);
     else
 	TTYput('\b');
 }
@@ -379,28 +379,28 @@ STATIC void TTYinfo()
        TTYrows = SCREEN_ROWS;
        return;
     }
-    backspace = (CHAR *)tgetstr("le", &bp);
-    upline = (CHAR *)tgetstr("up", &bp);
-    clrpage = (CHAR *)tgetstr("cl", &bp);
-    nextline = (CHAR *)tgetstr("nl", &bp);
+    backspace = (ECHAR *)tgetstr("le", &bp);
+    upline = (ECHAR *)tgetstr("up", &bp);
+    clrpage = (ECHAR *)tgetstr("cl", &bp);
+    nextline = (ECHAR *)tgetstr("nl", &bp);
     if (nextline==NULL)
-      nextline = (CHAR *)"\n";
+      nextline = (ECHAR *)"\n";
     if (strncmp(term, "pcansi", 6)==0 || strncmp(term, "cygwin", 6)==0)
     {
-	bol = (CHAR *)"\033[0G";
+	bol = (ECHAR *)"\033[0G";
 	RequireNLforWrap = 0; /* doesn't require nl to get to next line */
     }
     else
-	bol = (CHAR *)tgetstr("cr", &bp);
+	bol = (ECHAR *)tgetstr("cr", &bp);
     if (bol==NULL)
-      bol = (CHAR *)"\r";
+      bol = (ECHAR *)"\r";
 
-    newline= walloc(CHAR, 20);
+    newline= walloc(ECHAR, 20);
     strcpy((char *)newline,(char *)bol);
     strcat((char *)newline,(char *)nextline);
 
-    downline = (CHAR *)newline;
-    move_right = (CHAR *)tgetstr("nd", &bp);
+    downline = (ECHAR *)newline;
+    move_right = (ECHAR *)tgetstr("nd", &bp);
     if (!move_right || !downline) 
 	upline = NULL;  /* terminal doesn't support enough so fall back */
     TTYwidth = tgetnum("co");
@@ -426,7 +426,7 @@ STATIC void TTYinfo()
 */
 STATIC void print_columns(int ac, char **av)
 {
-    CHAR	*p;
+    ECHAR	*p;
     int		i,c;
     int		j;
     int		k;
@@ -438,15 +438,15 @@ STATIC void print_columns(int ac, char **av)
 
     if (ac > 99)
     {
-	TTYputs((CHAR *)newline);
+	TTYputs((ECHAR *)newline);
 	sprintf(info1,"There are %d possibilities.  Do you really \n",ac);
-	TTYputs((CHAR *)info1);
-	TTYputs((CHAR *)"want to see them all (y/n) ? ");
+	TTYputs((ECHAR *)info1);
+	TTYputs((ECHAR *)"want to see them all (y/n) ? ");
 	while (((c = TTYget()) != EOF) && ((strchr("YyNn ",c) == NULL)))
 	    ring_bell();
 	if (strchr("Nn",c) != NULL)
 	{
-	    TTYputs((CHAR *)newline);
+	    TTYputs((ECHAR *)newline);
 	    return;
 	}
     }
@@ -458,17 +458,17 @@ STATIC void print_columns(int ac, char **av)
     cols = TTYwidth / (longest + 3);
     if (cols < 1) cols = 1;
 
-    TTYputs((CHAR *)newline);
+    TTYputs((ECHAR *)newline);
     for (skip = ac / cols + 1, i = 0; i < skip; i++) {
 	for (j = i; j < ac; j += skip) {
-	    for (p = (CHAR *)av[j], len = strlen((char *)p), k = len; 
+	    for (p = (ECHAR *)av[j], len = strlen((char *)p), k = len; 
 		 --k >= 0; p++)
 		TTYput(*p);
 	    if (j + skip < ac)
 		while (++len < longest + 3)
 		    TTYput(' ');
 	}
-	TTYputs((CHAR *)newline);
+	TTYputs((ECHAR *)newline);
     }
 }
 
@@ -484,7 +484,7 @@ STATIC void reposition(int reset)
 	for (i=screen_pos()/TTYwidth; i > 0; i--)
 	    if (upline) TTYputs(upline);
     }
-    TTYputs((CHAR *)Prompt);
+    TTYputs((ECHAR *)Prompt);
     pos = printlen(Prompt);
     ppp[1] = '\0';
     for (i = 0; i < End; i++)
@@ -546,14 +546,14 @@ STATIC STATUS ring_bell()
 #if 0 
 STATIC STATUS do_macro(unsigned int c)
 {
-    CHAR		name[4];
+    ECHAR		name[4];
 
     name[0] = '_';
     name[1] = c;
     name[2] = '_';
     name[3] = '\0';
 
-    if ((el_Input = (CHAR *)getenv((char *)name)) == NULL) {
+    if ((el_Input = (ECHAR *)getenv((char *)name)) == NULL) {
 	el_Input = el_NIL;
 	return ring_bell();
     }
@@ -564,7 +564,7 @@ STATIC STATUS do_macro(unsigned int c)
 STATIC STATUS do_forward(STATUS move)
 {
     int		i;
-    CHAR	*p;
+    ECHAR	*p;
     (void) move;
 
     i = 0;
@@ -583,12 +583,12 @@ STATIC STATUS do_forward(STATUS move)
     return CSstay;
 }
 
-STATIC STATUS do_case(CHAR type)
+STATIC STATUS do_case(ECHAR type)
 {
     int		i;
     int		end;
     int		count;
-    CHAR	*p;
+    ECHAR	*p;
     int OP;
 
     OP = Point;
@@ -634,7 +634,7 @@ STATIC void ceol()
 {
     int		extras;
     int		i, PPoint;
-    CHAR	*p;
+    ECHAR	*p;
 
     PPoint = Point;
     for (extras = 0, i = Point, p = &Line[i]; i < End; i++, p++) {
@@ -690,16 +690,16 @@ STATIC void clear_line()
     Line[0] = '\0';
 }
 
-STATIC STATUS insert_string(CHAR *p)
+STATIC STATUS insert_string(ECHAR *p)
 {
-    SIZE_T	len;
+    ESIZE_T	len;
     int		i,pos0,pos1;
-    CHAR	*new;
-    CHAR	*q;
+    ECHAR	*new;
+    ECHAR	*q;
 
     len = strlen((char *)p);
     if (End + len >= Length) {
-	if ((new = NEW(CHAR, Length + len + MEM_INC)) == NULL)
+	if ((new = NEW(ECHAR, Length + len + MEM_INC)) == NULL)
 	    return CSstay;
 	if (Length) {
 	    COPYFROMTO(new, Line, Length);
@@ -738,17 +738,17 @@ STATIC STATUS insert_string(CHAR *p)
 }
 
 
-STATIC CHAR *next_hist()
+STATIC ECHAR *next_hist()
 {
     return H.Pos >= H.Size - 1 ? NULL : H.Lines[++H.Pos];
 }
 
-STATIC CHAR *prev_hist()
+STATIC ECHAR *prev_hist()
 {
     return H.Pos == 0 ? NULL : H.Lines[--H.Pos];
 }
 
-STATIC STATUS do_insert_hist(CHAR *p)
+STATIC STATUS do_insert_hist(ECHAR *p)
 {
     int i;
     if (p == NULL)
@@ -762,9 +762,9 @@ STATIC STATUS do_insert_hist(CHAR *p)
     return insert_string(p);
 }
 
-STATIC STATUS do_hist(CHAR *(*move)())
+STATIC STATUS do_hist(ECHAR *(*move)())
 {
-    CHAR	*p;
+    ECHAR	*p;
     int		i;
 
     i = 0;
@@ -800,7 +800,7 @@ STATIC STATUS h_last()
 */
 STATIC int substrcmp(char *text, char *pat, int len)
 {
-    CHAR	c;
+    ECHAR	c;
 
     if ((c = *pat) == '\0')
         return *text == '\0';
@@ -810,9 +810,9 @@ STATIC int substrcmp(char *text, char *pat, int len)
     return 1;
 }
 
-STATIC CHAR *search_hist(CHAR *search, CHAR *(*move)())
+STATIC ECHAR *search_hist(ECHAR *search, ECHAR *(*move)())
 {
-    static CHAR	*old_search;
+    static ECHAR	*old_search;
     int		len;
     int		pos;
     int		(*match)();
@@ -822,7 +822,7 @@ STATIC CHAR *search_hist(CHAR *search, CHAR *(*move)())
     if (search && *search) {
 	if (old_search)
 	    DISPOSE(old_search);
-	old_search = (CHAR *)STRDUP((const char *)search);
+	old_search = (ECHAR *)STRDUP((const char *)search);
     }
     else {
 	if (old_search == NULL || *old_search == '\0')
@@ -852,8 +852,8 @@ STATIC STATUS h_search()
 {
     static int	Searching;
     CONST char	*old_prompt;
-    CHAR	*(*move)();
-    CHAR	*p;
+    ECHAR	*(*move)();
+    ECHAR	*p;
 
     if (Searching)
 	return ring_bell();
@@ -862,12 +862,12 @@ STATIC STATUS h_search()
     clear_line();
     old_prompt = Prompt;
     Prompt = "Search: ";
-    TTYputs((CHAR *)Prompt);
+    TTYputs((ECHAR *)Prompt);
     move = Repeat == NO_ARG ? prev_hist : next_hist;
     p = search_hist(editinput(), move);
     clear_line();
     Prompt = old_prompt;
-    TTYputs((CHAR *)Prompt);
+    TTYputs((ECHAR *)Prompt);
 
     Searching = 0;
     return do_insert_hist(p);
@@ -896,7 +896,7 @@ STATIC void save_yank(int begin, int i)
     if (i < 1)
 	return;
 
-    if ((Yanked = NEW(CHAR, (SIZE_T)i + 1)) != NULL) {
+    if ((Yanked = NEW(ECHAR, (ESIZE_T)i + 1)) != NULL) {
 	COPYFROMTO(Yanked, &Line[begin], i);
 	Yanked[i] = '\0';
     }
@@ -975,8 +975,8 @@ STATIC STATUS redisplay()
 {
     if (clrpage) TTYputs(clrpage);
     else
-	TTYputs((CHAR *)newline);
-/*    TTYputs((CHAR *)Prompt);
+	TTYputs((ECHAR *)newline);
+/*    TTYputs((ECHAR *)Prompt);
     TTYstring(Line); */
     return CSmove;
 }
@@ -1033,7 +1033,7 @@ STATIC STATUS h_risearch()
     char *pat, *hist, *nhist;
     char *nprompt;
     int patsize, patend, i;
-    CHAR	c;
+    ECHAR	c;
     int lpos,cpos;
 
     old_prompt = Prompt;
@@ -1051,7 +1051,7 @@ STATIC STATUS h_risearch()
 	sprintf(nprompt,"(reverse-i-search)`%s': ",pat);
 	Prompt = nprompt;
 	kill_line();
-	do_insert_hist((CHAR *)hist);
+	do_insert_hist((ECHAR *)hist);
 	if (patend != 0)
 	    for (i=strlen((char *)H.Lines[lpos]); i>cpos; i--) bk_char();
 	c = TTYget();
@@ -1091,11 +1091,11 @@ STATIC STATUS h_risearch()
     /* Tidy up */
     clear_line();
     Prompt = old_prompt;
-    TTYputs((CHAR *)Prompt);
+    TTYputs((ECHAR *)Prompt);
     wfree(nprompt);
 
     kill_line();
-    s = do_insert_hist((CHAR *)hist);
+    s = do_insert_hist((ECHAR *)hist);
     if (patend != 0)
 	for (i=strlen((char *)H.Lines[lpos]); i>cpos; i--) s = bk_char();
     if (c != ESC)
@@ -1107,9 +1107,9 @@ STATIC STATUS h_risearch()
 STATIC STATUS insert_char(int c)
 {
     STATUS	s;
-    CHAR	buff[2];
-    CHAR	*p;
-    CHAR	*q;
+    ECHAR	buff[2];
+    ECHAR	*p;
+    ECHAR	*q;
     int		i;
 
     if (Repeat == NO_ARG || Repeat < 2) {
@@ -1118,7 +1118,7 @@ STATIC STATUS insert_char(int c)
 	return insert_string(buff);
     }
 
-    if ((p = NEW(CHAR, Repeat + 1)) == NULL)
+    if ((p = NEW(ECHAR, Repeat + 1)) == NULL)
 	return CSstay;
     for (i = Repeat, q = p; --i >= 0; )
 	*q++ = c;
@@ -1227,7 +1227,7 @@ STATIC STATUS TTYspecial(unsigned int c)
     return CSdispatch;
 }
 
-STATIC CHAR *editinput()
+STATIC ECHAR *editinput()
 {
     unsigned int	c;
 
@@ -1266,11 +1266,11 @@ STATIC CHAR *editinput()
     return NULL;
 }
 
-STATIC void hist_add(CHAR *p)
+STATIC void hist_add(ECHAR *p)
 {
     int		i;
 
-    if ((p = (CHAR *)STRDUP((char *)p)) == NULL)
+    if ((p = (ECHAR *)STRDUP((char *)p)) == NULL)
 	return;
     if (H.Size < editline_histsize)
 	H.Lines[H.Size++] = p;
@@ -1307,7 +1307,7 @@ void read_history(const char *history_file)
     char buff[2048];
     int c,i;
 
-    H.Lines = NEW(CHAR *,editline_histsize);
+    H.Lines = NEW(ECHAR *,editline_histsize);
     H.Size = 0;
     H.Pos = 0;
     
@@ -1343,11 +1343,11 @@ rl_initialize()
 
 char *readline(CONST char *prompt)
 {
-    CHAR	*line;
+    ECHAR	*line;
 
     if (Line == NULL) {
 	Length = MEM_INC;
-	if ((Line = NEW(CHAR, Length)) == NULL)
+	if ((Line = NEW(ECHAR, Length)) == NULL)
 	    return NULL;
     }
 
@@ -1361,16 +1361,16 @@ char *readline(CONST char *prompt)
     if (el_no_echo == 1)
     {
 	el_no_echo = 0;
-	TTYputs((CHAR *)Prompt);
+	TTYputs((ECHAR *)Prompt);
 	TTYflush();
 	el_no_echo = 1;
     }
     else
-	TTYputs((CHAR *)Prompt);
+	TTYputs((ECHAR *)Prompt);
     line = editinput();
     if (line != NULL) {
-	line = (CHAR *)STRDUP((char *)line);
-	TTYputs((CHAR *)newline);
+	line = (ECHAR *)STRDUP((char *)line);
+	TTYputs((ECHAR *)newline);
 	TTYflush();
     }
     rl_ttyset(1);
@@ -1392,7 +1392,7 @@ add_history(p)
     if (H.Pos && strcmp(p, H.Lines[H.Pos - 1]) == 0)
         return;
 #endif	/* defined(UNIQUE_HISTORY) */
-    hist_add((CHAR *)p);
+    hist_add((ECHAR *)p);
 }
 
 
@@ -1430,17 +1430,17 @@ STATIC STATUS end_line()
 **  Move back to the beginning of the current word and return an
 **  allocated copy of it.
 */
-STATIC CHAR *find_word()
+STATIC ECHAR *find_word()
 {
     static char	SEPS[] = "#;&|^$=`'{}()<>\n\t ";
-    CHAR	*p;
-    CHAR	*new;
-    SIZE_T	len;
+    ECHAR	*p;
+    ECHAR	*new;
+    ESIZE_T	len;
 
     for (p = &Line[Point]; p > Line && strchr(SEPS, (char)p[-1]) == NULL; p--)
 	continue;
     len = Point - (p - Line) + 1;
-    if ((new = NEW(CHAR, len)) == NULL)
+    if ((new = NEW(ECHAR, len)) == NULL)
 	return NULL;
     COPYFROMTO(new, p, len);
     new[len - 1] = '\0';
@@ -1596,12 +1596,12 @@ STATIC STATUS c_complete()
 	else if (started_with_quote)
 	    p[strlen(p)-1] = '"';
 	
-	s = insert_string((CHAR *)p);
+	s = insert_string((ECHAR *)p);
 	wfree(p);
     }
     else if ((p = completion_to_ambiguity(Point-start,possibles)) != NULL)
     {    /* an expansion to a later ambiguity */
-	s = insert_string((CHAR *)p);
+	s = insert_string((ECHAR *)p);
 	wfree(p);
 	ring_bell();
     }
@@ -1624,13 +1624,13 @@ STATIC STATUS c_complete()
 /* Original version without automatic listing of possible completions */
 STATIC STATUS c_complete_old()
 {
-    CHAR	*p;
-    CHAR	*word;
+    ECHAR	*p;
+    ECHAR	*word;
     int		unique;
     STATUS	s;
 
     word = find_word();
-    p = (CHAR *)rl_complete((char *)word, &unique);
+    p = (ECHAR *)rl_complete((char *)word, &unique);
     if (word)
 	DISPOSE(word);
     if (p && *p) {
@@ -1646,8 +1646,8 @@ STATIC STATUS c_complete_old()
 
 STATIC STATUS c_possible()
 {
-    CHAR	**av;
-    CHAR	*word;
+    ECHAR	**av;
+    ECHAR	*word;
     int		ac;
 
     word = find_word();
@@ -1679,7 +1679,7 @@ STATIC STATUS end_of_input()
 
 STATIC STATUS transpose()
 {
-    CHAR	c;
+    ECHAR	c;
 
     if (Point) {
 	if (Point == End)
@@ -1763,7 +1763,7 @@ STATIC STATUS move_to_char()
 {
     unsigned int	c;
     int			i;
-    CHAR		*p;
+    ECHAR		*p;
 
     if ((c = TTYget()) == EOF)
 	return CSeof;
@@ -1799,7 +1799,7 @@ STATIC STATUS fd_kill_word()
 STATIC STATUS bk_word()
 {
     int		i;
-    CHAR	*p;
+    ECHAR	*p;
 
     i = 0;
     do {
@@ -1824,16 +1824,16 @@ STATIC STATUS bk_kill_word()
     return CSstay;
 }
 
-STATIC int argify(CHAR *line, CHAR ***avp)
+STATIC int argify(ECHAR *line, ECHAR ***avp)
 {
-    CHAR	*c;
-    CHAR	**p;
-    CHAR	**new;
+    ECHAR	*c;
+    ECHAR	**p;
+    ECHAR	**new;
     int		ac;
     int		i;
 
     i = MEM_INC;
-    if ((*avp = p = NEW(CHAR*, i))== NULL)
+    if ((*avp = p = NEW(ECHAR*, i))== NULL)
 	 return 0;
 
     for (c = line; isspace(*c); c++)
@@ -1846,7 +1846,7 @@ STATIC int argify(CHAR *line, CHAR ***avp)
 	    *c++ = '\0';
 	    if (*c && *c != '\n') {
 		if (ac + 1 == i) {
-		    new = NEW(CHAR*, i + MEM_INC);
+		    new = NEW(ECHAR*, i + MEM_INC);
 		    if (new == NULL) {
 			p[ac] = NULL;
 			return ac;
@@ -1869,15 +1869,15 @@ STATIC int argify(CHAR *line, CHAR ***avp)
 
 STATIC STATUS last_argument()
 {
-    CHAR	**av;
-    CHAR	*p;
+    ECHAR	**av;
+    ECHAR	*p;
     STATUS	s;
     int		ac;
 
     if (H.Size == 1 || (p = H.Lines[H.Size - 2]) == NULL)
 	return ring_bell();
 
-    if ((p = (CHAR *)STRDUP((char *)p)) == NULL)
+    if ((p = (ECHAR *)STRDUP((char *)p)) == NULL)
 	return CSstay;
     ac = argify(p, &av);
 

@@ -226,7 +226,7 @@ void siod_print_welcome(void)
 
 void print_hs_1(void)
 {printf("heap_size = %ld cells, %ld bytes. %ld inums. GC is %s\n",
-        heap_size,heap_size*sizeof(struct obj),
+        heap_size,(long)(heap_size*sizeof(struct obj)),
 	inums_dim,
 	(gc_kind_copying == 1) ? "stop and copy" : "mark and sweep");}
 
@@ -550,7 +550,7 @@ static LISP err(const char *message, LISP x, const char *s)
     nointerrupt = 1;
     if NNULLP(x) 
     {
-	fprintf(stderr,"SIOD ERROR: %s %s\n",
+	fprintf(stderr,"SIOD ERROR: %s %s: ",
 		(message) ? message : "?",
 		(s) ?s : ""
 		);

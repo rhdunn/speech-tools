@@ -83,6 +83,21 @@ public class XColor extends Color
       name=n;
     }
 
+  public XColor(String n, int i)
+    {
+      super(x11ColorRGBThrow(n));
+      name=n;
+    }
+
+  public static int x11ColorRGBThrow(String name)
+        throws IllegalArgumentException
+    {
+	int c = x11ColorRGB(name);
+	if (c<0)
+	    throw new IllegalArgumentException("Can't find color '"+name+"'");
+	return c;
+    }
+
   public static int x11ColorRGB(String name)
     {
 
@@ -169,7 +184,7 @@ public class XColor extends Color
 	
 
       System.err.println("Can't find color '"+name+"'");
-      return 0;
+      return -1;
     }
 
   public static String getName(Color c)

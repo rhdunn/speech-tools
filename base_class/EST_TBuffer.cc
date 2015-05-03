@@ -41,6 +41,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "EST_unix.h"
 #include "EST_TBuffer.h"
 

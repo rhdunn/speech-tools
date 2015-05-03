@@ -71,12 +71,17 @@ public class EnumValues
 	return -1;
     }
 
+  void add(Enum v, String a)
+    {
+      table.put(a,v);
+    }
+
   Enum getValue(String s)
-    throws BadValueException
+    throws IllegalArgumentException
     {
       Enum v = (Enum)table.get(s);
       if (v==null)
-	throw new BadValueException(name+":"+s);
+	throw new IllegalArgumentException(name+":"+s);
       return v;
     }
 

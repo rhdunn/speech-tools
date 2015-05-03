@@ -37,7 +37,7 @@
 /*  awb Dec 30 1998                                                         */
 /*                                                                          */
 /****************************************************************************/
-/*  $Revision: 1.4 $
+/*  $Revision: 1.2 $
 **
 **  Unix system-dependant routines for editline library.
 */
@@ -47,12 +47,12 @@
 #include <sys/types.h>
 #include <signal.h>
 
-extern CONST CHAR el_NIL[];
+extern CONST ECHAR el_NIL[];
 
 int el_user_intr = 0;
 int el_PushBack=0;
 int el_Pushed=0;
-CONST CHAR	*el_Input = el_NIL;
+CONST ECHAR	*el_Input = el_NIL;
 
 extern void TTYflush();
 
@@ -132,7 +132,7 @@ void rl_ttyset(int Reset)
 
 unsigned int TTYget()
 {
-    CHAR	c;
+    ECHAR	c;
     int s;
 
     TTYflush();
@@ -142,7 +142,7 @@ unsigned int TTYget()
     }
     if (*el_Input)
 	return *el_Input++;
-    s = read(0, &c, (SIZE_T)1) == 1 ? c : EOF;
+    s = read(0, &c, (ESIZE_T)1) == 1 ? c : EOF;
     return s;
 }
 

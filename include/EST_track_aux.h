@@ -35,7 +35,7 @@
 /**@name EST_track_aux.h
   * EST_Track Auxiliary functions
   * @author Paul Taylor <pault@cstr.ed.ac.uk>
-  * @version $Id: EST_track_aux.h,v 1.29 1999/05/30 13:52:03 awb release $
+  * @version $Id: EST_track_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 //@{

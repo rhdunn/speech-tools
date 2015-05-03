@@ -93,6 +93,11 @@ public class Item
       return i;
     }
 
+  public long getHandle()
+    {
+	return cpp_handle;
+    }
+
   private native String cpp_name();
 
   public String name()
@@ -163,6 +168,20 @@ public class Item
   public float getF(String n)
     {
       return cpp_getF(n, 0);
+    }
+
+  private native void cpp_set(String n, float val);
+  
+  public void set(String n, float val)
+    {
+      cpp_set(n, val);
+    }
+
+  private native void cpp_set(String n, String val);
+  
+  public void set(String n, String val)
+    {
+      cpp_set(n, val);
     }
 
   private native String cpp_type();
@@ -238,6 +257,28 @@ public class Item
   public Item down()
     {
       long h = cpp_down();
+      if (h==0)
+	return null;
+      else
+	return getItem(h);
+    }
+
+  private native long cpp_insert_after();
+
+  public Item insert_after()
+    {
+      long h = cpp_insert_after();
+      if (h==0)
+	return null;
+      else
+	return getItem(h);
+    }
+
+  private native long cpp_insert_before();
+
+  public Item insert_before()
+    {
+      long h = cpp_insert_before();
       if (h==0)
 	return null;
       else

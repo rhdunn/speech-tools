@@ -518,7 +518,6 @@ int load_names(EST_String file, EST_TList<EST_String> &names)
 {
     char inbuf[1000];
     EST_String tmpstr;
-    EST_String points[1000];
     
     ifstream inf(file);
     if (!inf) cerr << "Can't open names file " << file << endl;

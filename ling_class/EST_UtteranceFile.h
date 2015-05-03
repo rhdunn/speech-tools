@@ -44,15 +44,15 @@
 /** Table of different file formats for loading an saving utterances.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_UtteranceFile.h,v 1.5 1999/05/30 13:52:51 awb release $
+  * @version $Id: EST_UtteranceFile.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 typedef enum EST_UtteranceFileType{
   uff_none,
   uff_est,
   uff_est_ascii=uff_est,
+  uff_xlabel,
   uff_genxml,
-  uff_solexml
 } EST_UtteranceFileType;
 
 
@@ -85,10 +85,10 @@ public:
   static EST_write_status save_est_ascii(SaveUtterance_TokenStreamArgs);
   static EST_read_status load_est_ascii(LoadUtterance_TokenStreamArgs);
 
-  //  static EST_write_status save_solexml(SaveUtterance_TokenStreamArgs);
-  static EST_read_status load_solexml(LoadUtterance_TokenStreamArgs);
+  static EST_write_status save_xlabel(SaveUtterance_TokenStreamArgs);
+  static EST_read_status load_xlabel(LoadUtterance_TokenStreamArgs);
 
-  //  static EST_write_status save_genxml(SaveUtterance_TokenStreamArgs);
+  static EST_write_status save_genxml(SaveUtterance_TokenStreamArgs);
   static EST_read_status load_genxml(LoadUtterance_TokenStreamArgs);
 
   static EST_TNamedEnumI<EST_UtteranceFileType, Info> map;

@@ -37,7 +37,7 @@
   * Privare header interfacing gen file format.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: genxml.h,v 1.9 1999/06/10 09:59:51 rjc release $
+  * @version $Id: genxml.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 //@{
 #ifndef __GENXML_H__

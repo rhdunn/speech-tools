@@ -79,7 +79,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
     if (ts.open(filename) == -1)
 	return misc_read_error;
 
-    // find  \\data\\  
+    // find  backslash data backslash
     while ((!ts.eof()) && !ts.get().string().contains("\\data\\"));
 
     if (ts.eof())
@@ -199,7 +199,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
     } // loop through orders
     
 
-    // find \\end\\   
+    // find backslash end backslash 
     while (!ts.eof())
 	if (ts.get().string() == "\\end\\")
 	{

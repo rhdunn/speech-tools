@@ -368,7 +368,7 @@ static void extract_ids(XML_Attribute_List &attributes,
   else
     ids.append(make_new_id("n"));
   
-  cout << ids << "\n";
+  // cout << ids << "\n";
 }
 
 /* For debugging.

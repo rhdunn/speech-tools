@@ -40,14 +40,16 @@ ALL_DIRS =
 
 LOCAL_JAVA_NATIVE_CLASSES = Wave Track \
 	Utterance Relation Item Item_Content \
-	Sigpr
+	Sigpr Features
 JAVA_NATIVE_CLASSES = $(LOCAL_JAVA_NATIVE_CLASSES)
 
-LOCAL_JAVA_CLASSES = $(LOCAL_JAVA_NATIVE_CLASSES) TrackFileFormat
+LOCAL_JAVA_CLASSES = $(LOCAL_JAVA_NATIVE_CLASSES) \
+	TrackFileFormat UtteranceFileFormat
 JAVA_CLASSES = $(LOCAL_JAVA_CLASSES) \
 	ServerConnection SocketsFile
 
 NEED_JAVA=true
+NO_DEPEND=1
 
 CPPSRCS = $(JAVA_NATIVE_CLASSES:=.cc)
 SRCS = $(CPPSRCS)

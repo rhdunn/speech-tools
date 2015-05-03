@@ -37,7 +37,7 @@
 /*  awb Dec 30 1998                                                         */
 /*                                                                          */
 /****************************************************************************/
-/*  $Revision: 1.3 $
+/*  $Revision: 1.2 $
 **
 **  History and file completion functions for editline library.
 */
@@ -83,8 +83,8 @@ STATIC int FindMatches(char *dir,char *file,char ***avp)
     char	*p;
     DIR		*dp;
     DIRENTRY	*ep;
-    SIZE_T	ac;
-    SIZE_T	len;
+    ESIZE_T	ac;
+    ESIZE_T	len;
 
     if ((dp = opendir(dir)) == NULL)
 	return 0;
@@ -175,11 +175,11 @@ char *rl_complete(char *pathname,int *unique)
     char	*file;
     char	*new;
     char	*p;
-    SIZE_T	ac;
-    SIZE_T	end;
-    SIZE_T	i;
-    SIZE_T	j;
-    SIZE_T	len;
+    ESIZE_T	ac;
+    ESIZE_T	end;
+    ESIZE_T	i;
+    ESIZE_T	j;
+    ESIZE_T	len;
 
     if (SplitPath(pathname, &dir, &file) < 0)
 	return NULL;

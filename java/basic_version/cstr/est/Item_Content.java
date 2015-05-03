@@ -79,6 +79,11 @@ public class Item_Content
       return name();
     }
 
+  public Features getFeatures()
+    {
+	return new Features();
+    }
+
   public Item getItem()
     {
       return null;

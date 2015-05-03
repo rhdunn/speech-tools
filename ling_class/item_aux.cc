@@ -69,6 +69,19 @@ int in_tree(const EST_Item *c,const EST_Item *t)
     }
 }
 
+void remove_item_list(EST_Relation *rel, EST_Item *item)
+{
+    if (item==NULL)
+	return;
+
+    EST_Item *p = item->prev();
+    EST_Item *n = item->next();
+
+    rel->remove_item(item);
+
+    EST_Item::splice(p,n);
+}
+
 int merge_item(EST_Item *from, EST_Item *to)
 {
     // Make all references to from be references to to and merge

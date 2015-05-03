@@ -38,7 +38,7 @@
 /** Instantiate rules for vector template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TVectorI.h,v 1.11 1999/06/10 16:59:30 rjc release $
+  * @version $Id: EST_TVectorI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 

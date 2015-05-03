@@ -180,6 +180,7 @@ Java_cstr_est_Wave_cpp_1set_1play_1ops(JNIEnv *env, jclass myclass,
     wave_play_ops.add_item("-command",command);
   if (*server)
     wave_play_ops.add_item("-display",server);
+  wave_play_ops.add_item("-otype","riff");
   
   env->ReleaseStringUTFChars(jprotocol, protocol);
   env->ReleaseStringUTFChars(jcommand, command);

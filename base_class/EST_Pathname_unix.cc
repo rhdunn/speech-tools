@@ -126,7 +126,7 @@ EST_TList<EST_String> EST_Pathname::entries(int check_for_directories) const
 	  struct stat buf;
 
 	  if (check_for_directories && 
-	      stat((EST_String)this->as_directory() + name, &buf)==0 && 
+	      stat((EST_String)this->as_directory() + (EST_String)name, &buf)==0 && 
 	      (buf.st_mode & S_IFDIR))
 	    list.append(name.as_directory());
 	  else

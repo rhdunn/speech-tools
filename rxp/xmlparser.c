@@ -12,10 +12,10 @@
 /* WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.       */
 /*                                                                       */
 /*************************************************************************/
-/* 	$Id: xmlparser.c,v 1.2 1998/07/24 15:12:25 awb release $	 */
+/* 	$Id: xmlparser.c,v 1.2 2001/04/04 13:11:27 awb Exp $	 */
 
 #ifndef lint
-static char vcid[] = "$Id: xmlparser.c,v 1.2 1998/07/24 15:12:25 awb release $";
+static char vcid[] = "$Id: xmlparser.c,v 1.2 2001/04/04 13:11:27 awb Exp $";
 #endif /* lint */
 
 /* 

@@ -162,7 +162,7 @@ enum EST_CoefficientType
   * @see EST_Track
   * @see EST_TrackMap:example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_ChannelType.h,v 1.18 1999/05/30 13:51:40 awb release $
+  * @version $Id: EST_ChannelType.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 enum EST_ChannelType {

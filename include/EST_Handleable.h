@@ -44,7 +44,7 @@
   * @see EST_TBox
   * @see EST_TrackMap
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Handleable.h,v 1.5 1999/05/30 13:51:44 awb release $
+  * @version $Id: EST_Handleable.h,v 1.2 2001/04/04 13:11:27 awb Exp $
   */
 
 #include <limits.h>

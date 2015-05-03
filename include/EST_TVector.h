@@ -316,6 +316,9 @@ public:
 
   /// Matrix must be friend to set up subvectors
   friend class EST_TMatrix<T>;
+
+  void integrity() const;
+
 };
 
 //@}

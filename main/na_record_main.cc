@@ -90,7 +90,9 @@ int main (int argc, char *argv[])
 	 "use \"-\" to make output files stdout\n"+
 	 "-h               options help\n"+
 	 "-f <int>         Input sample rate\n"+
-	 "-time <int>      Wave length in seconds\n"+
+	 "-audiodevice <string> use specified audiodevice if appropriate\n"
+	 "                 for protocol\n"
+	 "-time <float>    Wave length in seconds\n"+
 	 options_wave_output()+
 	 "\n"+
 	 "-p <string>      audio device protocol. Ths supported types are\n"+

@@ -101,6 +101,8 @@ LISP make_param_float(const char *name, float val);
 LISP make_param_str(const char *name,const char *val);
 LISP make_param_lisp(const char *name,LISP val);
 LISP apply_hooks(LISP hook,LISP arg);
+LISP apply_hooks_right(LISP hook,LISP args);
+LISP apply(LISP func,LISP args);
 
 int parse_url(const EST_String &url,
 	      EST_String &protocol, 

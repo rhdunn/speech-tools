@@ -643,11 +643,11 @@ void EST_Server::run_sequential(EST_Server::RequestHandler &handler)
 {
   int csocket=0;
   struct sockaddr_in sin;
-  int sin_size = sizeof(sin);
+  socklen_t sin_size = sizeof(sin);
 
   while (connected() && 
 	 (csocket = accept(p_socket, (struct sockaddr *) &sin, 
-			   SOCKLEN_CAST &sin_size))>=0)
+			   &sin_size))>=0)
     {
       if (p_trace)
 	*p_trace << "connection " << csocket << "\n";

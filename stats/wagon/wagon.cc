@@ -417,7 +417,8 @@ static int wagon_split(int margin, WNode &node)
     node.set_impurity(WImpurity(node.get_data()));
     q = find_best_question(node.get_data());
 
-    if (q.get_score() < node.get_impurity().measure())
+    if ((q.get_score() < WGN_HUGE_VAL) &&
+	(q.get_score() < node.get_impurity().measure()))
     {
 	// Ok its worth a split
 	l = new WNode();

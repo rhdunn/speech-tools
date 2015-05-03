@@ -153,7 +153,7 @@ static int play_socket_wave(EST_Wave &inwave, EST_Option &al)
     if (al.present("socket_otype"))
 	otype = al.val("socket_otype");  // file type to send to client
     else
-	otype = "nist";
+	otype = "riff";
     
     inwave.save(tmpfile,otype);
     
@@ -324,14 +324,20 @@ static int record_sunau_wave(EST_Wave &wave, EST_Option &al)
     unsigned char *ulawwave;
     short *waveform;
     const int AUDIOBUFFSIZE = 256;
-    
-    if ((audio = open("/dev/audio",O_RDONLY)) == -1)
+    char *audiodevice;
+
+    if (al.present("-audiodevice"))
+	audiodevice = al.val("-audiodevice");
+    else
+	audiodevice = "/dev/audio";
+
+    if ((audio = open(audiodevice, O_RDONLY)) == -1)
     {
-	cerr << "SUN16: can't open /dev/audio for reading" << endl;
+	cerr << "SUN16: can't open " << audiodevice << " for reading" << endl;
 	return -1;
     }
 
-    num_samples = 8000*al.ival("-time");
+    num_samples = (int)(8000*al.fval("-time"));
     ulawwave = walloc(unsigned char,num_samples);
     
     for (r=i=0; i < num_samples; i+= r)

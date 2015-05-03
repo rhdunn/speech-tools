@@ -142,7 +142,13 @@ public class Relation
 
   public String [] featureNames()
     {
+	return featureNames(false, true);
+    }
+
+  public String [] featureNames(boolean nodes, boolean leaves)
+    {
       Vector names = new Vector();
+      Hashtable found = new Hashtable();
 
       Enumeration is = getElements();
 
@@ -150,14 +156,36 @@ public class Relation
 	{
 	  Item item = (Item)is.nextElement();
 	  Item_Content cont = item.getContent();
+	  Vector paths = new Vector();
 	  
-	  String [] newNames = cont.featureNames();
-
-	  for(int i=0; i< newNames.length; i++)
+	  cont.getFeatures().getPaths(null, paths, nodes, leaves);
+	  
+	  for(int i=0; i< paths.size(); i++)
 	    {
-	      int p = names.indexOf(newNames[i]);
-	      if (p<0)
-		names.addElement(newNames[i]);
+		String name = (String)paths.elementAt(i);
+
+		if (found.get(name) != null)
+		  continue;
+
+		for(int p=0; p<names.size(); p++)
+		    {
+			int cmp = name.compareTo((String)names.elementAt(p));
+			if (cmp>0)
+			    continue;
+			if (cmp< 0)
+			  {
+			    names.insertElementAt(name, p);
+			    found.put(name,name);
+			  }
+
+			name=null;
+			break;
+		    }
+		if (name != null)
+		  {
+		    names.addElement(name);
+		    found.put(name, name);
+		  }
 	    }
 	}
 
@@ -238,6 +266,24 @@ public class Relation
 	return getItem(h);
       else
 	return null;
+    }
+
+  private native long cpp_append();
+
+  public Item append()
+    {
+	long h = cpp_append();
+	if (h != 0)
+	    return getItem(h);
+	else
+	    return null;
+    }
+
+ private native void cpp_removeItemList(long itemh);
+
+  public void removeItemList(Item i)
+    {
+	cpp_removeItemList(i.getHandle());
     }
 
   private native long cpp_findItem(float time);

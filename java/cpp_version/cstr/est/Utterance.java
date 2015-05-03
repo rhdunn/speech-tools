@@ -106,6 +106,17 @@ public class Utterance
 	return new Relation(rel_h, this);
     }
 
+  private native long cpp_create_relation(String name);
+
+  public Relation create_relation(String name)
+    {
+	long rel_h = cpp_create_relation(name);
+	if (rel_h==0)
+	    return null;
+	else
+	    return new Relation(rel_h, this);
+    }
+
   private native String cpp_load(String filename);
 
   public void load(String filename) throws FileNotFoundException
@@ -114,6 +125,21 @@ public class Utterance
 
       if (!res.equals(""))
 	  throw new FileNotFoundException(res);
+    }
+
+  private native String cpp_save(String filename, String format);
+
+  public void save(String filename, UtteranceFileFormat format) throws IOException
+    {
+      String res = cpp_save(filename, format.toString());
+
+      if (!res.equals(""))
+	  throw new IOException(res);
+    }
+
+  public void save(String filename) throws IOException
+    {
+      save(filename, UtteranceFileFormat.EST_ASCII);
     }
 
   private native int cpp_findItem(float time);
