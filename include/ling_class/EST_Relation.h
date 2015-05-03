@@ -103,7 +103,7 @@ class EST_Relation
     EST_Features f;
 
     /** Evaluate the relation's feature functions */
-    void evaluate_features();
+    //void evaluate_features();
     /** Evaluate the feature functions of all the items in the relation */
     void evaluate_item_features();
 
@@ -149,7 +149,7 @@ class EST_Relation
     /** remove EST_Item <parameter>item</parameter> from relation */
     void remove_item(EST_Item *item);
 
-    /** remove all occurances of feature 
+    /** remove all occurrences of feature 
 	<parameter>name</parameter> from relation's items
     */
     void remove_item_feature(const EST_String &name);

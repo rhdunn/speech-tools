@@ -69,7 +69,7 @@ EST_TrieNode::~EST_TrieNode()
 	trie_delete_function(contents);
     for (i=0; i<w; i++)
 	delete d[i];
-    delete d;
+    delete [] d;
 }
     
 void *EST_TrieNode::lookup(const unsigned char *key) const

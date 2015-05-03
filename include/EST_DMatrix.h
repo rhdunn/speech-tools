@@ -155,7 +155,7 @@ int pseudo_inverse(const EST_DMatrix &a, EST_DMatrix &inv,int &singularity);
 /// some useful matrix creators
 /// make an identity matrix of dimension n
 void eye(EST_DMatrix &a, const int n);
-/// make already square matris into I without resizing
+/// make already square matrix into I without resizing
 void eye(EST_DMatrix &a);
 
 /// the user should use est_seed to seed the random number generator

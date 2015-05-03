@@ -60,7 +60,7 @@ problem of doing this on actual speech has not been attempted.
  */
 //@{
 
-/** Find pitchmarks in Larynograph (lx) signal. 
+/** Find pitchmarks in Laryngograph (lx) signal. 
 
 This high level function places a pitchmark on each positive peak in
 the voiced portions of the lx signal. Pitchmarks are stored in the
@@ -83,7 +83,7 @@ are then chosen.
 
 EST_Track pitchmark(EST_Wave &lx, EST_Features &op);
 
-/** Find pitchmarks in Larynograph (lx) signal. The function is the
+/** Find pitchmarks in Laryngograph (lx) signal. The function is the
 same as \Ref{pitchmark} but with more explicit control over
 the parameters.
 
@@ -97,7 +97,8 @@ the parameters.
 */
 
 EST_Track pitchmark(EST_Wave &lx, int lx_lf, int lx_lo, int lx_hf, 
-		    int lx_ho, int mo, int debug = 0);
+		    int lx_ho, int df_lf, int df_lo, int mo, int debug=0);
+
 
 /** Find times where waveform cross zero axis in negative direction.
 
@@ -111,9 +112,9 @@ void neg_zero_cross_pick(EST_Wave &lx, EST_Track &pm);
 
 Given a set of raw pitchmarks, this function makes sure no pitch
 period is shorter that {\tt min} seconds and no longer than {\tt max}
-seconds. Periods that are too short are eliminated. If a peroid is too
+seconds. Periods that are too short are eliminated. If a period is too
 long, extra pitchmarks are inserted whose period is {\it
-approxiamtely} {\tt def} seconds in duration. The approximation is to
+approximately} {\tt def} seconds in duration. The approximation is to
 ensure that the pitch period in the interval, D, is constant, and so
 the actual pitch period is given by \[T = D / floor(D/def)\] */
 
@@ -129,6 +130,9 @@ void pm_min_check(EST_Track &pm, float min);
 
 
 void pm_to_f0(EST_Track &pm, EST_Track &f0);
+
+// for constant shift pitchmarks
+void pm_to_f0(EST_Track &pm, EST_Track &fz, float shift);
 
 
 //@}

@@ -510,7 +510,7 @@ void EST_SCFG_traintest::test_crossbrackets()
 {
     // Compare bracketing of best parse to bracketing on original
     // For each sentence parse it (unbracketed) and then
-    // find the percentage of valid barckets in parsed version that
+    // find the percentage of valid brackets in parsed version that
     // are valid in the original one.
     int c;
     LISP parse;
@@ -554,7 +554,7 @@ void count_bracket_crossing(const EST_bracketed_string &ref,
 
     if (ref.length() != test.length())
     {
-	EST_error("bracket_crossing: setences of different lengths");
+	EST_error("bracket_crossing: sentences of different lengths");
     }
 
     for (i=0; i < ref.length(); i++)

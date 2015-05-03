@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 	options_track_filetypes_long(),
 	files, al);
 
-/*redunant options
+/*redundant options
 	"-time_channel <string>\n"+
 	"		 Which track in track file holds pitchmark times\n"+
 	"-time_scale <float>    \n"+
@@ -373,7 +373,7 @@ $ ch_track kdt_010.tr kdt_011.tr kdt_012.tr kdt_013.tr -o -pc longest out.tr
 <para>
 The argument to -pc can either be longest, in which the output
 track is the length of the longest input file, or first in which it
-is the length of the first intput file.
+is the length of the first input file.
 
 */
 

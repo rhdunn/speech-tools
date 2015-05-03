@@ -52,8 +52,8 @@ template ostream& operator << (ostream &st, const EST_TVector<EST_FMatrix> &v);
 #endif
 static const EST_FMatrix def_val_FMatrix;
 static EST_FMatrix error_return_FMatrix;
-const EST_FMatrix *EST_TVector<EST_FMatrix>::def_val = &def_val_FMatrix;
-EST_FMatrix *EST_TVector<EST_FMatrix>::error_return = &error_return_FMatrix;
+template <> const EST_FMatrix *EST_TVector<EST_FMatrix>::def_val = &def_val_FMatrix;
+template <> EST_FMatrix *EST_TVector<EST_FMatrix>::error_return = &error_return_FMatrix;
 
 int operator !=(const EST_FMatrix &fm1, 
 		const EST_FMatrix &fm2)

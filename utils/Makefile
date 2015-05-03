@@ -49,10 +49,12 @@ OBJS = $(CPPSRCS:.cc=.o) $(CSRCS:.c=.o)
 OBJS_eststring = walloc.o
 FILES = $(SRCS) $(H) Makefile system_specific_win32.c
 
+LOCAL_INCLUDES =
+
 ALL = .buildlibs
 
 include $(TOP)/config/common_make_rules
 
 EST_cutils.o: EST_cutils.c
-	$(CC_COMMAND) -DESTNAME='$(PROJECT_NAME)' -DESTDATE='$(PROJECT_DATE)' -DESTVERSION='$(PROJECT_VERSION)' -DESTLIBDIR=\"$(EST_HOME)/lib\" -DESTLIBDIR=\"$(EST_HOME)/lib\" -DESTSTATE='$(PROJECT_STATE)' -DESTOSTYPE='$(SYSTEM_TYPE)' EST_cutils.c
+	$(CC_COMMAND) -DESTNAME='$(PROJECT_NAME)' -DESTDATE='$(PROJECT_DATE)' -DESTVERSION='$(PROJECT_VERSION)' -DESTLIBDIRC='$(EST_HOME)/lib' -DESTSTATE='$(PROJECT_STATE)' -DESTOSTYPE='$(SYSTEM_TYPE)' EST_cutils.c
 

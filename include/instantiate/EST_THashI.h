@@ -42,7 +42,7 @@
 /** Instantiate rules for hash template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_THashI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_THashI.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 // Instantiation Macros
@@ -76,18 +76,20 @@
 	  Instantiate_THash_T_IT(KEY, VAL, KEY ## VAL, IP)
 
 
+/* disabled. it's INVALID !!!
 #define Declare_THash_T(KEY, VAL, TAG) \
 	VAL EST_THash< KEY, VAL >::Dummy_Value; \
 	KEY EST_THash< KEY, VAL >::Dummy_Key; \
 	EST_THash< KEY, VAL > TAG ## _hash_dummy(0);
+*/
 
 #define Declare_THash_Base_T(KEY, VAL, DEFAULTK, DEFAULT, ERROR,TAG) \
-	KEY EST_THash< KEY, VAL >::Dummy_Key=DEFAULTK; \
-	VAL EST_THash<KEY, VAL>::Dummy_Value=DEFAULT;
+	template <> KEY EST_THash< KEY, VAL >::Dummy_Key=DEFAULTK; \
+	template <> VAL EST_THash<KEY, VAL>::Dummy_Value=DEFAULT;
 
 #define Declare_THash_Class_T(KEY, VAL, DEFAULTK, DEFAULT, ERROR,TAG) \
-	KEY EST_THash< KEY, VAL >::Dummy_Key(DEFAULTK); \
-	VAL EST_THash<KEY, VAL>::Dummy_Value(DEFAULT);
+	template <> KEY EST_THash< KEY, VAL >::Dummy_Key(DEFAULTK); \
+	template <> VAL EST_THash<KEY, VAL>::Dummy_Value(DEFAULT);
 
 #define Declare_THash(KEY, VAL) Declare_THash_T(KEY, VAL, KEY ## VAL)
 

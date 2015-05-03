@@ -130,7 +130,7 @@ const EST_String &EST_Val::to_str(void) const
     // compiler this is a const function.  If this was properly declared
     // non-const vast amounts of the rest of this would also have to be
     // non-const.  So we do one nasty bit here for uniformity elsewhere.
-    // Not saving the result is also a posibility but probably too
+    // Not saving the result is also a possibility but probably too
     // inefficient (maybe not with rjc's string class)
     EST_String *n = (EST_String *)((void *)&sval);
     if (t==val_int)

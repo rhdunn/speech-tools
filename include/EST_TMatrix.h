@@ -104,7 +104,7 @@ protected:
     {
 
       return mcell_pos(r, c, 
-		       p_row_step, p_column_step);
+		       this->p_row_step, this->p_column_step);
     }
 
   INLINE unsigned int mcell_pos_1(int r, int c) const
@@ -116,14 +116,14 @@ protected:
 
   /// quick method for returning {\tt x[m][n]}
   INLINE const T &fast_a_m(int r, int c) const 
-    { return p_memory[mcell_pos(r,c)]; }
+    { return this->p_memory[mcell_pos(r,c)]; }
   INLINE T &fast_a_m(int r, int c) 
-    { return p_memory[mcell_pos(r,c)]; }
+    { return this->p_memory[mcell_pos(r,c)]; }
 
   INLINE const T &fast_a_1(int r, int c) const 
-    { return p_memory[mcell_pos_1(r,c)]; }
+    { return this->p_memory[mcell_pos_1(r,c)]; }
   INLINE T &fast_a_1(int r, int c) 
-    { return p_memory[mcell_pos_1(r,c)]; }
+    { return this->p_memory[mcell_pos_1(r,c)]; }
   
 
     /// Get and set values from array
@@ -173,9 +173,9 @@ public:
   //@{
 
   /// return number of rows
-  int num_rows() const {return p_num_rows;}
+  int num_rows() const {return this->p_num_rows;}
   /// return number of columns
-  int num_columns() const {return p_num_columns;}
+  int num_columns() const {return this->p_num_columns;}
 
   /// const access with no bounds check, care recommend
   INLINE const T &a_no_check(int row, int col) const 
@@ -206,7 +206,7 @@ public:
   bool have_columns_before(int n) const;
 
   /** resize matrix. If {\tt set=1}, then the current values in
-      the matirx are preserved up to the new size {\tt n}. If the
+      the matrix are preserved up to the new size {\tt n}. If the
       new size exceeds the old size, the rest of the matrix is
       filled with the {\tt def_val}
   */
@@ -214,7 +214,7 @@ public:
 
   /// fill matrix with value v
   void fill(const T &v);
-  void fill() { fill(*def_val); }
+  void fill() { fill(*this->def_val); }
 
   /// assignment operator
   EST_TMatrix &operator=(const EST_TMatrix &s); 
@@ -225,7 +225,7 @@ public:
 
   /**@name Sub-Matrix/Vector Extraction
     *
-    * All of these return matrecies and vectors which share
+    * All of these return matrices and vectors which share
     * memory with the original, so altering values them alters
     * the original. 
     */
@@ -283,6 +283,9 @@ public:
       */
     void set_column(int n, const T *buf, int offset=0, int num=-1);
 
+    void set_column(int n, const EST_TVector<T> &t, int offset=0, int num=-1)
+      { set_column(n, t.memory(), offset, num); }
+    
     void set_column(int c, 
                     const EST_TMatrix<T> &from, int from_c, int from_offset=0, 
                     int offset=0, int num=-1); // set nth column
@@ -303,7 +306,7 @@ public:
   /// save Matrix to file {\tt filename}
   EST_write_status save(const class EST_String &filename) const;
 
-  /// print matirx.
+  /// print matrix.
   friend ostream& operator << (ostream &st,const EST_TMatrix<T> &a);
   //@}
   

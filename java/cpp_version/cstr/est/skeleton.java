@@ -45,12 +45,12 @@ import java.awt.*;
 
 import java.io.*;
 
-public class skeliton
+public class skeleton
 {
   private long cpp_handle;
   
 
-  public Skeliton()
+  public Skeleton()
     {
       create_cpp_utterance();
     }
@@ -100,6 +100,6 @@ public class skeliton
   static {
     System.loadLibrary("estjava");
     if (!initialise_cpp())
-	throw new ExceptionInInitializerError("Skeliton C++ fails");
+	throw new ExceptionInInitializerError("Skeleton C++ fails");
   }
 }

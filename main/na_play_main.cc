@@ -157,7 +157,7 @@ int main (int argc, char *argv[])
 	 "-wait            wait for a key to be pressed between each file\n",
 	 files, al);
 
-    // by default, prase_cl_ops adds a stdout file called "-". This is
+    // by default, parse_cl_ops adds a stdout file called "-". This is
     // irrelevant for na_play and needs to be removed.
     if (al.present("-server"))
 	al.add_item("-display", al.val("-server"));

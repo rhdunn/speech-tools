@@ -57,7 +57,7 @@
 // associates enum elements with members of an arbitrary type.
 
 // Both named enums and valued enums can have an additional piece of
-// information (eg a struct containing cretion functions or another
+// information (eg a struct containing creation functions or another
 // representation) associated with each enum element.
 
 //  --------- Declaration (eg in header or class) ------------
@@ -105,7 +105,7 @@ End_TNamedEnum(Colour, SpanishColourMap)
 // ------- Alternative including extra information ---------------
 
 // Sometimes you may want to associate information with each element.
-// The following varient associates three small integers with each
+// The following variant associates three small integers with each
 // colour, perhaps to enable them to be displayed. 
 
 struct colour_info {
@@ -237,7 +237,7 @@ int main(void)
 // ----------- Template Brain Death --------------------
 
 // Declaration of the template use for GCC
-// Just which varients need to be declared is sometimes unpredictable,
+// Just which variants need to be declared is sometimes unpredictable,
 // especially between versions of gcc.
 // Best just compile and then find out which ones aren't there.
 

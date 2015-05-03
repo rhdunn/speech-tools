@@ -35,8 +35,8 @@
  /*                   Date: Fri Oct 10 1997                               */
  /* --------------------------------------------------------------------  */
  /* A subclass of TMatrix which copies using memcopy. This isn't          */
- /* suitable for Matrixes of class objects which have to be copied        */
- /* useing a constructor or specialised assignment operator.              */
+ /* suitable for matrices of class objects which have to be copied        */
+ /* using a constructor or specialised assignment operator.               */
  /*                                                                       */
  /*************************************************************************/
 

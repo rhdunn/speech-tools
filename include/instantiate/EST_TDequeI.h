@@ -39,7 +39,7 @@
 /** Instantiate rules for list template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TDequeI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TDequeI.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 // Instantiation Macros
@@ -54,16 +54,16 @@
 #define Instantiate_TDEQ(T) Instantiate_TDEQ_T(T, T) 
 
 #define Declare_TDEQ_T(T, TAG)  \
-	const T *EST_TDeque< T >::Filler=NULL;
+	template <> const T *EST_TDeque< T >::Filler=NULL;
 
 #define Declare_TDEQ_Base_T(T, FILLER ,TAG) \
 	const T TAG ## _deq_filler=FILLER; \
-	const T *EST_TDeque< T >::Filler=& TAG ## _deq_filler;
+	template <> const T *EST_TDeque< T >::Filler=& TAG ## _deq_filler;
 	
 
 #define Declare_TDEQ_Class_T(T, FILLER,TAG) \
 	const T TAG ## _deq_filler(FILLER); \
-	const T *EST_TDeque< T >::Filler=& TAG ## _deq_filler;
+	template <> const T *EST_TDeque< T >::Filler=& TAG ## _deq_filler;
 
 #define Declare_TDEQ(T) Declare_TDEQ_T(T, T)
 

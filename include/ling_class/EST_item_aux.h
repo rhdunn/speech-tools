@@ -38,7 +38,7 @@
 /** Non core feature funtionality.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_item_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_item_aux.h,v 1.3 2004/05/24 10:32:30 korin Exp $
   */
 
 //@{
@@ -87,5 +87,10 @@ float end(const EST_Item &item);
 
 
 //@}
+
+//Rob's function for jumping around HRG structures more easily
+EST_Item *item_jump(EST_Item *from, const EST_String &to);
+
+
 #endif
 

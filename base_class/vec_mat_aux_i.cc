@@ -33,7 +33,7 @@
 /*                         Author :  Simon King                          */
 /*                         Date   :  April 1995                          */
 /*-----------------------------------------------------------------------*/
-/*                  EST_IMatrix Class auxilliary functions               */
+/*                  EST_IMatrix Class auxiliary functions                */
 /*                                                                       */
 /*=======================================================================*/
 #include "EST_IMatrix.h"

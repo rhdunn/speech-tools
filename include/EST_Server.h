@@ -47,7 +47,7 @@
   * the server process.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_Server.h,v 1.3 2002/12/26 15:48:53 awb Exp $
+  * @version $Id: EST_Server.h,v 1.4 2004/05/04 00:00:16 awb Exp $
   */
 
 class EST_Server {
@@ -56,9 +56,9 @@ public:
   
   /// What type of server is this.
   enum Mode {
-    /// Bizzare state
+    /// Bizarre state
     sm_unknown = 0,
-    /// Client end of the connetion.
+    /// Client end of the connection.
     sm_client = 1,
     /// Answer one client at a time.
     sm_sequential = 2,
@@ -66,7 +66,7 @@ public:
     sm_interleaved =3,
     /// For off a process for each client.
     sm_fork = 4,
-    /// Muti-threaded (not implemented)
+    /// Multi-threaded (not implemented)
     sm_threded = 5
   };
 

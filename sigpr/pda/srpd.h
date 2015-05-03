@@ -77,7 +77,7 @@ typedef struct {
 } CROSS_CORR_;
 
 
-typedef struct {                    /* segement of speech data */
+typedef struct {                    /* segment of speech data */
   int size, shift, length;          /* in samples */
   short *data;
 } SEGMENT_;

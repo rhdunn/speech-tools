@@ -38,7 +38,7 @@
 /*=======================================================================*/
 
 #include "EST_lattice.h"
-#include "fstream.h"
+#include <fstream.h>
 #include <stdlib.h>
 
 Lattice::Lattice()
@@ -1212,7 +1212,7 @@ Lattice::is_enter_node(Node *n)
 }
 */
 
-/* superceded now we have list of final nodes
+/* Superseded now we have list of final nodes
 bool
 Lattice::is_exit_node(Node *n)
 {

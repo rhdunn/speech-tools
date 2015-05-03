@@ -36,7 +36,7 @@
 /*  A viterbi decoder                                                    */
 /*                                                                       */
 /*  User provides the candidates, target and combine score function      */
-/*  and it searches for the best path through the candidates              */
+/*  and it searches for the best path through the candidates             */
 /*                                                                       */
 /*=======================================================================*/
 
@@ -78,7 +78,7 @@ class EST_VTPath {
   public:
     EST_VTPath() {score=0.0; from=0; next=0; c=0;}
     ~EST_VTPath() {if (next != 0) delete next;}
-    double score;   /* cummulative score for path */
+    double score;   /* cumulative score for path */
     int state;
     EST_Features f;
     EST_VTCandidate *c;
@@ -112,10 +112,10 @@ typedef EST_VTPath *(*unpath_f_t)(EST_VTPath *p,EST_VTCandidate *c,
 /** A class that offers a generalised Viterbi decoder.
 
     This class can be used to find the best path through a set
-    of candidates based on liklihoods of the candidates and 
+    of candidates based on likelihoods of the candidates and 
     some combination function.  The candidate list and joining
     are not included in the decoder itself but are user defined functions
-    that are specified as construction time.  
+    that are specified at construction time.  
 
     Those functions need to return a list of candidates and score
     a join of a path to a candidate and (optionally define a state).
@@ -160,7 +160,7 @@ class EST_Viterbi_Decoder {
 			  int &cand_count);
   public:
 
-    /// For holding vlaues to pass to user called functions
+    /// For holding values to pass to user called functions
     EST_Features f;
 
     /// Unfortunately using MAX_DOUBLE doesn't do the right thing
@@ -180,16 +180,17 @@ class EST_Viterbi_Decoder {
     ~EST_Viterbi_Decoder();
     ///  Only for use in beam search mode: number of paths to consider
     void set_beam_width(int w) {beam_width = w;}
-    ///  Only for use in beam search mode: number of condidates to consider
+    ///  Only for use in beam search mode: number of candidates to consider
     void set_cand_width(int w) {cand_width = w;}
     ///  Output some debugging information
     void set_debug(int d) {debug = d;}
-    /** Define is good scores are bigger or smaller.  This allows
-        the search to work for likelihoods probabailities, scores or
+
+    /** Define whether good scores are bigger or smaller.  This allows
+        the search to work for likelihoods probabilities, scores or
         whatever
     */
     void set_big_is_good(int flag) { big_is_good = flag; }
-    /** Add a new candidtate to list if better than others, pruning
+    /** Add a new candidate to list if better than others, pruning
         the list if required.
     */
     EST_VTCandidate *add_cand_prune(EST_VTCandidate *newcand,
@@ -213,6 +214,12 @@ class EST_Viterbi_Decoder {
         named as {\tt n}. Return FALSE if no path is found.
     */
     bool result(const EST_String &n);
+
+    /** Extract the end point of the best path found during search. 
+	Return FALSE if no path is found.
+     */
+    bool result( EST_VTPath **bestPathEnd );
+
     /// Copy named feature from the best path to related stream item
     void copy_feature(const EST_String &n);
 };

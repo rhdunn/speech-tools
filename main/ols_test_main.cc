@@ -121,7 +121,7 @@ static int ols_test_main(int argc, char **argv)
 
     if (coeffs.load(al.val("-coeffs")) != format_ok)
     {
-	cerr << argv[0] << ": no coefficents file specified" << endl;
+	cerr << argv[0] << ": no coefficients file specified" << endl;
 	exit(-1);
     }
 

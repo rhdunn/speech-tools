@@ -128,7 +128,7 @@ int move_item(EST_Item *from, EST_Item *to)
 int move_sub_tree(EST_Item *from, EST_Item *to)
 {
     // make from's contents be to's contents, delete all of to's
-    // daughters and rebuild from's descendants betneath too.
+    // daughters and rebuild from's descendants beneath to.
     EST_Item *rfrom = from->as_relation(to->relation_name());
     EST_Item *d,*r,*nr;
 
@@ -142,7 +142,7 @@ int move_sub_tree(EST_Item *from, EST_Item *to)
     if (rfrom == d)
       d = next(d);
     if ((rfrom != 0) && (daughter1(rfrom)))
-    {   // copy the descendent structure
+    {   // copy the descendant structure
 	copy_node_tree(daughter1(rfrom),to->insert_below(daughter1(rfrom)));
 	delete rfrom;
     }
@@ -178,3 +178,108 @@ int exchange_sub_trees(EST_Item *from,EST_Item *to)
 
     return TRUE;
 }
+
+
+EST_Item *item_jump(EST_Item *from, const EST_String &to)
+{
+  // This function jumps around standard festival relation structures.
+  // Designed to be fast rather than anything else.
+  // Behaviour is undefined for non standard structures.
+  // Gives the first of non-unique items.
+
+  int f=0,t=0;
+
+  if (to == "Segment")
+    t=1;
+  else if (to == "Syllable")
+    t=2;
+  else if (to == "Word")
+    t=3;
+  else if (to == "IntEvent")
+    t=4;
+
+  if (from->in_relation("Segment"))
+    f=1;
+  else if (from->in_relation("Syllable"))
+    f=2;
+  else if (from->in_relation("Word"))
+    f=3;
+  else if (from->in_relation("IntEvent"))
+    f=4;
+
+  if ( t == 0 || f == 0 )
+    return 0;
+
+  if ( t == f )
+    return from;
+
+  switch(f) {
+
+  case 1:
+    // from Segment
+    switch(t) {
+    case 2:
+      // Syllable
+      return(from->as_relation("SylStructure")->up()->as_relation("Syllable"));
+    case 3:
+      // Word
+      return(from->as_relation("SylStructure")->up()->up()->as_relation("Word"));
+    case 4:
+      // IntEvent
+      return(from->as_relation("SylStructure")->up()->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    }
+
+  case 2:
+    // from Syllable
+    switch(t) {
+    case 1:
+      // Segment
+      return(from->as_relation("SylStructure")->down()->as_relation("Segment"));
+    case 3:
+      // Word
+      return(from->as_relation("SylStructure")->up()->as_relation("Word"));
+      // IntEvent
+    case 4:
+      return(from->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    }
+
+  case 3:
+    // from Word
+    switch(t) {
+    case 1:
+      // Segment
+      return(from->as_relation("SylStructure")->down()->down()->as_relation("Segment"));
+    case 2:
+      // Syllable
+      return(from->as_relation("SylStructure")->down()->as_relation("Syllable"));
+    case 4:
+      return(from->as_relation("SylStructure")->down()->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    }
+
+  case 4:
+    // from IntEvent
+    switch(t) {
+    case 1:
+      // Segment
+      return(from->as_relation("Intonation")->up()->as_relation("SylStructure")->down()->as_relation("Segment"));
+    case 2:
+      // Syllable
+      return(from->as_relation("Intonation")->up()->as_relation("Syllable"));
+    case 3:
+      // Word
+      return(from->as_relation("Intonation")->up()->as_relation("SylStructure")->up()->as_relation("Word"));
+    }
+  }
+
+  return NULL;
+}
+
+
+
+
+
+
+
+
+
+

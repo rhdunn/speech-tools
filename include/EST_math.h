@@ -34,8 +34,8 @@
 /*                    Date   :  August 1996                              */
 /*-----------------------------------------------------------------------*/
 /*       OS system dependent math routines                               */
-/*   You may use this instead of math.h to get a system independant      */
-/*   interface to the math functions (or include in addition, its up to  */
+/*   You may use this instead of math.h to get a system independent      */
+/*   interface to the math functions (or include in addition, it's up to */
 /*   you)                                                                */
 /*=======================================================================*/
 #ifndef __EST_MATH_H__
@@ -67,7 +67,7 @@ extern "C" {
 /* It doesn't exist on SunOS.  One could use the macro that Solaris uses */
 /* but I can't including it here, besides the follow will almost definitely */
 /* have the same effect                                                     */
-/* The defines are of course hueristics, this fails for NetBSD */
+/* The defines are of course heuristics, this fails for NetBSD */
 #if defined(__sun__) && defined(__sparc__) && !defined(__svr4__)
 #define isnanf(X) isnan(X)
 #endif

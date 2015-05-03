@@ -35,7 +35,7 @@
 /*-----------------------------------------------------------------------*/
 /*                      Command Line Utilities                           */
 /*                                                                       */
-/*  awb merged the help usage and argment definitions April 97           */
+/*  awb merged the help usage and argument definitions April 97          */
 /*                                                                       */
 /*=======================================================================*/
 #include <stdlib.h>
@@ -90,11 +90,11 @@ int init_lib_ops(EST_Option &al, EST_Option &op)
 //  An attempt to integrate help, usage and argument definitions in 
 //  one string (seems to work)
 //  Still to do: 
-// *   adding arbitrary "-" at end of files (do we need that ?)
+// *   adding arbitrary "-" at end of files (do we need that?)
 //     dealing with environment var specification of extra options
 //     override options function (maybe no longer needed)
 //     list of named values for argument
-//     Way to identify mandatory argments
+//     Way to identify mandatory arguments
 int parse_command_line(int argc, 
 		       char *argv[],
 		       const EST_String &usage,

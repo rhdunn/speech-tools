@@ -36,11 +36,11 @@
 #define __EST_FEATUREFUNCTIONCONTEXT_H__
 
 /** A feature function context is the interface through which feature
-  * functions are looked up. It is basicly a list of feature function
+  * functions are looked up. It is basically a list of feature function
   * packages.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_FeatureFunctionContext.h,v 1.2 2001/04/04 13:11:27 awb Exp $ */
+  * @version $Id: EST_FeatureFunctionContext.h,v 1.3 2004/05/04 00:00:17 awb Exp $ */
 
 #include "ling_class/EST_FeatureFunctionPackage.h"
 

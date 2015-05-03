@@ -34,7 +34,7 @@
 /*                     Date   :  February 1997                           */
 /*-----------------------------------------------------------------------*/
 /*                                                                       */
-/* Auxilliary functions for EST_Ngram class                              */
+/* Auxiliary functions for EST_Ngram class                               */
 /*                                                                       */
 /*=======================================================================*/
 #include <iostream.h>
@@ -596,7 +596,7 @@ Good_Turing_discount(EST_Ngrammar &ngrammar, const int maxcount,
 	    for(i=0;i<=max+1;i++)
 	    {
 		freqs[i] -= 1;
-		// possibly unneccesary check
+		// possibly unnecesary check
 		if ( freqs(i) < 0 )
 		    freqs[i] = 0;
 	    }

@@ -37,7 +37,7 @@
 /* Building tree lexicons from rules.  This could almost be done by the  */
 /* regular grammar compiler but for efficiently reasons we have a        */
 /* specific compiler.  As the ends of the trees are never minimized      */
-/* Actuially it will take full context free grammars and convert them    */
+/* Actually it will take full context free grammars and convert them     */
 /* up to a specified rewrite depth                                       */
 /*                                                                       */
 /* Based loosely on "Finite State Machines from Features Grammars" by    */
@@ -135,7 +135,7 @@ void EST_WFST::build_tree_lex(LISP inalpha, LISP outalpha,
 		}
 //		else // duplicate word
 //		{
-//		    cerr << "WFST: tlcompile, dulpicate word ignored\n";
+//		    cerr << "WFST: tlcompile, duplicate word ignored\n";
 //		}
 		break;
 	    }

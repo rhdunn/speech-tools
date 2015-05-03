@@ -33,7 +33,7 @@
 /*                         Author :  Simon King                          */
 /*                         Date   :  April 1995                          */
 /*-----------------------------------------------------------------------*/
-/*                  EST_DMatrix Class auxilliary functions               */
+/*                  EST_DMatrix Class auxiliary functions                */
 /*                                                                       */
 /*=======================================================================*/
 #include <stdlib.h>
@@ -315,7 +315,7 @@ int inverse(const EST_DMatrix &a,EST_DMatrix &inv,int &singularity)
     // in it if it fails to find an inverse.
     int i, j, k;
     int n = a.num_rows();
-    EST_DMatrix b = a;  // going to destructively maniplate b to get inv
+    EST_DMatrix b = a;  // going to destructively manipulate b to get inv
     EST_DMatrix pos;    // the original position
     double biggest,s;
     int r=0,this_row,all_zeros;
@@ -343,7 +343,7 @@ int inverse(const EST_DMatrix &a,EST_DMatrix &inv,int &singularity)
     for (i=0; i<n; i++)
     {
 	// Find the absolute largest val in this col as the next to
-	// manipuate
+	// manipulate.
 	biggest = 0.0;
 	r = 0;
 	for (j=i; j<n; j++)

@@ -57,8 +57,8 @@ default is 199 which gives a pretty good filter, but a value as low as
 */ 
 //@{
 
-/** Create an artibtrary filter or order {\tt order} that attempts to
-give the frequecny response given by {\tt freq_response}. The vector
+/** Create an arbitrary filter or order {\tt order} that attempts to
+give the frequency response given by {\tt freq_response}. The vector
 {\tt freq_response} should be any size 2**N and contain a plot of the
 desired frequency response with values ranging between 0.0 and
 1.0. The actual filtering is done by \Ref{FIRfilter}.
@@ -71,7 +71,7 @@ EST_FVector design_FIR_filter(const EST_FVector &freq_response, int
 			      filter_order);
 
 /** Design a FIR lowpass filter of order {\tt order} and cut-off
-freqeuncy {\tt freq}. The filter coefficients are returned in the
+frequency {\tt freq}. The filter coefficients are returned in the
 FVector and should be used in conjunction with \Ref{FIRfilter}.
 
 @see design_FIR_filter, design_highpass_FIR_filter, FIRfilter,
@@ -81,7 +81,7 @@ FIRlowpass_filter, FIRhighpass_filter
 EST_FVector design_lowpass_FIR_filter(int sample_rate, int freq, int
 				      order);
 
-/** Design a FIR highpass filter of order {\tt order} and cut-off freqeuncy
+/** Design a FIR highpass filter of order {\tt order} and cut-off frequency
 {\tt freq}. The filter coefficients are returned in the FVector and should be used in conjunction with \Ref{FIRfilter}
 @see design_FIR_filter, design_lowpass_FIR_filter, design_highpass_FIR_filter
 @see FIRfilter, FIRlowpass_filter, FIRhighpass_filter

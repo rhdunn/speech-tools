@@ -41,9 +41,9 @@
 #include "EST_system.h"
 #include "EST_FMatrix.h"
 #include "EST_cluster.h"
-#include "fstream.h"
+#include <fstream.h>
 #include "EST_string_aux.h"
-#include "float.h"
+#include <float.h>
 
 int fn_cluster(EST_FMatrix &m, EST_CBK &cbk, float d);
 int nn_cluster(EST_FMatrix &m, EST_CBK &cbk, float d);
@@ -133,13 +133,11 @@ void collapse(EST_FMatrix &d, EST_CBK &cbk, int row, int col)
 
 float min(float a, float b)
 {
-    cout << "Min\n";
     return (a < b) ? a: b;
 }
 
 float max(float a, float b)
 {
-    cout << "Max\n";
     return (a > b) ? a: b;
 }
 
@@ -316,7 +314,7 @@ EST_FVector sort_matrix(EST_FMatrix &m)
     float *v;
     int n_vals;
     
-    // determine size of triangualr part of matrix, excluding diagonal
+    // determine size of triangular part of matrix, excluding diagonal
     int size = m.num_rows() - 1;
     
     n_vals = 0;

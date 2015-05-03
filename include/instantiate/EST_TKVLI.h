@@ -39,7 +39,7 @@
 /** Instantiate rules for list template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TKVLI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TKVLI.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 #include "instantiate/EST_TListI.h"
@@ -71,8 +71,8 @@
 	static VAL TAG##_kv_def_val_s; \
 	static KEY TAG##_kv_def_key_s; \
 	\
-	VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
-	KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
+	template <> VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
+	template <> KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
 	\
 	Declare_TList_N(KVI_ ## TAG ## _t, MaxFree)
 #define Declare_KVL_T(KEY, VAL, TAG) \
@@ -85,8 +85,8 @@
 	static VAL TAG##_kv_def_val_s=DEFV; \
 	static KEY TAG##_kv_def_key_s=DEFK; \
 	\
-	VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
-	KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
+	template <> VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
+	template <> KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
 	\
 	Declare_TList_N(KVI_ ## TAG ## _t, MaxFree)
 #define Declare_KVL_Base_T(KEY, VAL, DEFV, DEFK, TAG) \
@@ -99,8 +99,8 @@
 	static VAL TAG##_kv_def_val_s(DEFV); \
 	static KEY TAG##_kv_def_key_s(DEFK); \
 	\
-	VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
-	KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
+	template <> VAL *EST_TKVL< KEY, VAL >::default_val=&TAG##_kv_def_val_s; \
+	template <> KEY *EST_TKVL< KEY, VAL >::default_key=&TAG##_kv_def_key_s; \
 	\
 	Declare_TList_N(KVI_ ## TAG ## _t, MaxFree)
 #define Declare_KVL_Class_T(KEY, VAL, DEFV, DEFK,TAG) \

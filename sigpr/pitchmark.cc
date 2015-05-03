@@ -48,6 +48,8 @@ written in matlab.
 #include "EST_math.h"
 #include "EST_inline_utils.h"
 #include "EST_wave_aux.h"
+#include "EST_track_aux.h"
+
 
 void delta(EST_Wave &tr, EST_Wave &d, int regression_length);
 
@@ -130,7 +132,7 @@ EST_Track pitchmark(EST_Wave &lx, EST_Features &op)
 }
 
 /** Iterate through track and eliminate any frame whose distance to a
-preceeding frames is less than min seconds*/
+preceding frames is less than min seconds*/
 
 void pm_min_check(EST_Track &pm, float min)
 {
@@ -265,5 +267,20 @@ void pm_to_f0(EST_Track &pm, EST_Track &f0)
     {
 	f0.a(i, 0) = 1.0 / (f0.t(i) - prev_pm);
 	prev_pm = f0.t(i);
+    }
+}
+
+void pm_to_f0(EST_Track &pm, EST_Track &fz, float shift)
+{
+    int i;
+    float period;
+
+    fz.resize((int)(pm.end()/shift), 1);
+    fz.fill_time(shift);
+
+    for (i = 0; i < fz.num_frames() -1 ; ++i)
+    {
+        period = get_time_frame_size(pm, pm.index_below(fz.t(i)));
+	fz.a(i) = 1.0 /period;
     }
 }

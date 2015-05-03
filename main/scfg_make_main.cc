@@ -79,7 +79,7 @@ static void generate_probs(double *probs,int num);
 /**
 
 Builds a stochastic context free grammar from a vocabulary of non-terminal
-and testminal symbols.  An exhaustive set of all possible binary rules
+and terminal symbols.  An exhaustive set of all possible binary rules
 are generated with random (or equal) probabilities (or negative log
 probabilities).  This program is designed for making grammars that
 can be trained using scfg_train.
@@ -127,6 +127,8 @@ static int scfg_make_main(int argc, char **argv)
        "-values <string> {equal}\n"+
        "                    General initial scores on rules as equal or\n"
        "                    random\n"+
+       "-heap <int> {500000}\n"+
+       "              Set size of Lisp heap, only needed for large grammars\n"+
        "-o <ofile>          File to save grammar (default stdout)\n",
 		       files, al);
     
@@ -187,7 +189,7 @@ static int scfg_make_main(int argc, char **argv)
 	exit(1);
     }
 
-    siod_init();
+    siod_init(al.ival("-heap"));
 
     rules = make_all_rules(NonTerminals,Terminals);
     rules = assign_probs(rules,domain,values);

@@ -202,6 +202,8 @@ int main (int argc, char *argv[])
 		if ((al.val("-pc") == "longest") &&
 		    (sig.num_samples() < sigload.num_samples()))
 		    sig.resize(sigload.num_samples());
+		else /* "first" or sig is longer */
+		    sigload.resize(sig.num_samples());
 		sig |= sigload;
 	    }
 	    else if (al.present("-add"))
@@ -330,7 +332,7 @@ $ ch_wave kdt_010.wav kdt_011.wav kdt_012.wav kdt_013.wav -o -pc LONGEST out.wav
 <para>
 The argument to -pc can either be LONGEST, in which the output
 waveform is the length of the longest input file, or FIRST in which it
-is the length of the first intput file.
+is the length of the first input file.
 
 */
 
@@ -387,7 +389,7 @@ waveform.
 
 /** @name Extracting of a multiple regions from a waveform
 
-Mulitple regions can be extracted from a waveform, but as it would be
+Multiple regions can be extracted from a waveform, but as it would be
 too complicated to specify the start and end points on the command
 line, a label file with start and end points, and file names is used.
 

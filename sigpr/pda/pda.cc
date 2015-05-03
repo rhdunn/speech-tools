@@ -160,10 +160,12 @@ void srpd(EST_Wave &sig, EST_Track &fz, Srpd_Op &srpd_op, int resize)
 	    if (held_status.v_uv != VOICED) 
 		fz.set_break(j);
 	    fz.a(j++) = held_status.pitch_freq;
+	    //    printf( "track set:  %d (of %d) to %f\n", j-1, fz.length(), held_status.pitch_freq );
 	}
 	if (pda_status.v_uv != VOICED) 
 	    fz.set_break(j);
 	fz.a(j++) = pda_status.pitch_freq;
+	//printf( "track set:  %d (of %d) to %f\n", j-1, fz.length(), pda_status.pitch_freq );
     }
     if (held_status.s_h == HELD) 
     {

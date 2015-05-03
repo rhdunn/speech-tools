@@ -33,7 +33,7 @@
 /*                     Author :  Alan W Black                            */
 /*                     Date   :  October 1999                            */
 /*-----------------------------------------------------------------------*/
-/*  A training method for spliting states in a WFST from data            */
+/*  A training method for splitting states in a WFST from data           */
 /*                                                                       */
 /*=======================================================================*/
 #include <stdlib.h>

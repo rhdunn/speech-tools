@@ -56,59 +56,125 @@ static inline int max(int a, int b) { return (a>b)?a:b; }
  /*                                                                       */
  /*************************************************************************/
 
-static void Rectangular(int size,  EST_TBuffer<float> &r_window)
+static void Rectangular(int size,  EST_TBuffer<float> &r_window, int window_centre=-1)
 {
-    // this may be a little silly
-    r_window.ensure(size);
-    int i;
-
-    for(i = 0; i < size; i++)
-	r_window[i] = 1.0;
+  // this may be a little silly
+  (void) window_centre; // not useful for rectangular window
+  r_window.ensure(size);
+  
+  for( int i=0; i<size; i++ )
+    r_window[i] = 1.0;
 }
 
-static void  Triangular(int size, EST_TBuffer<float> &r_window)
+static void  Triangular(int size, EST_TBuffer<float> &r_window, int window_centre=-1)
 {
-    r_window.ensure(size);
-    int i,j=size/2;
-    float k = 2.0 / (float)size;
+  int i, c, end=size-1;
+  
+  r_window.ensure(size);
 
-    if( (size & 1) != 0) // odd
-	r_window[j]=1.0;
-
-    for(i = 0; i < j; i++){
-	r_window[i] = i * k;
-	r_window[size-i-1] = r_window[i];
+  if( window_centre < 0 ) { // symmetric window (default)
+    c=size/2;
+    const float k = 2.0 / (float)size;
+    
+    if( (size & 1) != 0 ) // odd
+      r_window[c]=1.0;
+    
+    for( i=0; i<c; i++ ){
+      r_window[i] = i * k;
+      r_window[end-i] = r_window[i];
     }
+  }
+  else{
+    c = window_centre;
+    const float k_left  = 1.0 / (float) (window_centre+1);
+    const float k_right = 1.0 / (float) (size-(window_centre+1));
+
+    r_window[c] = 1.0;
+      
+    // left half
+    for( i=0; i<c; ++i )
+      r_window[i] = i * k_left;
+
+    // right half
+    const int righthand_size = size-1-window_centre; 
+    for( i=0; i<righthand_size; ++i )
+      r_window[end-i] = i * k_right;
+  }
 }
 
-static void  Hanning(int size, EST_TBuffer<float> &r_window)
+static void  Hanning(int size, EST_TBuffer<float> &r_window, int window_centre=-1)
 {
-    r_window.ensure(size);
-    int i,j=size/2;
-    float k = 2.0 * M_PI / size;
+  int i,c;
+  float k;
+  r_window.ensure(size);
+  int end = size-1;
+  
+  if( window_centre < 0 ){ // symmetric window (default)
+    c = size/2;
 
-    if( (size & 1) != 0) // odd
-	r_window[j]=1.0;
+    // only need to calculate one half + copy
+    if( (size & 1) != 0) // when odd
+      r_window[c]=1.0;
 
-    for(i = 0; i < j; i++){
-	r_window[i] = 0.5 - 0.5 * cos(k * (i + 0.5));
-	r_window[size-i-1] = r_window[i];
-    }
+    k = 2.0 * M_PI / size;
+    for( i=0; i<c; ++i )
+      r_window[end-i] = r_window[i] = 0.5 - 0.5 * cos(k * (i + 0.5));
+  }
+  else{
+    c = window_centre;
+    r_window[c]=1.0; // we assume "centre" is 1.0 
+
+    // first half
+    int effective_size = (2*window_centre)+1;
+    k = 2.0 * M_PI / effective_size;
+    for( i=0; i<c; ++i )
+      r_window[i] = 0.5 - 0.5 * cos(k * (i + 0.5));
+
+    // second half
+    const int righthand_size = size-1-window_centre; 
+    effective_size = (2*righthand_size)+1;
+    k = 2.0 * M_PI / effective_size;
+    for( i=0; i<righthand_size; ++i )
+      r_window[end-i] = 0.5 - 0.5 * cos(k * (i + 0.5));
+  }
 }
 
-static void  Hamming(int size, EST_TBuffer<float> &r_window)
+static void  Hamming(int size, EST_TBuffer<float> &r_window, int window_centre=-1)
 {
-    r_window.ensure(size);
-    int i,j=size/2;
-    float k = 2.0 * M_PI / size;
+  float k;
+  int i, c, end=size-1;
 
+  r_window.ensure(size);
+
+  if( window_centre < 0 ){ // symmetric window (default)
+    c=size/2;
+    k = 2.0 * M_PI / size;
+    
     if( (size & 1) != 0) // odd
-	r_window[j]=1.0;
-
-    for(i = 0; i < j; i++){
-	r_window[i] = 0.54 - 0.46 * cos(k * (i + 0.5));
-	r_window[size-i-1] = r_window[i];
+      r_window[c]=1.0;
+    
+    for( i=0; i<c; i++ ){
+      r_window[i] = 0.54 - 0.46 * cos(k * (i + 0.5));
+      r_window[end-i] = r_window[i];
     }
+  }
+  else{
+    c = window_centre;
+    r_window[c] = 1.0;
+    
+    //first half
+    int effective_size = (2*window_centre)+1;
+    k = 2.0 * M_PI / effective_size;
+    for( i=0; i<c ; ++i )
+      r_window[i] = 0.54 - 0.46 * cos(k * (i + 0.5));
+    
+    //second half
+    const int righthand_size = size-1-window_centre;
+    effective_size = (2*righthand_size)+1;
+    k = 2.0 * M_PI / effective_size;
+    for( i=0; i<righthand_size; ++i )
+      r_window[end-i] = 0.54 - 0.46 * cos(k * (i + 0.5));
+  }
 }
 
  /*************************************************************************/
@@ -186,21 +252,21 @@ static float find_dc(const EST_Wave &sig, int start, int size)
     return (sum / (float)size);
 }
 
-void EST_Window::make_window(EST_TBuffer<float> &window_vals, int size, 
-			    const char *name)
+void EST_Window::make_window( EST_TBuffer<float> &window_vals, int size, 
+			      const char *name, int window_centre )
 {
     EST_WindowFunc *make_window =  EST_Window::creator(name);
     window_vals.ensure(size, (bool)FALSE); 
-    make_window(size, window_vals);
+    make_window(size, window_vals, window_centre);
 }
 
-void EST_Window::make_window(EST_FVector &window_vals, int size, 
-			    const char *name)
+void EST_Window::make_window( EST_FVector &window_vals, int size, 
+			      const char *name, int window_centre )
 {
     EST_TBuffer<float> fwindow;
     EST_WindowFunc *make_window =  EST_Window::creator(name);
     fwindow.ensure(size, (bool)FALSE); 
-    make_window(size, fwindow);
+    make_window(size, fwindow, window_centre);
     window_vals.resize(size);
     for (int i = 0; i < size; ++i)
 	window_vals[i] = fwindow[i];

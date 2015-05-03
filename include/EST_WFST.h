@@ -281,7 +281,7 @@ class EST_WFST {
     void stop_cumulate();
     //@}
 
-    /**@name WFST construction functions from external represenations **/
+    /**@name WFST construction functions from external representations **/
     //@{
     /// Add a new state, returns new name
     int add_state(enum wfst_state_type state_type);
@@ -346,7 +346,7 @@ class EST_WFST {
     void concat(const EST_WFST &a,const EST_WFST &b);
     //@}
 
-    /**@name construction support fuctions */
+    /**@name construction support functions */
     //@{
     /// True if WFST is deterministic
     int deterministic() const;

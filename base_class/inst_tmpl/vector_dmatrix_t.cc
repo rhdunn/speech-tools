@@ -52,8 +52,8 @@ template ostream& operator << (ostream &st, const EST_TVector<EST_DMatrix> &v);
 #endif
 static const EST_DMatrix def_val_DMatrix;
 static EST_DMatrix error_return_DMatrix;
-const EST_DMatrix *EST_TVector<EST_DMatrix>::def_val = &def_val_DMatrix;
-EST_DMatrix *EST_TVector<EST_DMatrix>::error_return = &error_return_DMatrix;
+template <> const EST_DMatrix *EST_TVector<EST_DMatrix>::def_val = &def_val_DMatrix;
+template <> EST_DMatrix *EST_TVector<EST_DMatrix>::error_return = &error_return_DMatrix;
 
 int operator !=(const EST_DMatrix &fm1, 
 		const EST_DMatrix &fm2)

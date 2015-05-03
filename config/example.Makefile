@@ -33,7 +33,7 @@
  ##                                                                       ##
  ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
  ## --------------------------------------------------------------------  ##
- ## A skeliton makefile for a speech tools directory. This would be for   ##
+ ## A skeleton makefile for a speech tools directory. This would be for   ##
  ## a directory of mainly C++ code to be included in the library.         ##
  ##                                                                       ##
  ###########################################################################

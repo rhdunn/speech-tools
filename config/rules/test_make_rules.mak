@@ -43,7 +43,7 @@ FILES = Makefile \
 	$(SCRIPTS) \
         $(OTHERS)
 
-LOCAL_DEFINES += -DDATA=\"$(DATA)\"
+LOCAL_DEFINES += -DDATA="\"$(DATA)\""
 
 include $(TOP)/config/common_make_rules
 

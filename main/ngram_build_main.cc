@@ -114,7 +114,7 @@ the mat last_tag
 
 <para> The internal representation of the model becomes important for
 higher values of N where, if V is the vocabulary size, \(V^N\) becomes
-very large. In such cases, we cannot explicitly hold pobabilities for
+very large. In such cases, we cannot explicitly hold probabilities for
 all possible ngrams, and a sparse representation must be used
 (i.e. only non-zero probabilities are stored).</para> 
 </formalpara>

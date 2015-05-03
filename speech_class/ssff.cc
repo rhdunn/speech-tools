@@ -56,7 +56,7 @@
 #include "EST_FileType.h"
 
 EST_read_status EST_TrackFile::load_ssff(const EST_String filename, 
-					EST_Track &tr, float ishift)
+					EST_Track &tr, float ishift, float startt)
 {
     EST_TokenStream ts;
     
@@ -66,12 +66,13 @@ EST_read_status EST_TrackFile::load_ssff(const EST_String filename,
 	return misc_read_error;
     }
     tr.set_name(filename);
-    return load_ssff_ts(ts, tr, ishift);
+    return load_ssff_ts(ts, tr, ishift, startt);
 }
 
-EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, float ishift)
+EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, float ishift, float startt)
 {
     (void)ishift;
+    (void)startt;
     int num_frames, num_channels;
     int swap = FALSE;
     int i,j,pos,end;
@@ -99,7 +100,7 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
     
     while (ts.peek() != "-----------------")
     {
-	c = ts.get();
+	c = (EST_String)ts.get();
 	if (c == "Comment")
 	    ts.get_upto_eoln();
 	else if (c == "Start_Time")
@@ -124,9 +125,9 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
 	}
 	else if (c == "Column")
 	{
-	    name = ts.get();
-	    type = ts.get();
-	    size = ts.get();
+	    name = (EST_String)ts.get();
+	    type = (EST_String)ts.get();
+	    size = (EST_String)ts.get();
 	    cname = EST_String("Channel_")+itoString(num_channels);
 	    channels.set(cname+".name",name);
 	    channels.set(cname+".type",type);
@@ -141,7 +142,7 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
 		 (c == "preemphasis") ||
 		 (c == "frame_duration"))
 	{
-		type = ts.get();
+		type = (EST_String)ts.get();
 		if (type == "SHORT")
 		    tr.f_set(c,atoi(ts.get().string()));
 		else if (type == "DOUBLE")
@@ -163,8 +164,8 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
     }
     ts.get();  // skip over end of header line
 
-    // There's no num_records field in the heard so have to use file's 
-    // lenght to calculate it
+    // There's no num_records field in the header so have to use file's 
+    // length to calculate it
     fp = ts.filedescriptor();
     pos = ftell(fp);
     fseek(fp,0,SEEK_END);

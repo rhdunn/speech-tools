@@ -160,7 +160,7 @@ void array_smoother (float *p_array, int arraylen, struct Ms_Op *ms)
 		for (i = dely - 1; i > 0; i--)
 		    ydel[i] = ydel[i - 1];
 		ydel[0] = output;
-		/* second median smooothing */
+		/* second median smoothing */
 		medval2 = median (&c3, zatn, medbuf2, 
 				  ms->second_median, mid2);
 		if (c3 == -1) 

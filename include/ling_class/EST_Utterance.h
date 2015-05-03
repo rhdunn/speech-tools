@@ -113,7 +113,7 @@ public:
     /// Utterance level features
     EST_Features f;
 
-    /// Evaluarte all feature functions in utterance
+    /// Evaluate all feature functions in utterance
     void evaluate_all_features();
     
     /// The list of named relations
@@ -145,6 +145,9 @@ public:
 		
     void sub_utterance(EST_Item *i);
 };
+
+void utt_2_flat_repr( const EST_Utterance &utt,
+		      EST_String &flat_repr );
 
 int utterance_merge(EST_Utterance &utt,
 		    EST_Utterance &sub_utt,

@@ -149,10 +149,9 @@ const EST_Item_featfunc EST_FeatureFunctionContext::get_featfunc(const EST_Strin
 {
   int pos, len;
 
-  const EST_Item_featfunc func = cache.val(name);
 
-  if (func != NULL)
-    return func;
+  if (cache.present(name))
+      return cache.val(name);
 
   if ((pos= name.search(separator, len, 0))>=0)
     {
@@ -210,7 +209,11 @@ const EST_Item_featfunc EST_FeatureFunctionContext::get_featfunc(const EST_Strin
     return NULL;
 }
 
-Declare_TStringHash(EST_Item_featfunc)
+static EST_Val Dummy_Func(EST_Item *) { return EST_Val(); }
+template <> EST_String
+EST_THash<EST_String, EST_Item_featfunc>::Dummy_Key = "DUMMY";
+template <> EST_Item_featfunc
+EST_THash<EST_String, EST_Item_featfunc>::Dummy_Value = Dummy_Func;
 Declare_TList_T(EST_FeatureFunctionPackage *, EST_FeatureFunctionPackageP)
 
 

@@ -296,7 +296,7 @@
 	</para>
 
 	<para>
-	  Here is a varient on the siod server which handles a new
+	  Here is a variant on the siod server which handles a new
 	  operation <literal>"print"</literal> which evaluates an
 	  expression and prints the result to standard output as well
 	  as retruning it. (In this example some details of error
@@ -377,7 +377,7 @@
 	</para>
 
 	<para>
-	  I'll asuume we need a client to del with a varient on the
+	  I'll asuume we need a client to deal with a variant on the
 	  normal siod sever which returns multiple values, say it
 	  evaluates the expression in each of a number of environments
 	  and returns each result separately. I'll also assume that

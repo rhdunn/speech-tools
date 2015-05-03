@@ -38,7 +38,7 @@
 /** Instantiate rules for vector template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TVectorI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TVectorI.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 
@@ -62,22 +62,22 @@
 	static TYPE const TAG##_vec_def_val_s; \
 	static TYPE TAG##_vec_error_return_s; \
 	\
-	TYPE const *EST_TVector< TYPE >::def_val=&TAG##_vec_def_val_s; \
-	TYPE *EST_TVector< TYPE >::error_return=&TAG##_vec_error_return_s;
+	template <> TYPE const *EST_TVector< TYPE >::def_val=&TAG##_vec_def_val_s; \
+	template <> TYPE *EST_TVector< TYPE >::error_return=&TAG##_vec_error_return_s;
 
 #define Declare_TVector_Base_T(TYPE,DEFAULT,ERROR,TAG)  \
 	static TYPE const TAG##_vec_def_val_s=DEFAULT; \
 	static TYPE TAG##_vec_error_return_s=ERROR; \
 	\
-	TYPE const *EST_TVector<TYPE>::def_val=&TAG##_vec_def_val_s; \
-	TYPE *EST_TVector<TYPE>::error_return=&TAG##_vec_error_return_s;
+	template <> TYPE const *EST_TVector<TYPE>::def_val=&TAG##_vec_def_val_s; \
+	template <> TYPE *EST_TVector<TYPE>::error_return=&TAG##_vec_error_return_s;
 
 #define Declare_TVector_Class_T(TYPE,DEFAULT,ERROR,TAG)  \
 	static TYPE const TAG##_vec_def_val_s(DEFAULT); \
 	static TYPE TAG##_vec_error_return_s(ERROR); \
 	\
-	TYPE const *EST_TVector<TYPE>::def_val=&TAG##_vec_def_val_s; \
-	TYPE *EST_TVector<TYPE>::error_return=&TAG##_vec_error_return_s;
+	template <> TYPE const *EST_TVector<TYPE>::def_val=&TAG##_vec_def_val_s; \
+	template <> TYPE *EST_TVector<TYPE>::error_return=&TAG##_vec_error_return_s;
 
 #define Declare_TVector(TYPE) Declare_TVector_T(TYPE,TYPE)
 #define Declare_TVector_Base(TYPE,DEFAULT,ERROR)  Declare_TVector_Base_T(TYPE,DEFAULT,ERROR,TYPE)

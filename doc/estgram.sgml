@@ -260,7 +260,7 @@ recommended.
 
 <para>
 After each N passes the current state of the grammar may be saved, the
-number of passes between saving is specificed by the <filename>-checkpoint</filename>
+number of passes between saving is specified by the <filename>-checkpoint</filename>
 option.  The grammar is saved in the output file appended with the pass
 number.  
 </para>
@@ -288,7 +288,7 @@ bracketing in the corpus example.
 <para>
 The fourth program provides a mechanism for parsing one or more
 sentences.  The corpus this time should contain no bracketing except
-around the begining and end of the sentence itself.  Two forms of parses
+around the beginning and end of the sentence itself.  Two forms of parses
 are produced.  A full form with start and end points for each phrase,
 the related non-terminal and the probability, and a simple form where
 only the bracketing is given.  Note only one (or no) parses is given.

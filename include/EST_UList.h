@@ -120,7 +120,7 @@ public:
 };
 
 
-// inline finctions in header file
+// inline functions in header file
 // everything else in EST_UList.C
 
 inline EST_UItem *next(EST_UItem *ptr)

@@ -35,7 +35,7 @@
  /************************************************************************/
  /*                                                                      */
  /* A template class which allows names (const char *s) to be            */
- /* associated with enums, providing convertion.                         */
+ /* associated with enums, providing conversion.                         */
  /*                                                                      */
  /************************************************************************/
 
@@ -58,15 +58,15 @@ void EST_TValuedEnumI<ENUM,VAL,INFO>::initialise(const void *vdefs)
   for(n=1; defs[n].token != defs[0].token; n++)
     ;
 
-  ndefinitions = n;
-  definitions = new defn[n];
+  this->ndefinitions = n;
+  this->definitions = new defn[n];
 
-  definitions[0] = defs[0];
+  this->definitions[0] = defs[0];
   for(n=1; defs[n].token != defs[0].token; n++)
-    definitions[n] = defs[n];
+    this->definitions[n] = defs[n];
 
-  p_unknown_enum = defs[n].token;
-  p_unknown_value = defs[n].values[0];
+  this->p_unknown_enum = defs[n].token;
+  this->p_unknown_value = defs[n].values[0];
 }
 
 template<class ENUM, class VAL, class INFO> 
@@ -87,37 +87,37 @@ void EST_TValuedEnumI<ENUM,VAL,INFO>::initialise(const void *vdefs, ENUM (*conv)
       // fprintf(stderr, ": %d '%s' '%s'\n", n, defs[n].token, defs[0].token);
     }
 
-  ndefinitions = n;
+  this->ndefinitions = n;
   typedef EST_TValuedEnumDefinition<ENUM,VAL,INFO> defn;
-  definitions = new defn[n];
+  this->definitions = new defn[n];
 
-  definitions[0].token = conv(defs[0].token);  
+  this->definitions[0].token = conv(defs[0].token);  
   for(int i=0; i<NAMED_ENUM_MAX_SYNONYMS; i++)
-    definitions[0].values[i] = defs[0].values[i];
-  definitions[0].info = defs[0].info;
+    this->definitions[0].values[i] = defs[0].values[i];
+  this->definitions[0].info = defs[0].info;
   for(n=1; strcmp(defs[n].token, defs[0].token) != 0; n++)
     {
-      definitions[n].token = conv(defs[n].token);
+      this->definitions[n].token = conv(defs[n].token);
       for(int i2=0; i2<NAMED_ENUM_MAX_SYNONYMS; i2++)
-	definitions[n].values[i2] = defs[n].values[i2];
-      definitions[n].info = defs[n].info;
+	this->definitions[n].values[i2] = defs[n].values[i2];
+      this->definitions[n].info = defs[n].info;
     }
 
-  p_unknown_enum = conv(defs[n].token);
-  p_unknown_value = defs[n].values[0];
+  this->p_unknown_enum = conv(defs[n].token);
+  this->p_unknown_value = defs[n].values[0];
 }
 
 template<class ENUM, class VAL, class INFO>
 EST_TValuedEnumI<ENUM,VAL,INFO>::~EST_TValuedEnumI(void)
 {
-  if (definitions)
-     delete[] definitions;
+  if (this->definitions)
+     delete[] this->definitions;
 }
 
 template<class ENUM, class VAL, class INFO> 
 int EST_TValuedEnumI<ENUM,VAL,INFO>::n(void) const
 { 
-return ndefinitions; 
+return this->ndefinitions; 
 }
 
 template<class ENUM, class VAL, class INFO>
@@ -125,11 +125,11 @@ VAL EST_TValuedEnumI<ENUM,VAL,INFO>::value (ENUM token, int n) const
 {
   int i;
 
-  for(i=0; i<ndefinitions; i++)
-    if (definitions[i].token == token)
-      return definitions[i].values[n];
+  for(i=0; i<this->ndefinitions; i++)
+    if (this->definitions[i].token == token)
+      return this->definitions[i].values[n];
 
-  return p_unknown_value;
+  return this->p_unknown_value;
 }
 
 template<class ENUM, class VAL, class INFO>
@@ -137,9 +137,9 @@ INFO &EST_TValuedEnumI<ENUM,VAL,INFO>::info (ENUM token) const
 {
   int i;
 
-  for(i=0; i<ndefinitions; i++)
-    if (definitions[i].token == token)
-      return definitions[i].info;
+  for(i=0; i<this->ndefinitions; i++)
+    if (this->definitions[i].token == token)
+      return this->definitions[i].info;
 
   cerr << "Fetching info for invalid entry\n";
   abort();
@@ -151,10 +151,10 @@ INFO &EST_TValuedEnumI<ENUM,VAL,INFO>::info (ENUM token) const
 template<class ENUM, class VAL, class INFO>
 ENUM EST_TValuedEnumI<ENUM,VAL,INFO>::nth_token (int n) const
 {
-  if (n>=0 && n < ndefinitions)
-    return definitions[n].token;
+  if (n>=0 && n < this->ndefinitions)
+    return this->definitions[n].token;
 
-  return p_unknown_enum;
+  return this->p_unknown_enum;
 }
 
 template<class ENUM, class VAL, class INFO> 
@@ -162,12 +162,12 @@ ENUM EST_TValuedEnumI<ENUM,VAL,INFO>::token (VAL value) const
 {
     int i,j;
 
-    for(i=0; i<ndefinitions; i++)
-	for(j=0; j<NAMED_ENUM_MAX_SYNONYMS && definitions[i].values[j] ; j++)
-	    if (eq_vals(definitions[i].values[j], value))
-		return definitions[i].token;
+    for(i=0; i<this->ndefinitions; i++)
+	for(j=0; j<NAMED_ENUM_MAX_SYNONYMS && this->definitions[i].values[j] ; j++)
+	    if (eq_vals(this->definitions[i].values[j], value))
+		return this->definitions[i].token;
 
-    return p_unknown_enum;
+    return this->p_unknown_enum;
 }
 
 template<class ENUM> 
@@ -186,11 +186,11 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
   if ((file=fopen(name, "rb"))==NULL)
     return misc_read_error;
 
-  if (definitions)
-    delete[] definitions;
+  if (this->definitions)
+    delete[] this->definitions;
 
-  ndefinitions= -1;
-  definitions=NULL;
+  this->ndefinitions= -1;
+  this->definitions=NULL;
 
   buffer[LINE_LENGTH-1] = 'x';
 
@@ -202,27 +202,27 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
 	  return wrong_format;
 	}
 
-      if (ndefinitions>=0 && quote != '\0' && buffer[0] == '=')
+      if (this->ndefinitions>=0 && quote != '\0' && buffer[0] == '=')
 	{
 	  // definition by number
 
-	  if ( n>= ndefinitions)
+	  if ( n>= this->ndefinitions)
 	    {
 	      cerr << "too many definitions\n";
 	      return wrong_format;
 	    }
 
 	  int ntokens = split(line, tokens, NAMED_ENUM_MAX_SYNONYMS+2, RXwhite, '"');
-	  definitions[n].token = (ENUM)atoi(tokens[0].after(0,1));
+	  this->definitions[n].token = (ENUM)atoi(tokens[0].after(0,1));
 
 	  for(int i=1; i<ntokens; i++)
-	      definitions[n].values[i-1] = wstrdup(tokens[i].unquote_if_needed(quote));
+	      this->definitions[n].values[i-1] = wstrdup(tokens[i].unquote_if_needed(quote));
 	  for(int j=ntokens-1 ; j< NAMED_ENUM_MAX_SYNONYMS; j++)
-	    definitions[n].values[j]=NULL;
+	    this->definitions[n].values[j]=NULL;
 
 	  n++;
 	}
-      else if (have_unknown && ndefinitions>=0 && quote != '\0' && buffer[0] == quote)
+      else if (have_unknown && this->ndefinitions>=0 && quote != '\0' && buffer[0] == quote)
 	{
 	  // definition by standard name
 	  if (!definitive)
@@ -230,7 +230,7 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
 	      cerr << "can't use names in this definition\n";
 	      return wrong_format;
 	    }
-	  if ( n>= ndefinitions)
+	  if ( n>= this->ndefinitions)
 	    {
 	      cerr << "too many definitions\n";
 	      return wrong_format;
@@ -238,12 +238,12 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
 
 	  int ntokens = split(line, tokens, NAMED_ENUM_MAX_SYNONYMS+2, RXwhite, quote);
 
-	  definitions[n].token = definitive->token(tokens[0].unquote(quote));
+	  this->definitions[n].token = definitive->token(tokens[0].unquote(quote));
 
 	  for(int i=1; i<ntokens; i++)
-	    definitions[n].values[i-1] = wstrdup(tokens[i].unquote_if_needed(quote));
+	    this->definitions[n].values[i-1] = wstrdup(tokens[i].unquote_if_needed(quote));
 	  for(int j=ntokens-1 ; j< NAMED_ENUM_MAX_SYNONYMS; j++)
-	    definitions[n].values[j]=NULL;
+	    this->definitions[n].values[j]=NULL;
 
 	  n++;
 	}
@@ -269,16 +269,16 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
 	    }
 	  else if (key == "number")
 	    {
-	      ndefinitions=atoi(line.after(eq,1));
+	      this->ndefinitions=atoi(line.after(eq,1));
 	      // cout << "n = '" << ndefinitions << "'\n";
-	      definitions = new Defn[ndefinitions];
-	      for(int i=0; i<ndefinitions; i++)
-		definitions[i].values[0] =NULL;
+	      this->definitions = new Defn[this->ndefinitions];
+	      for(int i=0; i<this->ndefinitions; i++)
+		this->definitions[i].values[0] =NULL;
 	      n=0;
 	    }
 	  else if (key == "unknown")
 	    {
-	      p_unknown_enum=(ENUM)atoi(line.after(eq,1));
+	      this->p_unknown_enum=(ENUM)atoi(line.after(eq,1));
 	      // cout << "unknown = '" << p_unknown_enum << "'\n";
 	      have_unknown=1;
 	    }
@@ -305,20 +305,20 @@ EST_write_status EST_TNamedEnum<ENUM>::priv_save(EST_String name, EST_TNamedEnum
   if ((file=fopen(name, "wb"))==NULL)
     return write_fail;
 
-  fprintf(file, "unknown=%d\n", p_unknown_enum);
+  fprintf(file, "unknown=%d\n", this->p_unknown_enum);
   fprintf(file, "quote=%c\n", quote);
-  fprintf(file, "number=%d\n", ndefinitions);
+  fprintf(file, "number=%d\n", this->ndefinitions);
 
-  for(int i=0; i<ndefinitions; i++)
-    if (definitions[i].values[0])
+  for(int i=0; i<this->ndefinitions; i++)
+    if (this->definitions[i].values[0])
       {
 	if (definitive)
-	  fprintf(file, "%s ", (const char *)EST_String(definitive->name(definitions[i].token)).quote(quote));
+	  fprintf(file, "%s ", (const char *)EST_String(definitive->name(this->definitions[i].token)).quote(quote));
 	else
-	  fprintf(file, "=%d ", (int)definitions[i].token);
+	  fprintf(file, "=%d ", (int)this->definitions[i].token);
 
-	for(int j=0; j<NAMED_ENUM_MAX_SYNONYMS && definitions[i].values[j] != NULL; j++)
-	  fprintf(file, "%s ", (const char *) EST_String(definitions[i].values[j]).quote_if_needed(quote));
+	for(int j=0; j<NAMED_ENUM_MAX_SYNONYMS && this->definitions[i].values[j] != NULL; j++)
+	  fprintf(file, "%s ", (const char *) EST_String(this->definitions[i].values[j]).quote_if_needed(quote));
       
 	fputc('\n', file);
       }

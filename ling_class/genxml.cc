@@ -736,7 +736,8 @@ void GenXML_Parser_Class::error(XML_Parser_Class &c,
   est_error_throw();
 }
 
-Declare_TStringHash_T(EST_Item_Content *, THash_String_ItemC_P)
+template <> EST_String EST_THash<EST_String, EST_Item_Content *>::Dummy_Key = "DUMMY";
+template <> EST_Item_Content *EST_THash<EST_String, EST_Item_Content *>::Dummy_Value = NULL;
 
 #if defined(INSTANTIATE_TEMPLATES)
 

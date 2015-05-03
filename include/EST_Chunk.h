@@ -92,14 +92,14 @@
 
  /************************************************************************/
  /*                                                                      */
- /* EST_Chunk is a use-counted chunk of memory. You souldn`t be able     */
+ /* EST_Chunk is a use-counted chunk of memory. You shouldn't be able    */
  /* to do anything to it except create it and manipulate it via          */
  /* EST_ChunkPtr. The private operator::new takes a placement argument   */
  /* which is actually the number of bytes of memory in the body of the   */
  /* chunk.                                                               */
  /*                                                                      */
- /* If ther use counter overflows, it sticks. Anything with more than    */
- /* SHRT_MAX references to it is probably permanant.                     */
+ /* If the use counter overflows, it sticks. Anything with more than     */
+ /* SHRT_MAX references to it is probably permanent.                     */
  /*                                                                      */
  /************************************************************************/
 
@@ -189,7 +189,7 @@ class EST_ChunkPtr {
     });
 
     // If they manage to get hold of one...
-    // Actually usually used to assign NULL and so (possibly) dealocate
+    // Actually usually used to assign NULL and so (possibly) deallocate
     // the chunk currently pointed to.
     EST_ChunkPtr &operator = (EST_Chunk *chp) CII({
       // doing it in this order means self assignment is safe.

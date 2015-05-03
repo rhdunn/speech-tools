@@ -51,7 +51,7 @@
 /** A class for complex numbers. The class stores the values as
 cartesian real and imaginary parts, but these can be read as polar
 coordinates using the {\tt mag()} and {\tt ang()} functions. Addition,
-subtracttion, multiplication and division are supported. */
+subtraction, multiplication and division are supported. */
 
 class EST_Complex {
  private:

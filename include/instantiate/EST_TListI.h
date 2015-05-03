@@ -39,7 +39,7 @@
 /** Instantiate rules for list template.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TListI.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TListI.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 
@@ -64,9 +64,9 @@
 
 #define Declare_TList_TN(TYPE,MaxFree,TAG) \
 	typedef TYPE TLIST_ ## TAG ## _VAL; \
-	EST_TItem< TYPE > * EST_TItem< TYPE >::s_free=NULL; \
-	unsigned int EST_TItem< TYPE >::s_maxFree=MaxFree; \
-	unsigned int EST_TItem< TYPE >::s_nfree=0;
+	template <> EST_TItem< TYPE > * EST_TItem< TYPE >::s_free=NULL; \
+	template <> unsigned int EST_TItem< TYPE >::s_maxFree=MaxFree; \
+	template <> unsigned int EST_TItem< TYPE >::s_nfree=0;
 #define Declare_TList_T(TYPE,TAG) \
 	Declare_TList_TN(TYPE,0,TAG)
 

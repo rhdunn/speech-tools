@@ -276,7 +276,7 @@ static float test_tree_class(WNode &tree,WDataSet &dataset,ostream *output)
     for (p=dataset.head(); p != 0; p=next(p))
     {
 	pnode = tree.predict_node((*dataset(p)));
-	predict = pnode->get_impurity().value();
+	predict = (EST_String)pnode->get_impurity().value();
 	if (wgn_count_field == -1)
 	    count = 1.0;
 	else
@@ -299,7 +299,7 @@ static float test_tree_class(WNode &tree,WDataSet &dataset,ostream *output)
     {
 	print_confusion(m,pairs,lex);  // should be to output not stdout
 	*output << ";; entropy " << (-1*(H/total)) << " perplexity " <<
-	    pow(2.0,(-1*(H/total)));
+	    pow(2.0,(-1*(H/total))) << endl;
     }
 
     // Minus it so bigger is better 
@@ -653,7 +653,7 @@ static LISP sort_class_scores(int feat,float *scores)
 static float construct_float_ques(int feat,WQuestion &ques,WVectorVector &ds)
 {
     // Find out a split of the range that gives the best score 
-    // Naively does this by paritioning the range into float_range_split slots
+    // Naively does this by partitioning the range into float_range_split slots
     float tscore,bscore = WGN_HUGE_VAL;
     int d;
     float p;
@@ -774,10 +774,10 @@ WNode *wagon_stepwise(float limit)
 {
     // Find the best single features and incrementally add features
     // that best improve result until it doesn't improve.
-    // This is bascially to automate what Kurt was doing in building
+    // This is basically to automate what Kurt was doing in building
     // trees, he then automated it in PERL and as it seemed to work
     // I put it into wagon itself.
-    // This can be pretty computationally intensive
+    // This can be pretty computationally intensive.
     WNode *best = 0,*new_best = 0;
     float bscore,best_score = -WGN_HUGE_VAL;
     int best_feat,i;
@@ -792,7 +792,7 @@ WNode *wagon_stepwise(float limit)
 	if ((wgn_dataset.ftype(i) == wndt_ignore) || (i == wgn_predictee))
 	{
 	    // This skips the round not because this has anything to
-	    // do with this feature being (user specificed) ignored
+	    // do with this feature being (user specified) ignored
 	    // but because it indicates there is one less cycle that is
 	    // necessary
 	    continue;

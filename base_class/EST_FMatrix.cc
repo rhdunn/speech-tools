@@ -50,6 +50,12 @@
 #include "EST_cutils.h"  // for swap functions 
 #include "EST_Token.h"
 
+/* EST_FVector may used as EST_Val */
+VAL_REGISTER_CLASS(fvector,EST_FVector)
+
+/* EST_FMatrix may used as EST_Val */
+VAL_REGISTER_CLASS(fmatrix,EST_FMatrix)
+
 EST_String EST_FMatrix::default_file_type = "est_ascii";
 
 EST_FMatrix::EST_FMatrix(const EST_FMatrix &a, int b)
@@ -508,7 +514,7 @@ EST_read_status EST_FMatrix::load(const EST_String &filename)
     if ((r = est_load(filename)) == format_ok)
 	return r;
     else if (r == wrong_format)
-    {   // maybe its an acient ascii file
+    {   // maybe its an ancient ascii file
 	EST_TokenStream ts, tt;
 	EST_StrList sl;
 	int i, j, n_rows=0, n_cols=0;
@@ -677,7 +683,7 @@ EST_read_status EST_FVector::load(const EST_String &filename)
     if ((r = est_load(filename)) == format_ok)
 	return r;
     else if (r == wrong_format)
-    {   // maybe its an acient ascii file
+    {   // maybe its an ancient ascii file
       EST_TokenStream ts;
       EST_String s;
       int i;

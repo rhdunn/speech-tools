@@ -109,7 +109,7 @@ lengths.dump(cout);
 lengths.map(look_at);
 cout << "\n";
 
-// We can step through the table with an itterator.
+// We can step through the table with an iterator.
 
  EST_THash<EST_String, int>::Entries them;
 
@@ -135,7 +135,8 @@ cout << "\n";
 }
 
 
-Declare_THash(int,float)
+template <> int EST_THash<int, float>::Dummy_Key = 0;
+template <> float EST_THash<int, float>::Dummy_Value = 0.0;
 
 #if defined(INSTANTIATE_TEMPLATES)
 #include "../base_class/EST_THash.cc"

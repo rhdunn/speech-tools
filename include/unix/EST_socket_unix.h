@@ -44,7 +44,7 @@
 
 #include <errno.h>
 
-/* Solaris defines this, linux doesnt */
+/* Solaris defines this, linux doesn't */
 #if defined(sun) && !defined(SVR4)
 typedef int ssize_t;
 #endif
@@ -62,7 +62,7 @@ typedef int socklen_t;
 typedef int socklen_t;
 #endif
 
-#if defined(__CYGWIN__)
+#if defined(__CYGWIN__) &&  __GNUC__ < 3
 typedef int socklen_t;
 #endif
 

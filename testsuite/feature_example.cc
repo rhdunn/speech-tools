@@ -35,7 +35,7 @@
 #include "EST_ling_class.h"
 
 
-/** @name Feature and Val Classe Example Code
+/** @name Feature and Val Classes Example Code
   */
 //@{
 
@@ -47,8 +47,8 @@ int main(void)
   * An item such as 
   * <graphic fileref="../arch_doc/eq01.gif" format="gif"></graphic> 
   * is constructed as follows: (note that
-  * the atttributes are in capitals by linguistic convention only:
-  * attirbute names are case sensitive and can be upper or lower
+  * the attributes are in capitals by linguistic convention only:
+  * attribute names are case sensitive and can be upper or lower
   * case).
   */
   //@{
@@ -209,7 +209,7 @@ int main(void)
   cout << "This is false: " << p.f_present("MANNER");
   //@} code
 
-  /** A attirbute can be removed by <function>f_remove</function>
+  /** A attribute can be removed by <function>f_remove</function>
     */
 
   //@{ code

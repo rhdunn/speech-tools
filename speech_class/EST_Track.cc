@@ -119,14 +119,9 @@ void EST_Track::default_vals(void)
     init_features();
 }
 
-int EST_Track::track_break(int i) const // does location i hold a break?
-{
-    return (p_is_val(i));
-}    
-
 void EST_Track::set_break(int i) // make location i hold a break
 {
-    if (i > num_frames())
+    if (i >= num_frames())
 	cerr << "Requested setting of break value of the end of the array\n";
     
     p_is_val[i] = 1;
@@ -348,12 +343,13 @@ EST_Track& EST_Track::operator+=(const EST_Track &a) // add to existing track
     }
     
     int old_num = num_frames();
+    float old_end = end();
     this->resize(a.num_frames()+ this->num_frames(), this->num_channels());
     for (i = 0, j = old_num; i < a.num_frames(); ++i, ++j)
     {
 	for (k = 0; k < num_channels(); ++k)
-	    p_values.a_no_check(k, j) = a(i, k);
-	p_times[j] = a.t(i);
+	    p_values.a_no_check(j, k) = a(i, k);
+	p_times[j] = old_end + a.t(i);
 	p_is_val[j] = a.p_is_val(i);
     }
     
@@ -381,7 +377,7 @@ EST_Track& EST_Track::operator|=(const EST_Track &a)
     this->resize(a.num_frames(), this->num_channels() + a.num_channels());
     for (i = 0, j = old_num; i < a.num_channels(); ++i, ++j)
 	for (k = 0; k < num_frames(); ++k)
-	    p_values.a_no_check(j, k) = a(k, i);
+	    p_values.a_no_check(k, j) = a(k, i);
     
     return *this;
 }
@@ -476,14 +472,14 @@ int EST_Track::index(float x) const
     if (equal_space())
     {
 	float s = shift();
-	int f = (int)(x/s+0.5);
+	int f = (int)( (x-t(0))/s+0.5 ); //don't assume track starts at t=0.0
 	if (f<0)
 	    f=0;
 	else if (f>= num_frames())
 	    f=num_frames()-1;
 	return f;
     }
-    else if (num_frames() > 0)
+    else if (num_frames() > 1) //if single frame, return that index (0)
     {
 	int bst, bmid, bend;
 	bst = 1;
@@ -579,7 +575,7 @@ int EST_Track::val(int i) const
    
    Different functions naturally work better on different representations
    and that is why all these different types are supported. A
-   general function mod_cont() is upplied to change from one
+   general function mod_cont() is supplied to change from one
    type to another. Not all conversions are currently
    supported however.
    
@@ -787,16 +783,28 @@ float EST_Track::estimate_shift(float x)
     return 5.0;			// default value
 }
 
-void EST_Track::fill_time(float t, int start)
+void EST_Track::fill_time( float t, int start )
 {
-    for (int i = 0; i < num_frames(); ++i)
-	p_times.a_no_check(i) = t * (float) (i + start);
+  unsigned int nframes = num_frames();
+  
+  for( unsigned int i=0; i<nframes; ++i )
+    p_times.a_no_check(i) = t * (float) (i + start);
 }
 
-void EST_Track::fill_time(EST_Track &t)
+void EST_Track::fill_time( float t, float startt )
 {
-    for (int i = 0; i < num_frames(); ++i)
-	p_times.a_no_check(i) = t.t(i);
+  unsigned int nframes = num_frames();
+  
+  for( unsigned int i=0; i<nframes; ++i )
+    p_times.a_no_check(i) = startt + (t * (float)i);
+}
+
+void EST_Track::fill_time( const EST_Track &t )
+{
+  unsigned int nframes = num_frames();
+
+  for( unsigned int i=0; i<nframes; ++i )
+    p_times.a_no_check(i) = t.t(i);
 }
 
 void EST_Track::rm_excess_breaks()
@@ -1164,6 +1172,61 @@ void EST_Track::copy_sub_track(EST_Track &st,
     st.p_map = NULL;
 }
 
+void EST_Track::copy_sub_track_out( EST_Track &st, const EST_FVector& frame_times ) const
+{
+  int f_len = frame_times.length();
+  int nchans = num_channels();
+  st.resize( f_len, nchans );
+
+  for( int i=0; i<f_len; ++i ){
+    
+    int source_index = index(frame_times(i));
+    
+    st.p_times.a(i) = p_times.a( source_index );
+    st.p_is_val.a(i) = p_is_val.a( source_index );
+      
+    for( int c=0; c<nchans; c++ )
+      st.p_values.a(i,c) = p_values.a(source_index,c);
+  }
+  
+  st.copy_setup( *this );
+  st.set_equal_space( false ); //might not be true, but it's a better default
+  
+  //  st.p_aux = p_aux;
+  //  st.p_aux_names = p_aux_names;
+}
+
+void EST_Track::copy_sub_track_out( EST_Track &st, const EST_IVector& frame_indices ) const
+{
+  int f_len = frame_indices.length();
+  int nchans = num_channels();
+  st.resize( f_len, nchans );
+
+  int last_index = num_frames()-1;
+  
+  for( int i=0; i<f_len; ++i ){
+
+    int source_index = frame_indices(i);
+
+    if( source_index <= last_index ){
+
+      st.p_times.a(i) = p_times.a( source_index );
+      st.p_is_val.a(i) = p_is_val.a( source_index );
+
+      for( int c=0; c<nchans; c++ )
+	st.p_values.a(i,c) = p_values.a(source_index,c);
+    }
+  }
+
+  st.copy_setup( *this );
+  st.set_equal_space( false ); //might not be true, but it's a better default
+
+  //  st.p_aux = p_aux;
+  //  st.p_aux_names = p_aux_names;
+}
+
+
+
 EST_write_status EST_Track::save(const EST_String filename, 
 				 const EST_String type)
 {
@@ -1209,7 +1272,7 @@ EST_write_status EST_Track::save(FILE *fp, const EST_String type)
     return (*s_fun)(fp, *this);
 }
 
-EST_read_status EST_Track::load(EST_TokenStream &ts, float ishift)
+EST_read_status EST_Track::load(EST_TokenStream &ts, float ishift, float startt)
 {
     EST_read_status stat = read_error;
     
@@ -1230,7 +1293,7 @@ EST_read_status EST_Track::load(EST_TokenStream &ts, float ishift)
 	if (l_fun == NULL)
 	    continue;
 	
-	stat = (*l_fun)(ts, *this, ishift);
+	stat = (*l_fun)(ts, *this, ishift, startt);
 	
 	if (stat != read_format_error)
 	  {
@@ -1243,7 +1306,7 @@ EST_read_status EST_Track::load(EST_TokenStream &ts, float ishift)
     return stat;
 }
 
-EST_read_status EST_Track::load(const EST_String filename, float ishift)
+EST_read_status EST_Track::load(const EST_String filename, float ishift, float startt)
 {
     EST_read_status stat = read_error;
     
@@ -1265,7 +1328,7 @@ EST_read_status EST_Track::load(const EST_String filename, float ishift)
 	if (l_fun == NULL)
 	    continue;
 	
-	stat = (*l_fun)(filename, *this, ishift);
+	stat = (*l_fun)(filename, *this, ishift, startt);
 	
 	if (stat == read_ok)
 	{
@@ -1279,7 +1342,7 @@ EST_read_status EST_Track::load(const EST_String filename, float ishift)
     return stat;
 }
 
-EST_read_status EST_Track::load(const EST_String filename, const EST_String type, float ishift)
+EST_read_status EST_Track::load(const EST_String filename, const EST_String type, float ishift, float startt)
 {
     EST_TrackFileType t = EST_TrackFile::map.token(type);
     
@@ -1298,7 +1361,7 @@ EST_read_status EST_Track::load(const EST_String filename, const EST_String type
     }
     
     set_file_type(t);
-    return (*l_fun)(filename, *this, ishift);
+    return (*l_fun)(filename, *this, ishift, startt);
 }
 
 EST_write_status EST_Track::save_channel_names(const EST_String filename)

@@ -479,7 +479,7 @@ return values."
   Returns subset of LIST whose car is ITEM if it exists, nil otherwise."
   (if (consp list)
       (if (equal? item (car list))
-	  t
+	  list
 	(member item (cdr list)))
     nil))
 
@@ -488,7 +488,7 @@ return values."
   Returns subset of LIST whose car is STRING if it exists, nil otherwise."
   (if (consp list)
       (if (string-equal item (car list))
-	  t
+	  list
 	(member_string item (cdr list)))
     nil))
 

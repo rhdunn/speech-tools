@@ -341,7 +341,7 @@ static int comp_extract(EST_Track &fz, EST_Track &part, float &start, float
 	s_l = s_c;
     } 
     
-    //    cout << "Lonest fragment is " << longest << " starting at " << s_l <<endl;
+    //    cout << "Longest fragment is " << longest << " starting at " << s_l <<endl;
     //    cout << "Times: " << tr_tmp.t(s_l) << " : " <<tr_tmp.t(s_l + longest) << endl;
     
     extract2(tr_tmp, tr_tmp.t(s_l), tr_tmp.t(s_l + longest), part);
@@ -665,7 +665,7 @@ static int match_rf_point(EST_Track &fz, int b_start, int b_stop,
     EST_Track new_fz(fz.num_frames(), 1);
     float f_shift;
     
-    mi = mj = 0;		// set values to zero for saftey
+    mi = mj = 0;		// set values to zero for safety
     
     if ((b_start >= b_stop) || (b_start < 0))
     {
@@ -903,7 +903,7 @@ static void adjust_overlaps(EST_Relation &ev)
 	{
 */
 /*	    cout << "Overlapping events " << *e <<":" << *n << endl;
-	    // case a: genunine overlap
+	    // case a: genuine overlap
 	    if (n->F("end") > e->F("end"))
 	    {
 		cout << "case A\n";

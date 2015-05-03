@@ -87,7 +87,8 @@ TEMPLATE_ARGS = $(TEMPLATE_DIRS:%=-pti%) $(PROJECT_TEMPLATE_DBS:%=-ptr%)
 
 ## special ways of doing things, blank means default
 
-MAKE_DEPEND = $(CXX) $(INCLUDES) $(TEMPLATES) -xM1
+MAKE_DEPEND_C = $(CC) $(INCLUDES) $(TEMPLATES) -xM1
+MAKE_DEPEND_CXX = $(CXX) $(INCLUDES) $(TEMPLATES) -xM1
 BUILD_LIB   = $(CXX) $(TEMPLATES) -xar -o
 INDEX_LIB   = $(DO_NOTHING_ARGS)
 

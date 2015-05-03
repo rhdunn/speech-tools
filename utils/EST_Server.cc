@@ -47,8 +47,8 @@
 #include "EST_Pathname.h"
 #include "EST_error.h"
 #include "EST_Token.h"
-#include "iomanip.h"
-#include "iostream.h"
+#include <iomanip.h>
+#include <iostream.h>
 
 static EST_Regex ipnum("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+");
 

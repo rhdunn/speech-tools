@@ -237,7 +237,7 @@ void EST_Viterbi_Decoder::search(void)
 			   betterthan(c->score,candidate_cutoff))
 			{
 			    cands_considered++;
-			    // Find path extention costs
+			    // Find path extension costs
 			    np = (*user_npath)(p->st_paths[i],c,f);
 			    if (debug) debug_output_1(p,c,np,i);
 			    if (do_pruning && betterthan(np->score,best_score))
@@ -380,6 +380,7 @@ void EST_Viterbi_Decoder::vit_add_path(EST_VTPoint *p, EST_VTPath *np)
 
     if ((np->state < 0) || (np->state > p->num_states))
     {
+	printf("awb pos debug\n");
 	cerr << "EST_Viterbi: state too big (" << np->state << ")" << endl;
     }
     else if ((p->st_paths[np->state] == 0) ||
@@ -418,7 +419,7 @@ void EST_Viterbi_Decoder::add_path(EST_VTPoint *p, EST_VTPath *np)
 	cerr << "Viterbi: tried to add path to NULL point\n";
     else 
     {
-	if ((beam_width == 0) ||            // Add if no beam restritions or
+	if ((beam_width == 0) ||            // Add if no beam restrictions or
 	    (p->num_paths < beam_width) ||  //        beam not filled  or
 	    (betterthan(np->score,p->paths->score)))//this is better than best
 //	    (np->score > p->paths->score))  //        this is better than best
@@ -470,7 +471,7 @@ EST_VTCandidate *EST_Viterbi_Decoder::add_cand_prune(EST_VTCandidate *newcand,
     else
 	numcands = allcands->pos;
     
-    if ((cand_width == 0) ||	// Add if no candbeam restritions or
+    if ((cand_width == 0) ||	// Add if no candbeam restrictions or
 	(numcands < cand_width) || //        candbeam not filled  or
 	(betterthan(newcand->score,allcands->score))) //this better than best
     {
@@ -529,6 +530,23 @@ bool EST_Viterbi_Decoder::result(const EST_String &n)
     }
     return TRUE;
 }
+
+bool EST_Viterbi_Decoder::result( EST_VTPath **bestPathEnd )
+{
+  // Finds best path through the search space (previously searched)
+  *bestPathEnd = 0; 
+  
+  if ((timeline == 0) || (timeline->next == 0))
+    return TRUE;  // it's an empty list so it has succeeded
+
+  *bestPathEnd = find_best_end();
+
+  if (*bestPathEnd == 0)
+    return FALSE; // there isn't any answer
+
+  return TRUE;
+}
+
 
 void EST_Viterbi_Decoder::copy_feature(const EST_String &n)
 {

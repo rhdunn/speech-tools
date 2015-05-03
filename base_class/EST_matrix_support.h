@@ -35,10 +35,10 @@
 #ifndef __EST_MATRIX_SUPPORT_H__
 #define __EST_MATRIX_SUPPORT_H__
 
-/** Support functions for all matricies.
+/** Support functions for all matrices.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_matrix_support.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_matrix_support.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 bool EST_matrix_bounds_check(int r,

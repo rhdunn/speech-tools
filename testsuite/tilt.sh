@@ -63,6 +63,8 @@ tilt_test () {
 
 echo >$OUTPUT
 
-tilt_test 2>&1 >> $OUTPUT
+echo Tilt Test no Longer run >>$OUTPUT
+
+#tilt_test 2>&1 >> $OUTPUT
 
 exit 0

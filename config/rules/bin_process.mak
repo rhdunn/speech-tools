@@ -74,7 +74,7 @@ endif
 	@echo
 
 .link_main: 
-	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C $(PROJECT_MAIN_DIR) BIN=TOP/$(DIRNAME) LIBDIR=MAIN/TOP/$(PROJECT_LIBRARY_DIR) MAIN=$($(PROJECT_PREFIX)_HOME) .link_main$(S)
+	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C '$(PROJECT_MAIN_DIR)' BIN=TOP/$(DIRNAME) LIBDIR=MAIN/TOP/$(PROJECT_LIBRARY_DIR) MAIN='$($(PROJECT_PREFIX)_HOME)' .link_main$(S)
 
 .link_main_static: FORCE
 	@echo
@@ -102,7 +102,7 @@ endif
 				topdir="$($(PROJECT_PREFIX)_HOME)" \
 				main="$(MAIN)/$(DIRNAME)" \
 				lib="$($(PROJECT_PREFIX)_HOME)/$(PROJECT_LIBRARY_DIR)" \
-				est="$(EST_HOME)" \
+				est="'$(EST_HOME)'" \
 				classpath="$(SYSTEM_JAVA_CLASSPATH)" \
 				perl="$(PERL)" \
 				javahome="$(JAVA_HOME)" \
@@ -117,7 +117,7 @@ endif
 
 
 .process_scripts: 
-	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C $(PROJECT_SCRIPTS_DIR) BIN=TOP/$(DIRNAME) BIN_TOP=$(TOP) .process_scripts_real
+	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C '$(PROJECT_SCRIPTS_DIR)' BIN=TOP/$(DIRNAME) BIN_TOP='$(TOP)' .process_scripts_real
 
 .process_scripts_real: FORCE	
 	@echo
@@ -129,7 +129,7 @@ endif
 			topdir="$($(PROJECT_PREFIX)_HOME)" \
 			est="$(EST_HOME)" \
 			ldpath="$(SYSTEM_LD_LIBRARY_PATH)" \
-			$(PROJECT_SCRIPTS_DIR)/shared_setup_$$ex > /tmp/$$$$.$$ex ;\
+			"$(PROJECT_SCRIPTS_DIR)"/shared_setup_$$ex > /tmp/$$$$.$$ex ;\
 	done ;\
 	for script in alwaysone $(SCRIPTS) ;\
 		do \
@@ -147,7 +147,7 @@ endif
 			ext="$$ex" \
 			scriptname="$$b" \
 			topdir="$($(PROJECT_PREFIX)_HOME)" \
-			est="$(EST_HOME)" \
+			est="'$(EST_HOME)'" \
 			perl="$(PERL)" \
 			javahome=$(JAVA_HOME) \
 			java_version="$(EST_JAVA_VERSION)" \

@@ -57,8 +57,8 @@ Declare_TList_T(EST_WFST_MultiState *,EST_WFST_MultiStateP)
 	static EST_IList int_EST_IList_kv_def_EST_IList_s; 
 	static int int_EST_IList_kv_def_int_s; 
 	
-	EST_IList *EST_TKVL< int, EST_IList >::default_val=&int_EST_IList_kv_def_EST_IList_s; 
-	int *EST_TKVL< int, EST_IList >::default_key=&int_EST_IList_kv_def_int_s; 
+	template <> EST_IList *EST_TKVL< int, EST_IList >::default_val=&int_EST_IList_kv_def_EST_IList_s; 
+	template <> int *EST_TKVL< int, EST_IList >::default_key=&int_EST_IList_kv_def_int_s; 
 	
 	Declare_TList_N(KVI_int_EST_IList_t, 0)
 
@@ -319,7 +319,7 @@ static int is_a_member(const EST_IList &ii, int i)
 void EST_WFST::add_epsilon_reachable(EST_WFST_MultiState *ms) const
 {
     // As ms->add() adds in order we need to copy to a new list and append
-    // to it any new eplison accessible states
+    // to it any new epsilon accessible states
     EST_Litem *p;
     EST_IList ii;
     int ie = p_in_symbols.name(get_c_string(epsilon_label()));
@@ -406,7 +406,7 @@ void EST_WFST::intersection(wfst_list &wl)
 		if ((i==o) && (i==0)) // shouldn't be epsilon/epsilon here 
 		    continue;
 		nms = new EST_WFST_MultiState(wfst_ms_list);
-		// Increment multistate to new mulitstate for each individual
+		// Increment multistate to new multistate for each individual
 		// state using each WFST
 		for (n=0,p=wl.head(),q=current->head(); 
 		     (p != 0) && (q != 0);
@@ -595,7 +595,7 @@ static int check_distinguished(const EST_WFST &nmwfst,
 
 void EST_WFST::extend_alphabets(const EST_WFST &b)
 {
-    // Extend current in/out alphabets to accomodate anthing in b's
+    // Extend current in/out alphabets to accommodate anything in b's
     // that are not in a's
     // This guarantees that the number in this will still be valid
     EST_StrList ivocab, ovocab;
@@ -727,7 +727,7 @@ void EST_WFST::uunion(const EST_WFST &a,const EST_WFST &b)
 	deterministiconstartstates(a,b))
     {
 	// This does the union without the epsilon and will preserve
-	// determistic wfsts in this special case
+	// deterministic wfsts in this special case
 	smap.resize(b.num_states());
 	smap[0] = start_state();
 	for (i=1; i < b.num_states(); ++i)

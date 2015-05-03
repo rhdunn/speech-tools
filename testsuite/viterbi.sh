@@ -32,9 +32,9 @@
 ##                                                                       ##
 ###########################################################################
 
-$TOP/bin/viterbi -ngram $DATA/vit.B.ngram \
-	$DATA/vit.observes \
-	-vocab $DATA/vit.vocab \
+$TOP/bin/viterbi -ngram "$DATA/vit.B.ngram" \
+	"$DATA/vit.observes" \
+	-vocab "$DATA/vit.vocab" \
 	-prev_tag B \
 	-prev_prev_tag NB > $OUTPUT
 

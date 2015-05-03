@@ -35,8 +35,8 @@
  /*                   Date: Fri Oct 10 1997                               */
  /* --------------------------------------------------------------------  */
  /* A subclass of TVector which copies using memcopy. This isn't          */
- /* suitable for Matrixes of class objects which have to be copied        */
- /* useing a constructor or specialised assignment operator.              */
+ /* suitable for matrices of class objects which have to be copied        */
+ /* using a constructor or specialised assignment operator.               */
  /*                                                                       */
  /*************************************************************************/
 
@@ -74,7 +74,7 @@ public:
     void zero(void);
 
     /// Fill vector with default value
-    void empty(void) { if (*def_val == 0) zero(); else fill(*def_val); }
+    void empty(void) { if (*this->def_val == 0) zero(); else fill(*this->def_val); }
 };
 
 #endif

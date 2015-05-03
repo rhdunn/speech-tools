@@ -56,7 +56,7 @@ class EST_Item;
 to relations.
 
 This class contents the potentially shared part of an \Ref{EST_Item}.
-It contaisn a list of features allowing string names to be related to
+It contains a list of features allowing string names to be related to
 string, floats, ints and arbitrary objects.  It also contains a reference
 list to the \Ref{EST_Item}s indexed by the relation names.
 

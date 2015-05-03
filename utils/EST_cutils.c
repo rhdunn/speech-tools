@@ -71,7 +71,9 @@ char *cmake_tmp_filename()
     char *t1;
     int i,j;
 
-   if ((tdir=getenv("TMPDIR")) == NULL)
+    if (((tdir=getenv("TMPDIR")) == NULL) ||
+	((tdir=getenv("TEMP")) == NULL) ||
+	((tdir=getenv("TMP")) == NULL))
 	tdir = "/tmp";
     
     t1 = wstrdup(tdir);

@@ -53,9 +53,9 @@ void *safe_walloc(int size)
 	/* Some mallocs return NULL for size 0, which means you can't tell
 	   if it failed or not. So we'll avoid that problem by never 
 	   asking for 0 bytes */
-	p = malloc(1);
+	p = calloc(1,1);
     else
-	p = malloc(size);
+	p = calloc(size,1);
 
     if (p == NULL)
     {

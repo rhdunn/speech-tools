@@ -60,7 +60,7 @@ void extract_channels(EST_Wave &single, const EST_Wave &multi,  EST_IList &ch_li
 
 /**
 tilt_synthesis generates a F0 contour, given a label file containing
-parameteriszed Tilt or RFC events.
+parameterised Tilt or RFC events.
 
 A detailed description of the Tilt intonation model can be found in the
 <link linkend="tilt-overview">Tilt model overview</link> section.

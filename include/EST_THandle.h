@@ -40,7 +40,7 @@
 /** A `smart' pointer which does reference counting.
   *
   * Behaves almost like a pointer as far as naive code is concerned, but
-  * keeps count of how many handles are holding on to the conents
+  * keeps count of how many handles are holding on to the contents
   * and deletes it when there are none.
   *
   * You need to be careful there are no dumb C++ pointers to things which
@@ -60,7 +60,7 @@
   * @see EST_THandle:example
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_THandle.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_THandle.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 
@@ -106,7 +106,7 @@ public:
   }
 
   // If they manage to get hold of one...
-  // Actually usually used to assign NULL and so (possibly) dealocate
+  // Actually usually used to assign NULL and so (possibly) deallocate
   // the object currently pointed to.
   EST_THandle &operator = (BoxT *t_ptr) {
     // doing it in this order means self assignment is safe.

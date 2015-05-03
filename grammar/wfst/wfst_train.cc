@@ -95,7 +95,7 @@ LISP load_string_data(EST_WFST &wfst,EST_String &filename)
 	LISP s = NIL;
 	do
 	{
-	    t = ts.get();
+	    t = (EST_String)ts.get();
 	    id = wfst.in_symbol(t);
 	    if (id == -1)
 	    {
@@ -291,7 +291,7 @@ static LISP find_best_split(EST_WFST &wfst,
 			    int split_state_name,
 			    LISP *data)
 {
-    // Find the best parittion of incomming transations that
+    // Find the best partition of incoming translations that
     // minimises entropy
     EST_DiscreteProbDistribution pdf_all(&wfst.in_symbols());
     EST_DiscreteProbDistribution *a_pdf, *b_pdf;

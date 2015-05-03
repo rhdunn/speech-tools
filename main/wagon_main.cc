@@ -75,7 +75,7 @@ features include:
 <listitem><para>both decisions trees and decision lists are supported</para></listitem>
 <listitem><para>predictees can be discrete or continuous</para></listitem>
 <listitem><para>input features may be discrete or continuous</para></listitem>
-<listitem><para>many options for controling tree building</para>
+<listitem><para>many options for controlling tree building</para>
 <itemizedlist>
 <listitem><para>fixed stop value</para></listitem>
 <listitem><para>balancing</para></listitem>
@@ -287,11 +287,11 @@ static int wagon_main(int argc, char **argv)
 
 /** @name Building Trees
 
-To build a decision tree (or list) Wagon requires data and a desccription
+To build a decision tree (or list) Wagon requires data and a description
 of it.  A data file consists a set of samples, one per line each
 consisting of the same set of features.   Features may be categorial
 or continuous.  By default the first feature is the predictee and the
-others are used as preditors.  A typical data file will look like
+others are used as predictors.  A typical data file will look like
 this
 </para>
 <para>
@@ -310,7 +310,7 @@ this
 </para>
 <para>
 The data may come from any source, such as the festival script 
-dumpfeats which allos the creation of such files easily from utetrance
+dumpfeats which allows the creation of such files easily from utterance
 files.  
 </para><para>
 In addition to a data file a description file is also require that 
@@ -348,11 +348,11 @@ wagon -data feats.data -desc fest.desc -stop 10 -output feats.tree
 </screen>
 A test data set may also be given which must match the given data description.
 If specified the built tree will be tested on the test set and results
-on that wil be presented on completion, without a test set the
+on that will be presented on completion, without a test set the
 results are given with respect to the training data.  However in
 stepwise case the test set is used in the multi-level training process
 thus it cannot be considered as true test data and more reasonable 
-results should found on applying the generate tree to truely
+results should found on applying the generate tree to truly
 held out data (via the program wagon_test).
 
 */

@@ -249,7 +249,7 @@ EST_read_status load_words_label(EST_TokenStream &ts, EST_Relation &s)
 static float convert_long_num_string_to_time(const char *s,int sample)
 {
     // For those label files that think 100 nanosecond times are cool
-    // we have to proveide a special function to convert them as 
+    // we have to provide a special function to convert them as 
     // this quickly gets beyond the capabilities of ints.
 
     if (strlen(s) < 15)

@@ -48,11 +48,11 @@
 /**@name Hash Tables
   *
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_THash.h,v 1.3 2002/12/26 15:48:53 awb Exp $
+  * @version $Id: EST_THash.h,v 1.5 2004/05/04 00:00:16 awb Exp $
   */
 //@{
 
-/** This is just a convinient place to put some useful hash functions.
+/** This is just a convenient place to put some useful hash functions.
   */
 class EST_HashFunctions {
 public:
@@ -279,7 +279,7 @@ class EST_TStringHash : public EST_THash<EST_String, V> {
 public:
 
   /// Create a string hash table of <parameter>size</parameter> buckets.
-  EST_TStringHash(int size) : EST_THash<EST_String, V>(size, StringHash) {};
+  EST_TStringHash(int size) : EST_THash<EST_String, V>(size, EST_HashFunctions::StringHash) {};
 
   /// An entry returned by the iterator is a key value pair.
   typedef EST_Hash_Pair<EST_String, V> Entry;
@@ -287,11 +287,15 @@ public:
 /*    struct IPointer_s{  unsigned int b; Entry *p; };
       typedef struct IPointer_s IPointer; */
 
+  // Convince GCC that the IPointer we're going to use is a typename
+  typedef typename EST_THash<EST_String, V>::IPointer TN_IPointer;
 
   /// Give the iterator a sensible name.
-  typedef EST_TStructIterator< EST_THash<EST_String, V>, IPointer, EST_Hash_Pair<EST_String, V> > Entries;
-
-  typedef EST_TRwStructIterator< EST_THash<EST_String, V>, IPointer, EST_Hash_Pair<EST_String, V> > RwEntries;
+   typedef EST_TStructIterator< EST_THash<EST_String, V>, typename EST_THash<EST_String, V>::IPointer,
+ 				    EST_Hash_Pair<EST_String, V> > Entries;
+  
+   typedef EST_TRwStructIterator< EST_THash<EST_String, V>, typename EST_THash<EST_String, V>::IPointer,
+ 				    EST_Hash_Pair<EST_String, V> > RwEntries;
   //@}
 
   typedef EST_String KeyEntry;
@@ -300,8 +304,14 @@ public:
     typedef struct IPointer_k_s IPointer_k; */
 
   /// Give the iterator a sensible name.
-  typedef EST_TIterator< EST_THash<EST_String, V>, IPointer_k, EST_String > KeyEntries;
-  typedef EST_TRwIterator< EST_THash<EST_String, V>, IPointer_k, EST_String > KeyRwEntries;
+
+  // Convince GCC that the IPointer_k we're going to use is a typename 
+  typedef typename EST_THash<EST_String, V>::IPointer_k TN_IPointer_k;
+
+  typedef EST_TIterator< EST_THash<EST_String, V>, typename EST_THash<EST_String, V>::IPointer_k,
+ 			    EST_String > KeyEntries;
+  typedef EST_TRwIterator< EST_THash<EST_String, V>, typename EST_THash<EST_String, V>::IPointer_k,
+ 			    EST_String > KeyRwEntries;
 };
 
 

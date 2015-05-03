@@ -91,7 +91,7 @@ static LISP l_log(LISP n)
 
 static LISP l_rand()
 {
-    double r = (double)abs(rand())/(double)0x7fff;
+    double r = (double)abs(rand())/(double)RAND_MAX;
     
     return flocons(r);
 }
@@ -130,6 +130,25 @@ static LISP l_pow(LISP x, LISP y)
 	return flocons(pow(FLONM(x),FLONM(y)));
     else
 	err("pow: x or y not a number",cons(x,cons(y,NIL)));
+    return NIL;
+}
+
+static LISP l_mod(LISP x, LISP y)
+{
+    if (x && (TYPEP(x,tc_flonum)) &&
+	y && (TYPEP(y,tc_flonum)))
+    {
+	int a,b;
+
+	a = (int)FLONM(x);
+	b = (int)FLONM(y);
+	if (b == 0)
+	    err("mod: y cannot be 0",cons(x,cons(y,NIL)));
+
+	return flocons((float)(a%b));
+    }
+    else
+	err("mod: x or y not a number",cons(x,cons(y,NIL)));
     return NIL;
 }
 
@@ -173,7 +192,7 @@ void init_subrs_math(void)
  Returns a pseudo random number between 0 and 1 using the libc rand()\n\
  function.");
  init_subr_1("srand",l_srand,
- "(rand SEED)\n\
+ "(srand SEED)\n\
  Seeds the libc pseudo random number generator with the integer SEED.");
  init_subr_1("exp",l_exp,
  "(exp NUM)\n\
@@ -184,5 +203,8 @@ void init_subrs_math(void)
  init_subr_2("pow",l_pow,
  "(pow X Y)\n\
  Return X**Y.");
+ init_subr_2("%",l_mod,
+ "(% X Y)\n\
+ Return X%Y.");
 
 }

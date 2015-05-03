@@ -286,7 +286,7 @@ protected:
         { return words(p_order-1); }
     const int lastword(const EST_IVector &words) const
         { return words(p_order-1); }
-    // are we allowing out-of-voculary words, or is the vocabulary closed ?
+    // are we allowing out-of-vocabulary words, or is the vocabulary closed?
     bool allow_oov; 
     
     bool sparse_to_dense();
@@ -420,7 +420,7 @@ public:
 	       const int mincount=1,
 	       const int maxcount=10);
     
-    // Accummulate ngrams
+    // Accumulate ngrams
     void accumulate(const EST_StrVector &words,
 		    const double count=1);
     //const int index=0);
@@ -556,7 +556,7 @@ public:
     friend EST_write_status save_ngram_wfst(const EST_String filename, 
 					    EST_Ngrammar &n);
 
-    // Auxilliary functions
+    // Auxiliary functions
     
     // smoothing
 friend void frequency_of_frequencies(EST_DVector &ff, EST_Ngrammar &n,int this_order=0);

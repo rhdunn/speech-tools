@@ -121,7 +121,7 @@ int transduce(const EST_WFST &wfst,const EST_IList &in,EST_IList &out)
 	current_ms = ns;  
 
 	if (current_ms->length() == 0)
-	    break;  // give up, no transition posible
+	    break;  // give up, no transition possible
     }
     // current_ms will contain the list of possible transitions
     if (current_ms->length() > 1)
@@ -151,7 +151,7 @@ static void add_transduce_mstate(const EST_WFST &wfst,
     // add it to ns.
     // This should really only add states if they are not already there
     // but you really need stae plus recognized path to get all 
-    // trasnducations so a tree structure would be better.
+    // transductions so a tree structure would be better.
     EST_Litem *t;
 
     // Add new states to ns if not already there

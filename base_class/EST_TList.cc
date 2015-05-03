@@ -67,7 +67,7 @@ template<class T> void EST_TItem<T>::release(EST_TItem<T> *it)
       // Destroy the value in case it holds resources.
       it->EST_TItem<T>::~EST_TItem();
 
-      // I suppose it's a but wierd to use 'n' after calling the destructor.
+      // I suppose it's a bit weird to use 'n' after calling the destructor.
       it->n=s_free;
       s_free=it;
       s_nfree++;

@@ -44,7 +44,7 @@
 	text is processed. 
       </para>
       <para>
-	There are two posible ways to anotate the DTD. Either a new
+	There are two possible ways to anotate the DTD. Either a new
 	DTD can be created with the anotations added, or the
 	anotations can be included in the &xml; file.
       </para>
@@ -314,7 +314,7 @@
       <para>
 	Included in the &est; library is a version of the
 	<productname>RXP</productname> &xml; parser. This version is
-	limited to 8-bit characters for consistancy with the rest of
+	limited to 8-bit characters for consistency with the rest of
 	&est;. For more details, see the
 	<productname>RXP</productname> documentation. 
 		<footnote><para>Insert reference to

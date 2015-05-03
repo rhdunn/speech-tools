@@ -250,7 +250,7 @@ of the input or output vectors, and hence is not passed explicitly.
 </para>
 
 &docpp-Functionsforusewithframebasedprocessing-3;
-&docpp-DeltaandAccelerationcoefficents-3;
+&docpp-DeltaandAccelerationcoefficients-3;
 &docpp-PitchF0DetectionAlgorithmfunctions-3;
 &docpp-PitchmarkingFunctions-3;
 &docpp-Spectrogramgeneration-3;
@@ -282,7 +282,7 @@ simple filters for changing the spectral tilt of a
 signal</para></listitem></varlistentry>
 
 <varlistentry><term>Non linear
-filters</term><listitem><para>Miscelaneous
+filters</term><listitem><para>Miscellaneous
 filters</para></listitem></varlistentry>
 
 </variablelist>
@@ -291,7 +291,7 @@ filters</para></listitem></varlistentry>
 &docpp-FIRfilters-3;
 &docpp-LinearPredictionfilters-3;
 &docpp-PrePostEmphasisfilters--3;
-&docpp-Miscelaneousfilters--3;
+&docpp-Miscellaneousfilters--3;
 </sect2>
 
 

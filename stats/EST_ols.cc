@@ -138,7 +138,7 @@ int robust_ols(const EST_FMatrix &X,
 	}
     }
 	 
-    // Map coefficients back, making coefficent 0 for singular cols
+    // Map coefficients back, making coefficient 0 for singular cols
     coeffs.resize(X.num_columns(),1);
     for (j=i=0; i<X.num_columns(); i++)
 	if (included(i))

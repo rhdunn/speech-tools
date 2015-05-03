@@ -33,7 +33,7 @@
  /*                                                                       */
  /*                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             */
  /* --------------------------------------------------------------------  */
- /* Axiliary operations on utterance structures.                          */
+ /* Auxiliary operations on utterance structures.                         */
  /*                                                                       */
  /*************************************************************************/
 
@@ -60,7 +60,7 @@ EST_String options_utterance_filetypes_long(void)
 
  /*************************************************************************/
  /*                                                                       */
- /* XML related fuctions. the first two are stubs is RXP is not           */
+ /* XML related functions. the first two are stubs if RXP is not          */
  /* available. The third is not available at all.                         */
  /*                                                                       */
  /*************************************************************************/

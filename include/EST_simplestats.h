@@ -140,12 +140,17 @@ public:
     ///
     EST_SuffStats() {n = p_sum = p_sumx = 0.0;}
     ///
+    EST_SuffStats(double in, double isum, double isumx) 
+	{n = in; p_sum = isum; p_sumx = isumx;}
+    ///
     EST_SuffStats(const EST_SuffStats &s) { copy(s); }
     ///
     void copy(const EST_SuffStats &s) 
        {n=s.n; p_sum = s.p_sum; p_sumx = s.p_sumx;}
     /// reset internal values
     void reset(void) {n = p_sum = p_sumx = 0.0;}
+    void set(double in, double isum, double isumx) 
+	{n = in; p_sum = isum; p_sumx = isumx;}
     /// number of samples in set
     double samples(void) {return n;}
     /// sum of values
@@ -181,7 +186,7 @@ enum EST_tprob_type {tprob_string, tprob_int, tprob_discrete};
     This may be used to cummulate the probability distribution of a 
     class of values.  Values are actually help as frequencies so both
     frequency and probability information may be available.   Note that
-    frequencies are not integers because usings smoothing and backoff
+    frequencies are not integers because using smoothing and backoff
     integers are too restrictive so they are actually represented as
     doubles.
 
@@ -235,13 +240,13 @@ public:
     void clear(void);
     /// Initialise using given vocabulary
     bool init(const EST_StrList &vocab);
-    /// Initialise using given \Ref{EST_Distcrete} as vocabulary
+    /// Initialise using given \Ref{EST_Discrete} as vocabulary
     void init(const EST_Discrete *d);
     /// Initialise
     void init();
     /// Total number of example found.
     double samples(void) const { return num_samples; }
-    /// Add this observation, may specify number of occurences
+    /// Add this observation, may specify number of occurrences
     void cumulate(const EST_String &s,double count=1);
     /// Add this observation, i must be with in EST\_Discrete range
     void cumulate(const int i,double count=1);
@@ -265,21 +270,21 @@ public:
     int item_next(int idx) const;
     /// Used for iterating through members of the distribution
     int item_end(int idx) const;
-    /// During iteration ruturns name given index 
+    /// During iteration returns name given index 
     const EST_String &item_name(int idx) const;
-    /// During iteration ruturns name and frequency given index  
+    /// During iteration returns name and frequency given index  
     void item_freq(int idx,EST_String &s,double &freq) const;
-    /// During iteration ruturns name and probability given index
+    /// During iteration returns name and probability given index
     void item_prob(int idx,EST_String &s,double &prob) const;
 
-    /// Returns discrete vocabilary of distribution
+    /// Returns discrete vocabulary of distribution
     inline const EST_Discrete *const get_discrete() const { return discrete; };
     
-    /** Sets the frequency of named item, modifes {\tt num\_samples}
+    /** Sets the frequency of named item, modifies {\tt num\_samples}
          accordingly.  This is used when smoothing frequencies.
     */
     void set_frequency(const EST_String &s,double c);
-    /** Sets the frequency of named item, modifes {\tt num\_samples}
+    /** Sets the frequency of named item, modifies {\tt num\_samples}
         accordingly.  This is used when smoothing frequencies.
     */
     void set_frequency(int i,double c); 

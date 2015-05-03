@@ -30,7 +30,7 @@
 /*                                                                          */
 /*  The version contained here has some modifications by awb@cstr.ed.ac.uk  */
 /*  (Alan W Black) in order to integrate it with the Edinburgh Speech Tools */
-/*  library and Scheme-in-one-defun in particularm though these changes     */
+/*  library and Scheme-in-one-defun in particular, though these changes     */
 /*  have a much more general use that just us.  All modifications to        */
 /*  to this work are continued with the same copyright above.  That is      */
 /*  this version of editline does not have the the "no commercial use"      */
@@ -48,7 +48,7 @@
 /*                                                                          */
 /****************************************************************************/
 
-/*  $Revision: 1.2 $
+/*  $Revision: 1.4 $
 **
 **  Main editing routines for editline library.
 */
@@ -70,8 +70,8 @@
 #define META(x)		(char)((x) | 0x80)
 #define ISMETA(x)	((x) & 0x80)
 #define UNMETA(x)	(char)((x) & 0x7F)
-/* modified by awb to allow speicifcation of history size at run time  */
-/* (though only once)                                                  */
+/* modified by awb to allow specifcation of history size at run time  */
+/* (though only once)                                                 */
 int editline_histsize=256;
 char *editline_history_file;
 /* If this is defined it'll be called for completion first, before the */
@@ -305,8 +305,8 @@ STATIC int printlen(CONST char *p)
 
 STATIC int screen_pos()
 {
-    /* Returns the number of characters printed from begining of line   */
-    /* include sthe size of the prompt and and meta/ctl char expansions */
+    /* Returns the number of characters printed from beginning of line  */
+    /* includes the size of the prompt and and meta/ctl char expansions */
     int p = strlen(Prompt);
     int i;
     
@@ -1008,7 +1008,7 @@ STATIC STATUS kill_line()
 
 STATIC char *rsearch_hist(char *patt, int *lpos,int *cpos)
 {
-    /* Extention by awb to do reverse incremental searches */
+    /* Extension by awb to do reverse incremental searches */
 
     for (; *lpos > 0; (*lpos)--)
     {
@@ -1522,8 +1522,8 @@ static char *completion_to_ambiguity(int index,char **possibles)
 
 static char **el_file_completion_function(char * text, int start, int end)
 {
-    /* Interface to editline rl_list_possib which looks up possibes */
-    /* file name completion                                         */
+    /* Interface to editline rl_list_possib which looks up possible */
+    /* file name completions.                                       */
     char *word;
     char **matches1;
     char **matches2;
@@ -1651,7 +1651,10 @@ STATIC STATUS c_possible()
     int		ac;
 
     word = find_word();
-    ac = rl_list_possib((char *)word, (char ***)&av);
+    /* The (char ***) ((void *) &av) below is to avoid a warning
+     * from GCC about casting an unsigned char *** to char ***
+     */
+    ac = rl_list_possib((char *)word, (char ***) ((void *) &av));
     if (word)
 	DISPOSE(word);
     if (ac) {
@@ -1671,11 +1674,13 @@ STATIC STATUS accept_line()
     return CSdone;
 }
 
+#ifdef SYSTEM_IS_WIN32
 STATIC STATUS end_of_input()
 {
     Line[End] = '\0';
     return CSeof;
 }
+#endif
 
 STATIC STATUS transpose()
 {

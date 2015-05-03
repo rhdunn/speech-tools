@@ -82,7 +82,7 @@ EST_Val est_val(const class CLASS *v)                  \
 }                                                      \
 
 /* Macro for defining new typedef'd things as vals       */
-/* You don't need CLASS and TYPE but it often convinient */
+/* You don't need CLASS and TYPE but it often convenient */
 #define VAL_REGISTER_TYPE(NAME,CLASS)                  \
 val_type val_type_##NAME=#NAME;                        \
 CLASS *NAME(const EST_Val &v)                          \
@@ -106,7 +106,7 @@ EST_Val est_val(const CLASS *v)                        \
 }                                                      \
 
 /* Macro for defining new typedef'd things as vals that don't get deleted */
-/* You don't need CLASS and TYPE but it often convinient */
+/* You don't need CLASS and TYPE but it often convenient */
 #define VAL_REGISTER_TYPE_NODEL(NAME,CLASS)            \
 val_type val_type_##NAME=#NAME;                        \
 CLASS *NAME(const EST_Val &v)                          \

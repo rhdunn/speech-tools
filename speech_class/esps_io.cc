@@ -50,7 +50,7 @@
 /* The following are attempts to read and write ESPS header files without */
 /* Using the Entropic libraries. These routines do not read all ESPS      */
 /* headers but are adequate for all of the uses we wish (and those you    */
-/* wish too probabably)                                                   */
+/* wish too probably)                                                     */
 
 enum EST_write_status put_esps(const char *filename,const char *style, float *t, float *a, 
 	     int *v, float fsize, float rate, int num_points)

@@ -35,21 +35,22 @@
  /*                   Date: Fri Oct 10 1997                               */
  /* --------------------------------------------------------------------  */
  /* A subclass of TVector which copies using memcopy. This isn't          */
- /* suitable for Matrixes of class objects which have to be copied        */
- /* useing a constructor or specialised assignment operator.              */
+ /* suitable for matrices of class objects which have to be copied        */
+ /* using a constructor or specialised assignment operator.               */
  /*                                                                       */
  /*************************************************************************/
 
 #include "EST_TSimpleVector.h"
+#include "EST_matrix_support.h"
 #include <fstream.h>
 #include "EST_cutils.h"
 
 template<class T> void EST_TSimpleVector<T>::copy(const EST_TSimpleVector<T> &a)
 {
-  if (p_column_step==1 && a.p_column_step==1)
+  if (this->p_column_step==1 && a.p_column_step==1)
     {
     resize(a.n(), FALSE);
-    memcpy((void *)(p_memory), (const void *)(a.p_memory), n() * sizeof(T));
+    memcpy((void *)(this->p_memory), (const void *)(a.p_memory), this->n() * sizeof(T));
     }
 else
   ((EST_TVector<T> *)this)->copy(a);
@@ -57,33 +58,33 @@ else
 
 template<class T> EST_TSimpleVector<T>::EST_TSimpleVector(const EST_TSimpleVector<T> &in)
 {
-    default_vals();    
+    this->default_vals();
     copy(in);
 }
 
 // should copy from and delete old version first
 template<class T> void EST_TSimpleVector<T>::resize(int newn, int set)
 {
-  int oldn = n();
+  int oldn = this->n();
   T *old_vals =NULL;
-  int old_offset = p_offset;
+  int old_offset = this->p_offset;
 
   just_resize(newn, &old_vals);
 
   if (set && old_vals)
     {
       int copy_c = 0;
-      if (p_memory != NULL)
+      if (this->p_memory != NULL)
 	{
-	  copy_c = Lof(n(), oldn);
-	  memcpy((void *)p_memory, (const void *)old_vals,  copy_c* sizeof(T));
+	  copy_c = Lof(this->n(), oldn);
+	  memcpy((void *)this->p_memory, (const void *)old_vals,  copy_c* sizeof(T));
 	}
       
-      for (int i=copy_c; i < n(); ++i)
-	p_memory[i] = *def_val;
+      for (int i=copy_c; i < this->n(); ++i)
+	this->p_memory[i] = *this->def_val;
     }
   
-  if (old_vals != NULL && old_vals != p_memory && !p_sub_matrix)
+  if (old_vals != NULL && old_vals != this->p_memory && !this->p_sub_matrix)
     delete [] (old_vals - old_offset);
 
 }
@@ -92,32 +93,32 @@ template<class T>
 void EST_TSimpleVector<T>::copy_section(T* dest, int offset, int num) const
 {
   if (num<0)
-    num = num_columns()-offset;
+    num = this->num_columns()-offset;
 
-  if (!EST_vector_bounds_check(num+offset-1, num_columns(), FALSE))
+  if (!EST_vector_bounds_check(num+offset-1, this->num_columns(), FALSE))
     return;
 
-  if (!p_sub_matrix && p_column_step==1)
-    memcpy((void *)dest, (const void *)(p_memory+offset), num*sizeof(T));
+  if (!this->p_sub_matrix && this->p_column_step==1)
+    memcpy((void *)dest, (const void *)(this->p_memory+offset), num*sizeof(T));
   else
     for(int i=0; i<num; i++)
-      dest[i] = a_no_check(offset+i);
+      dest[i] = this->a_no_check(offset+i);
 }
 
 template<class T>
 void EST_TSimpleVector<T>::set_section(const T* src, int offset, int num)
 {
   if (num<0)
-    num = num_columns()-offset;
+    num = this->num_columns()-offset;
 
-  if (!EST_vector_bounds_check(num+offset-1, num_columns(), FALSE))
+  if (!EST_vector_bounds_check(num+offset-1, this->num_columns(), FALSE))
     return;
   
-  if (!p_sub_matrix && p_column_step==1)
-    memcpy((void *)(p_memory+offset), (void *)src, num*sizeof(T));
+  if (!this->p_sub_matrix && this->p_column_step==1)
+    memcpy((void *)(this->p_memory+offset), (void *)src, num*sizeof(T));
   else
     for(int i=0; i<num; i++)
-      a_no_check(offset+i) = src[i];
+      this->a_no_check(offset+i) = src[i];
 }
 
 template<class T> EST_TSimpleVector<T> &EST_TSimpleVector<T>::operator=(const EST_TSimpleVector<T> &in)
@@ -128,9 +129,9 @@ template<class T> EST_TSimpleVector<T> &EST_TSimpleVector<T>::operator=(const ES
 
 template<class T> void EST_TSimpleVector<T>::zero()
 {
-  if (p_column_step==1)
-    memset((void *)(p_memory), 0, n() * sizeof(T));
+  if (this->p_column_step==1)
+    memset((void *)(this->p_memory), 0, this->n() * sizeof(T));
   else
-    ((EST_TVector<T> *)this)->fill(*def_val);
+    ((EST_TVector<T> *)this)->fill(*this->def_val);
 }
 

@@ -208,7 +208,7 @@ void EST_Utterance::copy(const EST_Utterance &u)
     f = u.f;
 
     EST_Features::Entries r;
-    for (r.begin(relations); r; r++)
+    for (r.begin(u.relations); r; r++)
     {
 	EST_Relation *rr = ::relation(r->v);
 	nrel = create_relation(rr->name());
@@ -553,4 +553,30 @@ EST_write_status EST_Utterance::save(ostream &outf,
     }
     
     return (*s_fun)(outf, *this);
+}
+
+void utt_2_flat_repr( const EST_Utterance &utt,
+		      EST_String &flat_repr )
+{
+  EST_Item *phrase = utt.relation("Phrase")->head();
+  for( ; phrase; phrase=next(phrase) ){
+    flat_repr += "<";
+ 
+    EST_Item *word = daughter1(phrase);
+    for( ; word; word=next(word) ){
+      flat_repr += "{";
+
+      EST_Item *syllable = daughter1(word, "SylStructure");
+      for( ; syllable; syllable=next(syllable) ){
+	flat_repr += EST_String::cat( "(", syllable->S("stress") );
+
+	EST_Item *phone = daughter1(syllable);
+	for( ; phone; phone=next(phone) )
+	  flat_repr += EST_String::cat( " ", phone->S("name"), " " );
+	flat_repr += ")";
+      }
+      flat_repr += "}";
+    }
+    flat_repr += EST_String::cat( "> _", phrase->S("name"), " " ); 
+  }
 }

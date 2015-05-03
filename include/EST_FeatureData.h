@@ -56,7 +56,7 @@ typedef EST_TVector<EST_Val> EST_ValVector;
 A number of fields are defined in the EST_FeatureData class, each of
 which represents a measurable quantity, such as height, age or
 gender. Any number of fields can be defined and each field can take a
-float, integer or string value. The class holds mutiple instances of
+float, integer or string value. The class holds multiple instances of
 field values, representing samples taken from a population. 
 
 Several statistical training, testing and analysis programs use

@@ -34,7 +34,7 @@
 /*                       Date   :  April 1997                            */
 /*-----------------------------------------------------------------------*/
 /*    A separate file for an override function that may optionally be    */
-/*    proviided by the main program                                      */
+/*    provided by the main program.                                      */
 /*=======================================================================*/
 #include <stdlib.h>
 #include "EST_String.h"

@@ -78,7 +78,7 @@ int main(int argc,char **argv)
     // The defaults are standard whitespace, and nothing for the rest
     // (this is like awk's basic tokenizer).  For language analysis
     // you'll probably want to modify the punctuation
-    // \173 is '{', it is inserted by number becasue of a doc++ problem.
+    // \173 is '{', it is inserted by number because of a doc++ problem.
 
     ts.set_PrePunctuationSymbols("\173[(\"'");
     ts.set_PunctuationSymbols(EST_Token_Default_PunctuationSymbols);

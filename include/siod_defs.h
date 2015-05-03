@@ -18,12 +18,12 @@
 #define __EST_SIOD_DEFS_H__
 
 /* This states the default heap size is effective unset */
-/* The size if no heap is spcified by a command argument, the */
-/* value of the environment variable SIODHEAPSIZE will be use */
-/* otherwise ACTUAL_DEFAULT_HEAP_SIZE is used,  This is *not* */
-/* documented because environment variables can cause so many */
-/* problems I'd like to discouragethis use unless absolutely  */
-/* necessary                                                  */
+/* The size if no heap is specified by a command argument, the */
+/* value of the environment variable SIODHEAPSIZE will be used */
+/* otherwise ACTUAL_DEFAULT_HEAP_SIZE is used.  This is *not*  */
+/* documented because environment variables can cause so many  */
+/* problems I'd like to discourage this use unless absolutely  */
+/* necessary.                                                  */
 #define DEFAULT_HEAP_SIZE -1
 #define ACTUAL_DEFAULT_HEAP_SIZE 210000
 
@@ -135,7 +135,7 @@ struct obj
 #define tc_application_7 47
 
 // Application specific types may be added using siod_register_user_type()
-// WIll increment from tc_first_user_type to tc_table_dim
+// Will increment from tc_first_user_type to tc_table_dim
 #define tc_first_user_type 50
 
 #define tc_table_dim 100
@@ -157,7 +157,7 @@ typedef LISP (*SUBR_FUNC)(void);
 #define NFLONUMP(x) NTYPEP(x,tc_flonum)
 #define NSYMBOLP(x) NTYPEP(x,tc_symbol)
 
-// Not for the pureists, but I find these more readable than the eqivalent
+// Not for the purists, but I find these more readable than the equivalent
 // code inline.
 
 #define CAR1(x) CAR(x)
@@ -224,6 +224,39 @@ LISP siod(const class CLASS *v)                        \
     else                                               \
         return siod(est_val(v));                       \
 }                                                      \
+
+
+/* Macro for defining typedefed something as values public functions */
+#define SIOD_REGISTER_TYPE_DCLS(NAME,CLASS)            \
+CLASS *NAME(LISP x);                                   \
+int NAME##_p(LISP x);                                  \
+EST_Val est_val(const CLASS *v);                       \
+LISP siod(const CLASS *v);
+
+/* Macro for defining new class as siod               */
+#define SIOD_REGISTER_TYPE(NAME,CLASS)                 \
+CLASS *NAME(LISP x)                                    \
+{                                                      \
+    return NAME(val(x));                               \
+}                                                      \
+                                                       \
+int NAME##_p(LISP x)                                   \
+{                                                      \
+    if (val_p(x) &&                                    \
+        (val_type_##NAME == val(x).type()))            \
+	return TRUE;                                   \
+    else                                               \
+	return FALSE;                                  \
+}                                                      \
+                                                       \
+LISP siod(const CLASS *v)                              \
+{                                                      \
+    if (v == 0)                                        \
+        return NIL;                                    \
+    else                                               \
+        return siod(est_val(v));                       \
+}                                                      \
+
 
 /* Macro for defining function ptr as siod             */
 #define SIOD_REGISTER_FUNCPTR(NAME,CLASS)              \

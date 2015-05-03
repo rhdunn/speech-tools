@@ -71,7 +71,7 @@ static int scfg_train_main(int argc, char **argv);
 /**
 
 scfg_train takes a stochastic context free grammar (SCFG) and trains
-the probabilities with repsect to a given bracket corpus using the
+the probabilities with respect to a given bracket corpus using the
 inside-outside algorithm.   This is basically an implementation
 of Pereira and Schabes 1992.
 

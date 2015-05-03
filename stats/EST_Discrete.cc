@@ -156,7 +156,7 @@ Discretes::~Discretes()
 
 const int Discretes::def(const EST_StrList &vocab)
 {
-    //  Define descrete, increasing the size of the table if need be
+    //  Define discrete, increasing the size of the table if need be
     int i,pos;
     
     if (next_free == max)

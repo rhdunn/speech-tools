@@ -154,15 +154,15 @@ void EST_ServiceTable::read_table(EST_String socketsFileName)
       Entry &entry = entries.t.val(name);
 
       if (type=="host")
-	entry.hostname=val;
+	entry.hostname=(EST_String)val;
       else if (type=="address")
-	entry.address=val;
+	entry.address=(EST_String)val;
       else if (type=="type")
-	entry.type=val;
+	entry.type=(EST_String)val;
       else if (type=="port")
 	entry.port=val;
       else if (type=="cookie")
-	entry.cookie=val;
+	entry.cookie=(EST_String)val;
       else
 	EST_warning("Unknown entry field '%s' at %s",
 		    (const char *)type,
@@ -322,7 +322,7 @@ const EST_ServiceTable::Entry &EST_ServiceTable::create(const EST_String name,
   if (hent == NULL)
     EST_sys_error("Can't look up my address");
 
-  // Arbitrarilly choose the first address.
+  // Arbitrarily choose the first address.
   if (hent->h_addr_list != NULL)
     memcpy(&(sin.sin_addr.s_addr),hent->h_addr_list[0], sizeof (sin.sin_addr.s_addr));
   

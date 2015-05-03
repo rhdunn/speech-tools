@@ -62,7 +62,7 @@ void ltscompile(LISP lts_rules, EST_WFST &all_wfst)
 {
     // Build a transducer from given LTS rules.  Because the interpretation
     // of these rules is normally ordered and the WFST is not, the
-    // complement of each cummulative WFST must be generated before 
+    // complement of each cumulative WFST must be generated before 
     // adding the next rule
     LISP r;
     LISP fp;  // feasible pairs, those pairs with rules (rather than IxO)
@@ -232,7 +232,7 @@ static void ltsrule_compile(LISP inalpha, LISP outalpha,
 			    EST_WFST &a, EST_WFST &not_a)
 {
     // Return two regexs, one matching with rewrites and another
-    // that matches theings this rule doesn't match.
+    // that matches things this rule doesn't match.
     LISP LC,MAP,RC,notMAP,r;
 
     r = analyse_rule(rule);
@@ -346,7 +346,7 @@ static LISP expand_set(LISP p, LISP fp, LISP sets)
 
 static LISP find_notMAP(LISP MAP,LISP fp)
 {
-    // Returns REGEX that matches everthing except MAP,  this doesn't
+    // Returns REGEX that matches everything except MAP,  this doesn't
     // try all possible epsilons though 
     LISP r,notrp=NIL,m,np;
     EST_String s,l,p,sr,lr,rr;

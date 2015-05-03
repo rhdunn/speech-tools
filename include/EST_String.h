@@ -59,7 +59,7 @@ extern "C" void abort(void);
 /** A non-copyleft implementation of a string class to use with
   * compilers that aren't GNU C++.
   *
-  * Strings are reference-counted and reasonably efficiant (eg you
+  * Strings are reference-counted and reasonably efficient (eg you
   * can pass them around, into and out of functions and so on
   * without worrying too much about the cost).
   *
@@ -71,7 +71,7 @@ extern "C" void abort(void);
   * @see string_example
   * @author Alan W Black <awb@cstr.ed.ac.uk>
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_String.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_String.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 
 class EST_String {
@@ -90,7 +90,7 @@ class EST_String {
       */
 #   define __GSUB_REENTRANT__ (1)
 
-/// Gripe about wierd arguments like Nulls
+/// Gripe about weird arguments like Nulls
 #define __STRING_ARG_GRIPE__ (1)
 
 ///  When we find something to gripe about we die then and there.
@@ -143,7 +143,7 @@ private:
 	Chop_After  = 1
     };
 
-    /// Simple utility which removes const-ness frommemory
+    /// Simple utility which removes const-ness from memory
     static inline EST_ChunkPtr &NON_CONST_CHUNKPTR(const EST_ChunkPtr &ecp) 
 	{ return *((EST_ChunkPtr *)&ecp);}
 
@@ -221,17 +221,17 @@ public:
 
     /** Copy constructor
       * We have to declare our own copy constructor to lie to the
-      * compier about the constness of the RHS.
+      * compiler about the constness of the RHS.
       */
     EST_String(const EST_String &s) {
       memory = NON_CONST_CHUNKPTR(s.memory);
       size = s.size;
     }
 
-#if __FSF_COMPATABILITY__
+#if __FSF_COMPATIBILITY__
     /** Construct from single char.
       * This constructor is not usually included as it can mask errors.
-      * @see  __FSF_COMPATABILITY__
+      * @see  __FSF_COMPATIBILITY__
       */
     EST_String(const char c);
 #endif
@@ -392,9 +392,9 @@ public:
 
     /**@name Does string exactly match? */
     //@{
-    /// Exatly match this string?
+    /// Exactly match this string?
     int matches(const char *e, int pos=0) const;
-    /// Exatly match this string?
+    /// Exactly match this string?
     int matches(const EST_String &e, int pos=0) const;
     /// Exactly matches this regular expression, can return ends of sub-expressions.
     int matches(EST_Regex &e, int pos=0, int *starts=NULL, int *ends=NULL) const;
@@ -432,9 +432,9 @@ public:
 
     /**@name Frequency counts */
     //@{
-    /// Number of occurances of substring
+    /// Number of occurrences of substring
     int freq(const char *s) const;
-    /// Number of occurances of substring
+    /// Number of occurrences of substring
     int freq(const EST_String &s) const;
     /// Number of matches of regular expression.
     int freq(EST_Regex &s) const;
@@ -452,7 +452,7 @@ public:
     EST_String unquote_if_needed(const char quotec) const;
     //@}
 
-#if __FSF_COMPATABILITY__
+#if __FSF_COMPATIBILITY__
     const char operator [] (int i) const { return memory[i]; }
     char &operator () (int i) { return memory(i); }
 #else
@@ -478,7 +478,7 @@ public:
     EST_String &operator += (const EST_String b);
     //@}
 
-    /**@name Asignment */
+    /**@name Assignment */
     //@{
     /// Assign C string to EST_String
     EST_String &operator = (const char *str);
@@ -620,7 +620,7 @@ public:
     friend EST_String downcase(const EST_String &s);
 
     /** Concatenate a number of strings. 
-      * This is more efficiant than multiple uses of + or +=
+      * This is more efficient than multiple uses of + or +=
       */
     static EST_String cat(const EST_String s1, 
 			  const EST_String s2 = Empty, 

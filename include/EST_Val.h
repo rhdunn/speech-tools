@@ -34,14 +34,14 @@
 /*                    Date   :  May 1996                                 */
 /*-----------------------------------------------------------------------*/
 /*                                                                       */
-/* A egenric container class, originally for ints floats and string now  */
+/* A generic container class, originally for ints floats and string now  */
 /* extended for some others, eventually allow run addition of new types  */
 /* "built-in" types (i.e. ones explicitly mentioned in this file) may    */
 /* be accessed by member functions, objects added at run time may only   */
 /* be accessed by functions                                              */
 /*                                                                       */
 /* This is so similar to the LISP class in SIOD it could be viewed as a  */
-/* little embarassing, but this is done without a cons cell heap or gc   */
+/* little embarrassing, but this is done without a cons cell heap or gc  */
 /* which may or may not be a good thing.                                 */
 /*                                                                       */
 /*=======================================================================*/
@@ -103,11 +103,12 @@ class EST_Val {
     EST_Val(const double d) {t=val_float; v.fval=d;}
 
     /** Copy constructor for a string*/
-    EST_Val(const EST_String &s) {t=val_string; sval = s;}
+    //    EST_Val(const EST_String &s) {t=val_string; sval = s;}
+    EST_Val(const EST_String &s) : t(val_string), sval(s) {};
 
     /** Copy constructor for a string literal*/
-    EST_Val(const char *s) {t=val_string; sval = s;}
-
+    //    EST_Val(const char *s) {t=val_string; sval = s;}
+    EST_Val(const char *s) : t(val_string), sval(s) {};
 
     EST_Val(val_type type,void *p, void (*f)(void *));
 
@@ -133,27 +134,27 @@ class EST_Val {
     const int I(void) const 
 	{ return Int(); }
 
-    /** returns the value, cast as an float */
+    /** returns the value, cast as a float */
     const float Float(void) const 
 	{if (t==val_float) return v.fval; return to_flt();}
 
-    /** returns the value, cast as an float */
+    /** returns the value, cast as a float */
     const float F(void) const 
 	{ return Float(); }
 
-    /** returns the value, cast as an string */
+    /** returns the value, cast as a string */
     const EST_String &String(void) const
        {if (t!=val_string) to_str(); return sval;}
 
-    /** returns the value, cast as an string */
+    /** returns the value, cast as a string */
     const EST_String &string(void) const
        {return String();}
 
-    /** returns the value, cast as an string */
+    /** returns the value, cast as a string */
     const EST_String &S(void) const
        {return String();}
 
-    /** returns the value, cast as an string */
+    /** returns the value, cast as a string */
     const EST_String &string_only(void) const {return sval;}
 
     //@}

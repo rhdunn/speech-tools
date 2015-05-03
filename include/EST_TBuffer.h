@@ -37,7 +37,7 @@
   * 
   * @see EST_TBuffer
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TBuffer.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TBuffer.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 //@{
 #ifndef __EST_TBUFFER_H__
@@ -65,8 +65,8 @@ extern struct old_tbuffer EST_old_buffers[TBUFFER_N_OLD];
 
 /** Extending buffer class.
   * <p>
-  * This class provides the convinience of arrays which change in size
-  * at run time rather more efficiantly than the full EST_TVector class
+  * This class provides the convenience of arrays which change in size
+  * at run time rather more efficiently than the full EST_TVector class
   * would.
   * <p>
   * Buffers can only be expanded and when a buffer is no longer needed

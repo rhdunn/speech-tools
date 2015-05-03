@@ -134,7 +134,7 @@ void EST_DiscreteProbDistribution::cumulate(const EST_String &s,double count)
 		break;
 	    }
 	}
-	if (p == 0) // first occurence
+	if (p == 0) // first occurrence
 	    scounts.add_item(s,count,1);  // add without search
     }
     num_samples += count;

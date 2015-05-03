@@ -177,10 +177,10 @@ int main(int argc, char *argv[])
 	 "-coefs <string> list of basic types of processing required. \n"
 	 "    Permissable types are: \n" + sigpr_options_supported()+" \n"
 	 "-delta <string> list of delta types of processing required. Basic \n"
-	 "    processing does not need to be specfied for this option to work. \n"
+	 "    processing does not need to be specified for this option to work. \n"
 	 "    Permissable types are: \n" + sigpr_options_supported()+" \n"
 	 "-acc <string>  list of acceleration (delta delta) processing \n"
-	 "    required. Basic processing does not need to be specfied for \n"
+	 "    required. Basic processing does not need to be specified for \n"
          "    this option to work. \n" 
 	 "    Permissable types are: \n" 
 	 + sigpr_options_supported()+"\n"
@@ -379,7 +379,7 @@ pitch track specific processing parameters.
 </para>
 
 <para>Energy, Linear Prediction and Cepstral coefficients, with a 10ms frame shift
-during analis but a 5ms frame shift in the output file:
+during analysis but a 5ms frame shift in the output file:
 
 <para>
 <screen>
@@ -388,8 +388,8 @@ $ sig2fv kdt_010.wav -o kdt_010.lpc -coefs "f0 lpc cep" -otype est -S 0.005
 </screen>
 </para>
 
-<para>Delta  and acc coefficients can be calculated even if ther base form is not 
-required. This produces normal energy coefficients and cepstral delta coeficients:
+<para>Delta  and acc coefficients can be calculated even if their base form is not 
+required. This produces normal energy coefficients and cepstral delta coefficients:
 
 <para>
 <screen>

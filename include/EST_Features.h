@@ -85,7 +85,7 @@ class EST_Features {
     const EST_Val &val(const char *name) const;
 
     /** Look up directly without decomposing name as path (just simple feature),
-	returning <parameter>def</paramater> if not found
+	returning <parameter>def</parameter> if not found
     */
     const EST_Val &val(const char *name, const EST_Val &def) const;
 
@@ -94,7 +94,7 @@ class EST_Features {
     const EST_Val &val_path(const EST_String &path) const;
 
     /** Look up feature name, which may be simple feature or path,
-	returning <parameter>def</paramater> if not found
+	returning <parameter>def</parameter> if not found
      */
     const EST_Val &val_path(const EST_String &path, const EST_Val &def) const;
 
@@ -104,7 +104,7 @@ class EST_Features {
        {return val_path(path);}
 
     /** Look up feature name, which may be simple feature or path,
-	returning <parameter>def</paramater> if not found
+	returning <parameter>def</parameter> if not found
      */
     const EST_Val &operator() (const EST_String &path, const EST_Val &def) const 
        {return val_path(path, def);}
@@ -115,7 +115,7 @@ class EST_Features {
        { return val_path(path); }
 
     /** Look up feature name, which may be simple feature or path,
-	returning <parameter>def</paramater> if not found
+	returning <parameter>def</parameter> if not found
      */
     const EST_Val &f(const EST_String &path, const EST_Val &def) const
        { return val_path(path,def); }
@@ -136,7 +136,7 @@ class EST_Features {
        {return val_path(path).Float(); }
 
     /** Look up feature name, which may be simple feature or path, and
-	return as a float, returning <parameter>def</paramater> if not
+	return as a float, returning <parameter>def</parameter> if not
 	found */
     const float F(const EST_String &path, float def) const
        {return val_path(path, def).Float(); }
@@ -147,7 +147,7 @@ class EST_Features {
        {return val_path(path).Int(); }
 
     /** Look up feature name, which may be simple feature or path, and
-	return as an int, returning <parameter>def</paramater> if not
+	return as an int, returning <parameter>def</parameter> if not
 	found */
     const int I(const EST_String &path, int def) const
        {return val_path(path, def).Int(); }
@@ -158,7 +158,7 @@ class EST_Features {
        {return val_path(path).string(); }
 
     /** Look up feature name, which may be simple feature or path, and
-	return as a EST_String, returning <parameter>def</paramater> if not
+	return as a EST_String, returning <parameter>def</parameter> if not
 	found */
 
     const EST_String S(const EST_String &path, const EST_String &def) const
@@ -170,7 +170,7 @@ class EST_Features {
        {return *feats(val_path(path));}
 
     /** Look up feature name, which may be simple feature or path, and
-	return as a EST_Features, returning <parameter>def</paramater> if not
+	return as a EST_Features, returning <parameter>def</parameter> if not
 	found */
     EST_Features &A(const EST_String &path, EST_Features &def) const;
 

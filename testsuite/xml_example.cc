@@ -116,7 +116,7 @@ int main(void)
   My_Parser_Class pclass;
   Parse_State state;
 
-  /** Rewriting rules for pulic and system IDs can be
+  /** Rewriting rules for public and system IDs can be
     * used to locate local copies etc.
     */
 

@@ -36,12 +36,12 @@
 /*  Decision lists                                                       */
 /*  These are like a right branching decision tree, yes answers are not  */
 /*  partitioned any further.  These are used for the Yarowsky-style      */
-/*  homograph diambiguators                                              */
+/*  homograph disambiguators                                             */
 /*                                                                       */
 /*  Yarowsky, D. "Homograph Disambiguation in Text-to_Speech Synthesis"  */
 /*  in "Progress in Speech Synthesis" eds van Santen, J. et al. Springer */
 /*  pp 157-172, 1996                                                     */
-/*  Rivest, R.L. "Learning descision lists", Machine Learning 2:229-246  */
+/*  Rivest, R.L. "Learning decision lists", Machine Learning 2:229-246   */
 /*  1987                                                                 */
 /*                                                                       */
 /*=======================================================================*/
@@ -83,7 +83,7 @@ static void do_dlist_summary(WDlist *dlist, WDataSet &dataset)
 
     for (p=dataset.head(); p != 0; p=next(p))
     {
-	predict = dlist->predict(*dataset(p));
+	predict = (EST_String)dlist->predict(*dataset(p));
 	type = dataset.ftype(0);
 	real = wgn_discretes[type].name(dataset(p)->get_int_val(0));
 	pairs.add_item(real,predict,1);
@@ -101,7 +101,7 @@ static WDlist *wagon_decision_list()
     // For each possible question, measure it using 
     // yarowsky's loglikelihood ratio
     // Abs(log(P(class_1|question_j)/P(class_2|question_j)))
-    // Output it for extranal sorting 
+    // Output it for external sorting 
     // Hmm this implies binary classes 
     int i,cl;
     WQuestion ques;
@@ -151,7 +151,7 @@ static WDlist *dlist_score_question(WQuestion &q, WVectorList &ds)
 
 	EST_DiscreteProbDistribution &pd = y.pd();
 	
-	// Generalizing the formula in Yarowsky chapter we modify it
+	// Generalizing the formula in Yarowsky (pp157-172) we modify it
 	// to take absolute log-likelihood ration of the most probability
 	// of the most probable over the rest
 	EST_String t;
@@ -184,14 +184,14 @@ EST_Val WDlist::predict(const WVector &d)
     if (p_question.ask(d))
 	return p_token;
     else if (next == 0)
-	return "guess";  // should be apriori most probable as dlist can't help
+	return "guess";  // should be a priori most probable as dlist can't help
     else 
 	return next->predict(d);
 }
 
 WDlist *add_to_dlist(WDlist *l, WDlist *a)
 {
-    // Add a to l at approriate place in score order 
+    // Add a to l at appropriate place in score order 
     WDlist *p,*lp;
     
     if (l == 0)

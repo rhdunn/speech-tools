@@ -66,7 +66,7 @@ void default_rfc_params(EST_Features &op);
 
     @param f0: Smoothed continuous F0 contour. An error will occur
     if any unvoiced regions are detected in the contour. Use the
-    function smoooth_pda to smooth and interpolate a normal contour.
+    function smooth_pda to smooth and interpolate a normal contour.
     @param ev_list: list of events, each containing approximate start
     and end times of the events. On completion each event in this list
     will have a set of RFC parameters.
@@ -112,7 +112,7 @@ void tilt_synthesis(EST_Track &track, EST_Relation &ev_list,
 /** Convert a single set of local tilt parameters to local RFC parameters.
 <parameter>amp</parameter>
 
-@param tilt: input tilt paramaters, named <parameter>amp</parameter>, <parameter>dur</parameter> and <parameter>tilt</parameter>
+@param tilt: input tilt parameters, named <parameter>amp</parameter>, <parameter>dur</parameter> and <parameter>tilt</parameter>
 @param rfc: output RFC parameters, name <parameter>rise_amp</parameter>, <parameter>fall_amp</parameter>, <parameter>rise_dur</parameter> and <parameter>fall_dur</parameter>
 
 */
@@ -124,7 +124,7 @@ how this is performed.
 
 <parameter>
 @param rfc: input RFC parameters, named <parameter> rise_amp</parameter>, <parameter>fall_amp</parameter>, <parameter>rise_dur</parameter> and<parameter> fall_dur</parameter>
-@param tilt: output tilt paramaters, named <parameter>amp</parameter>, <parameter>dur</parameter> and <parameter>tilt</parameter> */
+@param tilt: output tilt parameters, named <parameter>amp</parameter>, <parameter>dur</parameter> and <parameter>tilt</parameter> */
 void rfc_to_tilt(EST_Features &rfc, EST_Features &tilt);
 
 /** For each tilt events in ev_tilt, produce a set of RFC parameters.

@@ -564,8 +564,8 @@ int EST_String::subst(EST_String source,
   return n;
 }
 
-// pass in the two possible separators as pointers so we don't have to
-// duplicat eall the code. Inline definitions of the friend functions
+// Pass in the two possible separators as pointers so we don't have to
+// duplicate all the code. Inline definitions of the friend functions
 // takes care of the pretty interface.
 
 int EST_String::split_internal(EST_String result[], int max, 

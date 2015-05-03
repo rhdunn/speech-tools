@@ -127,7 +127,7 @@ int main(void)
 //@}
 
 // we would need to include the following template
-// declarations if deqs of strings weren't aready declared
+// declarations if deqs of strings weren't already declared
 
 // Declare_TDEQ_Class(EST_String, "FILLER")
 

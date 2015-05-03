@@ -39,11 +39,11 @@
   *
   * This is template is usually hidden in the declaration of the
   * container classes with a typedef for Entries providing a more
-  * convinient name for the iterator. However the interface is that
+  * convenient name for the iterator. However the interface is that
   * defined here.
   *
   * We support two interfaces, a pointer like interface similar to
-  * specialised iteratiion code elsewhere in the speech tools library
+  * specialised iteration code elsewhere in the speech tools library
   * and to the iterators in the C++ standard template library and an
   * interface similar to that of Enumerations in Java.
   *
@@ -67,7 +67,7 @@
   *     }</programlisting>
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TIterator.h,v 1.4 2002/12/26 15:48:54 awb Exp $ 
+  * @version $Id: EST_TIterator.h,v 1.6 2004/05/04 00:00:16 awb Exp $ 
   */
 
 template <class Container, class IPointer, class Entry> 
@@ -87,13 +87,13 @@ protected:
   /// Position in the structure. May or may not be useful.
   unsigned int pos;
 
-  /** Structure defined by the container class whcih contains the
+  /** Structure defined by the container class which contains the
     * current state of the iteration.
     */
   IPointer pointer;
 
 public:
-  /// Name for an itterator like this
+  /// Name for an iterator like this
   typedef EST_TIterator<Container, IPointer, Entry> Iter;
 
   /// Create an iterator not associated with any specific container.
@@ -159,7 +159,7 @@ public:
   /**@name Access
     */
   //@{
-  /// Return the element currentl pointed to.
+  /// Return the element currently pointed to.
   const Entry& current() const
     {return cont->points_at(pointer);}
 
@@ -201,18 +201,18 @@ public:
   typedef EST_TIterator<Container, IPointer, Entry> Iter;
 
   /// Create an iterator not associated with any specific container.
-  EST_TStructIterator() {cont=NULL;}
+  EST_TStructIterator() {this->cont=NULL;}
 
   /// Copy an iterator by assignment
   Iter &operator = (const Iter &orig)
-    { cont=orig.cont; pos=orig.pos; pointer=orig.pointer; return *this;}
+    { this->cont=orig.cont; this->pos=orig.pos; this->pointer=orig.pointer; return *this;}
 
   /// Create an iterator ready to run over the given container.
   EST_TStructIterator(const Container &over)
     { begin(over); }
 
   const Entry *operator ->() const
-    {return &current();}
+    {return &this->current();}
 };
 
 template <class Container, class IPointer, class Entry>
@@ -231,11 +231,11 @@ public:
   typedef EST_TIterator<Container, IPointer, Entry> Iter;
 
   /// Create an iterator not associated with any specific container.
-  EST_TRwIterator() {cont=NULL;}
+  EST_TRwIterator() {this->cont=NULL;}
 
   /// Copy an iterator by assignment
   Iter &operator = (const Iter &orig)
-    { cont=orig.cont; pos=orig.pos; pointer=orig.pointer; return *this;}
+    { this->cont=orig.cont; this->pos=orig.pos; this->pointer=orig.pointer; return *this;}
 
   /// Create an iterator ready to run over the given container.
   EST_TRwIterator(Container &over)
@@ -243,14 +243,14 @@ public:
 
   /// Set the iterator ready to run over this container.
   void begin(Container &over)
-    {cont=&over; beginning();}
+    {this->cont=&over; this->beginning();}
 
   /**@name Access
     */
   //@{
-  /// Return the element currentl pointed to.
+  /// Return the element currently pointed to.
   Entry& current() const
-    {return cont->points_at(pointer);}
+    {return this->cont->points_at(this->pointer);}
 
   /// The * operator returns the current element. 
   Entry &operator *() const
@@ -264,8 +264,8 @@ public:
   /// Return the current element and move the pointer forwards.
   Entry& next_element() 
 	{ 
-	  Entry &it = cont->points_at(pointer); 
-	  cont->move_pointer_forwards(pointer); 
+	  Entry &it = this->cont->points_at(this->pointer); 
+	  this->cont->move_pointer_forwards(this->pointer); 
 	  return it; 
 	}
 
@@ -281,18 +281,18 @@ public:
   typedef EST_TIterator<Container, IPointer, Entry> Iter;
 
   /// Create an iterator not associated with any specific container.
-  EST_TRwStructIterator() {cont=NULL;}
+  EST_TRwStructIterator() {this->cont=NULL;}
 
   /// Copy an iterator by assignment
   Iter &operator = (const Iter &orig)
-    { cont=orig.cont; pos=orig.pos; pointer=orig.pointer; return *this;}
+    { this->cont=orig.cont; this->pos=orig.pos; this->pointer=orig.pointer; return *this;}
 
   /// Create an iterator ready to run over the given container.
   EST_TRwStructIterator(Container &over)
     { begin(over); }
 
   Entry *operator ->() const
-    {return &current();}
+    {return &this->current();}
 };
 
 #endif

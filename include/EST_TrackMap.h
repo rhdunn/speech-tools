@@ -55,7 +55,7 @@
   * @see EST_ChannelType
   * @see EST_TrackMap:example
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TrackMap.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_TrackMap.h,v 1.3 2004/05/04 00:00:16 awb Exp $
   */
 class EST_TrackMap : public EST_Handleable
 {
@@ -64,7 +64,7 @@ public:
   /**@name ChannelMapping
     * An auxiliary type used just to define static EST_TrackMaps.
     * Defining one of these and then converting it to an EST_TrackMap
-    * is, unfortunatly, the only way C++ allows to define
+    * is, unfortunately, the only way C++ allows us to define
     * a constant EST_TrackMap.
     */
   //@{
@@ -104,7 +104,7 @@ protected:
   /// Creation function used by friends to create refcounted maps.
   EST_TrackMap(int refcount);	
 
-  /// Creation function used by friends to create sub-trak maps.
+  /// Creation function used by friends to create sub-track maps.
   EST_TrackMap(const EST_TrackMap *parent, int offset, int refcount);
 
   /// copy an exiting map.

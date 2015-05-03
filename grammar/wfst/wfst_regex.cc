@@ -52,7 +52,7 @@ void EST_WFST::build_or_transition(int start, int end, LISP disjunctions)
 
     for (l=disjunctions; l != NIL; l=cdr(l))
     {
-	// Can't go direct to end as other transtions could be added there
+	// Can't go directly to end as other transitions could be added there
 	intermed = add_state(wfst_nonfinal);
 	build_wfst(start,intermed,car(l));
 	build_wfst(intermed,end,epsilon_label());

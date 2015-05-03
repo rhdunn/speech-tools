@@ -88,7 +88,6 @@ int socket_receive_file(SOCKET_FD fd,const EST_String &filename)
     while (file_stuff_key[k] != '\0')
     {
 	c = getc_unbuffered(fd);
-	fprintf(stderr,"%c",c);
 	if (file_stuff_key[k] == c)
 	    k++;
 	else if ((c == 'X') && (file_stuff_key[k+1] == '\0'))

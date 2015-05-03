@@ -35,7 +35,7 @@
 /*-----------------------------------------------------------------------*/
 /*                                                                       */
 /*  Due to incompatibility between the GPL for readline and Festival's   */
-/*  current lincence readline support was removed after 1.3.0            */
+/*  current licence readline support was removed after 1.3.0             */
 /*  This uses a much simpler but much poorer command line editor called  */
 /*  editline instead.                                                    */
 /*                                                                       */
@@ -236,7 +236,7 @@ static char **command_completion (char *text,int start,int end)
     char **matches = NULL;
     int i;
 
-    /* If preceeding non-alpanum character is a left paren, */
+    /* If preceding non-alphanum character is a left paren, */
     /* look for a command else look for any variable */
     if (possible_commandp(text,start,end))
 	matches = siod_command_generator(text+start,end-start);

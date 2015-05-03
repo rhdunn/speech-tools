@@ -60,6 +60,7 @@ public:
     EST_Relation *semstruct;
     EST_Relation *emphasis;
     EST_Relation *boundary;
+    EST_Relation *pause;
     EST_Item *parent;
     EST_Item *pending;
     EST_Item *last_word;
@@ -171,6 +172,7 @@ void Apml_Parser_Class::document_open(XML_Parser_Class &c,
   state->semstruct = state->utt->create_relation("SemStructure");
   state->emphasis = state->utt->create_relation("Emphasis");
   state->boundary = state->utt->create_relation("Boundary");
+  state->pause = state->utt->create_relation("Pause");
 
 
 }
@@ -209,7 +211,8 @@ void Apml_Parser_Class::element_open(XML_Parser_Class &c,
       || strcmp(name, "rheme")==0
       || strcmp(name, "theme")==0
       || strcmp(name, "emphasis")==0
-      || strcmp(name, "boundary")==0)
+      || strcmp(name, "boundary")==0
+      || strcmp(name, "pause")==0)
     {
       
       // create new item content
@@ -237,6 +240,12 @@ void Apml_Parser_Class::element_open(XML_Parser_Class &c,
 	  if(state->last_word)
 	    item->append_daughter(state->last_word);
 	}
+      else if(strcmp(name, "pause")==0 )
+	{
+	  item = state->pause->append();
+	  if(state->last_word)
+	    item->append_daughter(state->last_word);
+	}
       else
 	{
 	  if (state->parent == NULL)
@@ -251,7 +260,7 @@ void Apml_Parser_Class::element_open(XML_Parser_Class &c,
             
     }
   else
-    EST_warning("SOLE XML Parser: unknown element %s", name);
+    EST_warning("APML Parser: unknown element %s", name);
 }
 
 
@@ -277,7 +286,8 @@ void Apml_Parser_Class::element_close(XML_Parser_Class &c,
   Parse_State *state = (Parse_State *)data;
 
   if ( strcmp(name, "emphasis")==0
-       || strcmp(name, "boundary")==0 )
+       || strcmp(name, "boundary")==0 
+       || strcmp(name, "pause")==0 )
     {
       state->depth--;
       state->pending=NULL;
@@ -289,9 +299,8 @@ void Apml_Parser_Class::element_close(XML_Parser_Class &c,
       || strcmp(name, "rheme")==0)
     {
       state->depth--;
-      //      state->pending = state->parent;
       state->pending = NULL;
-      state->parent=state->parent->up();;
+      state->parent=state->parent->up();
     }
 }
 
@@ -393,7 +402,7 @@ void Apml_Parser_Class::error(XML_Parser_Class &c,
   (void)c; (void)p;  (void)data;
   // Parse_State *state = (Parse_State *)data;
 
-  EST_error("SOLE XML Parser %s", get_error(p));
+  EST_error("APML Parser %s", get_error(p));
 
   est_error_throw();
 }

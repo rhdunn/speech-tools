@@ -65,7 +65,7 @@ int main(void)
     /**@name Initialising and Resizing a Track
 
        The constructor functions can be used to create a track with
-       zero frames and channels or a track with a specfied number of
+       zero frames and channels or a track with a specified number of
        frames and channels
     */
 
@@ -129,7 +129,7 @@ int main(void)
 	tr.t(i) = (float) i * 0.01;
     //@} code
     /** which fills the time array with values 0.01, 0.02,
-	0.03... 5.0. However, A shortcut function is provded for fixed
+	0.03... 5.0. However, A shortcut function is provided for fixed
 	frame spacing: 
     */
     //@{ code
@@ -137,7 +137,7 @@ int main(void)
 
     //@} code
     /** which performs the same operation as above. Frames do not have
-	to be evenly spaced, in pitch sychronous processing the time
+	to be evenly spaced, in pitch synchronous processing the time
 	array holds the time position of each pitch period. In such
 	cases each position in the time array must obviously be set
 	individually.</para><para>
@@ -199,7 +199,7 @@ int main(void)
 	configuration. The <method>resize</method> function can take
 	this and resize the number of channels to the number of channels
 	indicated in the map, and give each channel its name from the 
-	map. For exmaple:
+	map. For example:
     */
     //@{ code
     EST_StrList map;
@@ -212,8 +212,8 @@ int main(void)
     /** A convention is used for channels which comprise
 	components of a multi-dimensional analysis such as
 	cepstra. In such cases the channels are named
-	<replacable>TYPE_I</replacable>.  The last coefficient is
-	always names <replacable>TYPE_N</replacable> regardless of
+	<replaceable>TYPE_I</replaceable>.  The last coefficient is
+	always names <replaceable>TYPE_N</replaceable> regardless of
 	the number of coefficients. This is very useful in extracting
 	a set of related  channels without needing to know the order
 	of the analysis.
@@ -256,7 +256,7 @@ int main(void)
     //@} code
 
     /** Here $ indicates the special status, "cep" the name of the
-	coefficents, "-0" that the first is number 0 and "+8" that
+	coefficients, "-0" that the first is number 0 and "+8" that
 	there are 8 more to follow. 
     */
 
@@ -273,7 +273,7 @@ int main(void)
 
 	Single frames or channels can be accessed as EST_FVectors:
 	Given a track with 500 frames and 10 channels, the 50th frame
-	can be accesed as:
+	can be accessed as:
     */
     //@{
     //@{ code
@@ -311,7 +311,7 @@ int main(void)
     //@{ code
     tr.frame(tmp_frame, 50, 2, 9);
     //@} code
-    /** Likewse, the 5th channel with only the last 100 frames can be set up
+    /** Likewise, the 5th channel with only the last 100 frames can be set up
 	as: */
     //@{ code
     tr.channel(tmp_channel, 5, 400, 100);
@@ -320,7 +320,7 @@ int main(void)
     /** @name Access multiple frames or channels.
 	@id tr-example-sub-tracks
 	In addition to extracting single frames and channels, multiple
-	frame and channel portions can be extacted in a similar
+	frame and channel portions can be extracted in a similar
 	way. In the following example, we make a sub-track sub, which
 	points to the entire cepstrum portion of a track (channels 2
 	through 11) 
@@ -333,7 +333,7 @@ int main(void)
 
     //@} code
 
-    /** <parameter>sub</parameter> behaves exactlty like a normal
+    /** <parameter>sub</parameter> behaves exactly like a normal
 	track in every way, except that it cannot be resized. Its
 	contents behave like a point into the designated portion of
 	<parameter>tr</parameter>, so changing
@@ -350,7 +350,7 @@ int main(void)
 
 	This facility is particularly useful for using standard
 	signal processing functions efficiently. For example,
-	the <function>melcep</function> in the signal procesing library
+	the <function>melcep</function> in the signal processing library
 	takes a waveform and produces a mel-scale cepstrum. It determines
 	the order of the cepstral analysis by the number of channels in
 	the track it is given, which has already been allocated to have
@@ -384,7 +384,7 @@ int main(void)
 
     tr.sub_track(sub, 0, EST_ALL, "cep_0", "cep_N");
     //@} code
-    /** and this specfies the end by a string also:
+    /** and this specifies the end by a string also:
      */
     //@{ code
     tr.sub_track(sub, 0, EST_ALL, "cep_0", "cep_N");
@@ -400,7 +400,7 @@ int main(void)
     //@} code
 
     /** We can step through the frames of a Track using a standard
-     * itterator. The frames are returned as one-frame sub-tracks.
+     * iterator. The frames are returned as one-frame sub-tracks.
      */
 
     //@{ code
@@ -432,7 +432,7 @@ int main(void)
 //    tr.copy_sub_track(tr_copy, 47, 39, "cep_0", "cep_N");
     //@} code
 
-    /** Indvidual frames and channels can be copied out into
+    /** Individual frames and channels can be copied out into
 	pre-allocated float * arrays as follows:
     */
     //@{ code
@@ -444,7 +444,7 @@ int main(void)
     tr.copy_frame_out(43, frame_buf);      // copy frame 4 into frame_buf
     //@} code
 
-    /** Indvidual frames and channels can be copied into the track
+    /** Individual frames and channels can be copied into the track
 	from float * arrays as follows:
     */
     //@{ code
@@ -456,7 +456,7 @@ int main(void)
 
     /** @name Auxiliary Channels
 	Auxiliary channels are used for storing frame information other than
-	amplitude coefficients, for example voicing decsions and points of
+	amplitude coefficients, for example voicing decisions and points of
 	interest in the track.
 
 	Auxiliary channels always have the same number of frames as the

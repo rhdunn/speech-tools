@@ -33,8 +33,8 @@
 /*                   Author :  Alan W Black                              */
 /*                   Date   :  May 1998                                  */
 /*-----------------------------------------------------------------------*/
-/*  Content part of a linguistic item, normall only referenced from      */
-/*  EST_Item                                                        */
+/*  Content part of a linguistic item, normally only referenced from     */
+/*  EST_Item                                                             */
 /*                                                                       */
 /*=======================================================================*/
 
@@ -62,7 +62,7 @@ EST_Item_Content::~EST_Item_Content()
 int EST_Item_Content::unref_relation(const EST_String &relname)
 {
     // Unreference this item from this relation.  Returns TRUE
-    // if no one else is relferencing it, FALSE otherwise
+    // if no one else is referencing it, FALSE otherwise
     if (this != 0)
     {
 	if ((relname == "") && (relations.length() == 1))

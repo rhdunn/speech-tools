@@ -235,7 +235,7 @@ EST_String options_supported_audio(void)
     // returns list of supported audio types
     EST_String audios = "";
 
-    audios += "sunaudio";  // we always support this inspite of the hardware
+    audios += "sunaudio";  // we always support this in spite of the hardware
 
     audios += " audio_command";
     if (nas_supported)

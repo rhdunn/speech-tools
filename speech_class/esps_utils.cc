@@ -33,17 +33,17 @@
 /*                    Author :  Alan W Black (and Paul Taylor)           */
 /*                    Date   :  June 1996                                */
 /*-----------------------------------------------------------------------*/
-/*  These routines form a basis for reading and writing Entropics ESPS   */
+/*  These routines form a basis for reading and writing Entropic's ESPS  */
 /*  headered files.  The reason we wrote them was to avoid including     */
-/*  Entropics own (large and combersome) code into all our programs      */
+/*  Entropic's own (large and cumbersome) code into all our programs.    */
 /*  No Entropic proprietary code is included in this code which means    */
 /*  you do not needs an Entropic licence to use it.                      */
 /*                                                                       */
-/*  However this should not be seen as anti-entropic in anyway it is for */
+/*  However this should not be seen as anti-Entropic in anyway it is for */
 /*  our and your convenience.  We would like to specifically thank       */
 /*  Rodney Johnson of Entropic for giving us help and confirming to us   */
 /*  the header format is in fact more complex than one can imagine,      */
-/*  mostly for very bad reasons, (backward compatability cripples all    */
+/*  mostly for very bad reasons, (backward compatibility cripples all    */
 /*  software in the long run).  Hence this code is almost definitely     */
 /*  incomplete and is not guaranteed to read or create all ESPS files    */
 /*  properly but it is adequate for many tasks.                          */
@@ -66,7 +66,7 @@
 
 /* First you must realise there is in fact a number of very similar but */
 /* subtly different header formats that appear on ESPS files.           */
-/* ESPS_FEA and ESPS_SD (others for filters, spectragrams, etc)         */
+/* ESPS_FEA and ESPS_SD (others for filters, spectrograms, etc)         */
 /* The basic format is                                                  */
 /*     preamble                                                         */
 /*     fixed header                                                     */
@@ -890,7 +890,7 @@ int esps_record_size(esps_hdr hdr)
 
 static int esps_num_of_type(int type,esps_hdr hdr)
 {
-    /* counts up the number of occurences of fields of type in a record */
+    /* counts up the number of occurrences of fields of type in a record */
     int i;
     int sum;
 

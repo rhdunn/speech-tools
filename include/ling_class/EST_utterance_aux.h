@@ -38,10 +38,10 @@
 #include "EST_String.h"
 #include "EST_types.h"
 
-/** Axiliary operations on utterance structures.
+/** Auxiliary operations on utterance structures.
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_utterance_aux.h,v 1.2 2001/04/04 13:11:27 awb Exp $
+  * @version $Id: EST_utterance_aux.h,v 1.3 2004/05/04 00:00:17 awb Exp $
   */
 
 //@{

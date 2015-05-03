@@ -80,7 +80,7 @@ class EST_SCFG_Chart_Edge {
 
 };
 
-/** A class for parsing with a probabalistic grammars.
+/** A class for parsing with a probabilistic grammars.
 
     The chart (sort of closer to CKY table) consists of indexes of
     edges indexed by vertex number of mother non-terminal.
@@ -89,10 +89,10 @@ class EST_SCFG_Chart_Edge {
     an \Ref{EST_Stream} with a given feature.  The grammar may be
     specified as LISP rules or as an already constructed \Ref{EST_SCFG}.
 
-    This produces a single best parse.  It treates the grammar as
-    structly context free in that the probability of a nonterminal
-    over vertex n to m, is the sum of the all possible analysis
-    of that sub-tree.  Only the best anaylsis is kept for the
+    This produces a single best parse.  It treats the grammar as
+    strictly context free in that the probability of a nonterminal
+    over vertex n to m, is the sum of all the possible analyses
+    of that sub-tree.  Only the best analysis is kept for the
     resulting parse tree.
 
     @author Alan W Black (awb@cstr.ed.ac.uk): October 1997
@@ -107,7 +107,7 @@ class EST_SCFG_Chart {
     int n_vertices;
     /// Index of edges by vertex start x vertex end x nonterminal
     EST_SCFG_Chart_Edge ****edges;
-    /// Index of basic symbols indexed by (start) vertice.
+    /// Index of basic symbols indexed by (start) vertex.
     EST_SCFG_Chart_Edge **wfst;
     /// An empty edge, denotes 0 probability edge.
     EST_SCFG_Chart_Edge *emptyedge;
@@ -144,10 +144,10 @@ class EST_SCFG_Chart {
     /// Initialize from existing \Ref{EST_SCFG} grammar
     void set_grammar_rules(EST_SCFG &grammar);
     /** Initialize for parsing from relation using {\tt name} feature
-        setting up the "Well Fromed Substring Table" */
+        setting up the "Well Formed Substring Table" */
     void setup_wfst(EST_Relation *s,const EST_String &name="name");
     /** Initialize for parsing from s to e using {\tt name} feature
-        setting up the "Well Fromed Substring Table" */
+        setting up the "Well Formed Substring Table" */
     void setup_wfst(EST_Item *s, EST_Item *e,const EST_String &name="name");
     //@}
 

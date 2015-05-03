@@ -15,7 +15,7 @@ Edinburgh Speech Tools provides a set of exectutables, which
     <itemizedlist>
       <listitem><para>Arguments to functions can be specified in any
 	      order on the command line. Most programs can take multiple input
-	  files, which by default have no preceeding argument.</para></listitem>
+	  files, which by default have no preceding argument.</para></listitem>
       <listitem><para>Output by defgault is to standard out. The
 	      <command>-o</command> flag can be used to specify an output file.</para></listitem>
       <listitem><para>Often programs can read many formats of input

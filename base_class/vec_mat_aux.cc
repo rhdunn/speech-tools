@@ -33,7 +33,7 @@
 /*                         Author :  Simon King                          */
 /*                         Date   :  April 1995                          */
 /*-----------------------------------------------------------------------*/
-/*                  EST_FMatrix Class auxilliary functions               */
+/*                  EST_FMatrix Class auxiliary functions                */
 /*                                                                       */
 /*=======================================================================*/
 #include "EST_FMatrix.h"
@@ -317,7 +317,7 @@ int inverse(const EST_FMatrix &a,EST_FMatrix &inv,int &singularity)
     // in it if it fails to find an inverse.
     int i, j, k;
     int n = a.num_rows();
-    EST_FMatrix b = a;  // going to destructively maniplate b to get inv
+    EST_FMatrix b = a;  // going to destructively manipulate b to get inv
     EST_FMatrix pos;    // the original position
     float biggest,s;
     int r=0,this_row,all_zeros;
@@ -345,7 +345,7 @@ int inverse(const EST_FMatrix &a,EST_FMatrix &inv,int &singularity)
     for (i=0; i<n; i++)
     {
 	// Find the absolute largest val in this col as the next to
-	// manipuate
+	// manipulate.
 	biggest = 0.0;
 	r = 0;
 	for (j=i; j<n; j++)

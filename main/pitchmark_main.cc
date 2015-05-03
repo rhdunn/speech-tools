@@ -68,7 +68,7 @@ void pm_to_f0(EST_Track &pm, EST_Track &f0);
 */
 
 
-/** @name <command> pitchmark </command> <emphasis> Find instants of glottal closure in Largynograph file</emphasis>
+/** @name <command> pitchmark </command> <emphasis> Find instants of glottal closure in Laryngograph file</emphasis>
 
   * @id pitchmark-manual
   * @toc */
@@ -98,15 +98,15 @@ removes noise in the signal. The parameter
 and <parameter>lx_lo</parameter> specifies the order. Double filtering
 (feeding the waveform through the filter, then reversing the waveform
 and feeding it through again) is performed to reduce any phase shift
-beween the input and output of the filtering operation.
+between the input and output of the filtering operation.
 </para></listitem>
 
 <listitem><para>Double high pass filter the signal. This removes the
-very low freqency swell that is often observed in laryngograph
+very low frequency swell that is often observed in laryngograph
 waveforms.  The parameter <parameter>lx_hf</parameter> specifies the high pass cutoff frequency,
 and <parameter>lx_ho</parameter> specifies the order.
 Double filtering is performed to reduce any phase shift
-beween the input and output of the filtering operation.
+between the input and output of the filtering operation.
 </para></listitem>
 
 <listitem><para>Calculate the delta signal. The filtered waveform is

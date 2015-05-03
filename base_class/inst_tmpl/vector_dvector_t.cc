@@ -52,8 +52,8 @@ template ostream& operator << (ostream &st, const EST_TVector<EST_DVector> &v);
 #endif
 static const EST_DVector def_val_DVector;
 static EST_DVector error_return_DVector;
-const EST_DVector *EST_TVector<EST_DVector>::def_val = &def_val_DVector;
-EST_DVector *EST_TVector<EST_DVector>::error_return = &error_return_DVector;
+template <> const EST_DVector *EST_TVector<EST_DVector>::def_val = &def_val_DVector;
+template <> EST_DVector *EST_TVector<EST_DVector>::error_return = &error_return_DVector;
 
 int operator !=(const EST_DVector &fv1, 
 		const EST_DVector &fv2)

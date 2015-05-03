@@ -36,7 +36,7 @@
 /*  Optional support for /dev/dsp under FreeBSD and Linux                */
 /*  These use the same underlying sound drivers (voxware).  This uses    */
 /*  16bit linear if the device supports it otherwise it uses 8bit.  The  */
-/*  8bit dirver is still better than falling back to the "sunaudio" ulaw */
+/*  8bit driver is still better than falling back to the "sunaudio" ulaw */
 /*  8K as this driver can cope with various sample rates (and saves on   */
 /*  resampling).                                                         */
 /*                                                                       */
@@ -77,6 +77,7 @@ static char *aud_sys_name = "FreeBSD";
 int linux16_supported = TRUE;
 int freebsd16_supported = FALSE;
 static char *aud_sys_name = "Linux";
+static int stereo_only = 0;
 #endif
 
 #if defined(SUPPORT_LINUX16) || defined(SUPPORT_FREEBSD16)
@@ -115,11 +116,16 @@ static int sb_set_sample_rate(int sbdevice, int samp_rate)
     int fmt;
     int sfmts;
     int stereo=0;
+    int sstereo;
     int channels=1;
 
     ioctl(sbdevice,SNDCTL_DSP_RESET,0);
     ioctl(sbdevice,SNDCTL_DSP_SPEED,&samp_rate);
-    ioctl(sbdevice,SNDCTL_DSP_STEREO,&stereo);
+    sstereo = stereo;
+    ioctl(sbdevice,SNDCTL_DSP_STEREO,&sstereo);
+    /* Some devices don't do mono even when you ask them nicely */
+    if (sstereo != stereo)
+        stereo_only = 1;
     ioctl(sbdevice,SNDCTL_DSP_CHANNELS,&channels);
     ioctl(sbdevice,SNDCTL_DSP_GETFMTS,&sfmts);
 
@@ -142,6 +148,7 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al)
 {
     int sample_rate;
     short *waveform;
+    short *waveform2 = 0;
     int num_samples;
     int audio,actual_fmt;
     int i,r,n;
@@ -165,6 +172,18 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al)
     sample_rate = inwave.sample_rate();
 
     actual_fmt = sb_set_sample_rate(audio,sample_rate);
+
+    if (stereo_only)
+    {
+	waveform2 = walloc(short,num_samples*2);
+	for (i=0; i<num_samples; i++)
+	{
+	    waveform2[i*2] = inwave.a(i);
+	    waveform2[(i*2)+1] = inwave.a(i);
+	}
+	waveform = waveform2;
+	num_samples *= 2;
+    }
 
     THREAD_DECS();
     THREAD_PROTECT();
@@ -246,6 +265,8 @@ int play_voxware_wave(EST_Wave &inwave, EST_Option &al)
 
     // close(tmp);
     close(audio);
+    if (waveform2)
+	wfree(waveform2);
     THREAD_UNPROTECT();
     return 1;
 }
@@ -254,6 +275,7 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
 {
     int sample_rate=16000;  // egcs needs the initialized for some reason
     short *waveform;
+    short *waveform2=0;
     int num_samples;
     int audio=-1,actual_fmt;
     int i,r,n;
@@ -285,13 +307,21 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
 	num_samples = inwave.num_samples();
 	waveform = inwave.values().memory();
 
+	if (stereo_only)
+	{
+	    waveform2 = walloc(short,num_samples*2);
+	    num_samples *= 2;
+	}
+	else
+	    waveform2 = waveform;
+
 	for (i=0; i < num_samples; i+= r)
 	{
 	    if (num_samples > i+AUDIOBUFFSIZE)
 		n = AUDIOBUFFSIZE;
 	    else
 		n = num_samples-i;
-	    r = read(audio,&waveform[i], n*2);
+	    r = read(audio,&waveform2[i], n*2);
 	    r /= 2;
 	    if (r <= 0)
 	    {
@@ -337,6 +367,13 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al)
 	    actual_fmt << endl;
 	close(audio);
 	return -1;
+    }
+
+    if (stereo_only)
+    {
+	for (i=0; i<num_samples; i+=2)
+	    waveform[i/2] = waveform2[i];
+	wfree(waveform2);
     }
 
     close(audio);

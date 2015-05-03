@@ -62,8 +62,8 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al);
 /**
 
 na_record records wavefors from an audio device.  It only supports
-recording for N seconds (default is 10).  Specifiying the frequency
-defines the recording frequency (if supported by the hardward).  This
+recording for N seconds (default is 10).  Specifying the frequency
+defines the recording frequency (if supported by the hardware).  This
 currently doesn't support NAS audio in.
 
  */

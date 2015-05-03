@@ -75,7 +75,7 @@ template class EST_TValuedEnum<EST_EstFileType,const char *>;
 template class EST_TValuedEnumI<EST_EstFileType,const char *, NO_INFO>;
 #endif
 
-/** Read and prase the header of an EST_File - interim version
+/** Read and parse the header of an EST_File - interim version
 returning features rather than EST_Option
 */
 
@@ -86,8 +86,8 @@ EST_read_status read_est_header(EST_TokenStream &ts, EST_Features &hinfo,
     char magic_number[9];
     int pos;
 
-    // read initial file type indentifier, can't use peek or get
-    // as that could read *way* too far if its binary so just read
+    // read initial file type identifier, can't use peek or get
+    // as that could read *way* too far if it's binary so just read
     // the first n bytes to change the magic number
     pos = ts.tell();
     if ((ts.fread(magic_number,sizeof(char),8) != 8) ||
@@ -126,7 +126,7 @@ EST_read_status read_est_header(EST_TokenStream &ts, EST_Features &hinfo,
     }
     ts.get().string();		// read control EST_Header_End
 
-    // If it explcitly says binary it is, otherwise its ascii
+    // If it explicitly says binary it is, otherwise its ascii
     if (hinfo.S("DataType") == "binary")
 	ascii = false;
     else
@@ -142,8 +142,8 @@ EST_read_status read_est_header(EST_TokenStream &ts, EST_Option &hinfo,
     char magic_number[9];
     int pos;
 
-    // read initial file type indentifier, can't use peek or get
-    // as that could read *way* too far if its binary so just read
+    // read initial file type identifier, can't use peek or get
+    // as that could read *way* too far if it's binary so just read
     // the first n bytes to change the magic number
     pos = ts.tell();
     if ((ts.fread(magic_number,sizeof(char),8) != 8) ||
@@ -182,7 +182,7 @@ EST_read_status read_est_header(EST_TokenStream &ts, EST_Option &hinfo,
     }
     ts.get().string();		// read control EST_Header_End
 
-    // If it explcitly says binary it is, otherwise its ascii
+    // If it explicitly says binary it is, otherwise its ascii
     if (hinfo.sval("DataType",0) == "binary")
 	ascii = false;
     else

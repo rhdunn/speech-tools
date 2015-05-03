@@ -32,18 +32,18 @@
 /*************************************************************************/
 
 #include <stdio.h>
-#include "jni_Skeliton.h"
-#include "ling_class/EST_Skeliton.h"
+#include "jni_Skeleton.h"
+#include "ling_class/EST_Skeleton.h"
 
-static jobject skeliton_class;
+static jobject skeleton_class;
 static jfieldID handle_field;
 
 static inline short abs(short s) { return s>0?s:-s; }
 
 JNIEXPORT jboolean JNICALL
-Java_cstr_est_Skeliton_initialise_1cpp (JNIEnv *env, jclass myclass)
+Java_cstr_est_Skeleton_initialise_1cpp (JNIEnv *env, jclass myclass)
 {
-  skeliton_class = env->NewGlobalRef(myclass);
+  skeleton_class = env->NewGlobalRef(myclass);
   handle_field = env->GetFieldID(myclass, "handle", "J");
 
   if (!handle_field)
@@ -56,7 +56,7 @@ Java_cstr_est_Skeliton_initialise_1cpp (JNIEnv *env, jclass myclass)
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_cstr_est_Skeliton_finalise_1cpp (JNIEnv *env, jclass myclass)
+Java_cstr_est_Skeleton_finalise_1cpp (JNIEnv *env, jclass myclass)
 {
   (void)env;
   (void)myclass;
@@ -64,71 +64,71 @@ Java_cstr_est_Skeliton_finalise_1cpp (JNIEnv *env, jclass myclass)
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_cstr_est_Skeliton_create_11skeliton(JNIEnv *env, jobject self)
+Java_cstr_est_Skeleton_create_11skeleton(JNIEnv *env, jobject self)
 {
-  EST_Skeliton *skeliton = new EST_Skeliton;
+  EST_Skeleton *skeleton = new EST_Skeleton;
 
-  // printf("create skeliton %x\n", skeliton);
+  // printf("create skeleton %x\n", skeleton);
 
-  env->SetLongField(self, handle_field, (jlong)skeliton);
+  env->SetLongField(self, handle_field, (jlong)skeleton);
 
   return 1;
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_cstr_est_Skeliton_destroy_11skeliton (JNIEnv *env, jobject self)
+Java_cstr_est_Skeleton_destroy_11skeleton (JNIEnv *env, jobject self)
 {
-  EST_Skeliton *skeliton = (EST_Skeliton *) env->GetLongField(self, handle_field);
+  EST_Skeleton *skeleton = (EST_Skeleton *) env->GetLongField(self, handle_field);
 
-  // printf("destroy skeliton  %x\n", skeliton);
+  // printf("destroy skeleton  %x\n", skeleton);
 
-  delete skeliton;
+  delete skeleton;
   return 1;
 }
 
 JNIEXPORT jstring JNICALL 
-Java_cstr_est_Skeliton_1name(JNIEnv *env, jobject self)
+Java_cstr_est_Skeleton_1name(JNIEnv *env, jobject self)
 {
-  EST_Skeliton *skeliton = (EST_Skeliton *) env->GetLongField(self, handle_field);
-  return  env->NewStringUTF(skeliton->name());
+  EST_Skeleton *skeleton = (EST_Skeleton *) env->GetLongField(self, handle_field);
+  return  env->NewStringUTF(skeleton->name());
 }
 
 JNIEXPORT jstring JNICALL 
-Java_cstr_est_Skeliton_1load (JNIEnv *env, jobject self, jstring jfilename)
+Java_cstr_est_Skeleton_1load (JNIEnv *env, jobject self, jstring jfilename)
 {
-  EST_Skeliton *skeliton = (EST_Skeliton *) env->GetLongField(self, handle_field);
+  EST_Skeleton *skeleton = (EST_Skeleton *) env->GetLongField(self, handle_field);
 
   const char *filename = env->GetStringUTFChars(jfilename, 0);
   const char *res = "";
 
-  EST_read_status stat = skeliton->load(filename);
+  EST_read_status stat = skeleton->load(filename);
 
   env->ReleaseStringUTFChars(jfilename, filename);
 
   if (stat == read_format_error)
-    res = "skeliton format error";
+    res = "skeleton format error";
   else if (stat == read_error) 
-    res = "skeliton load error";
+    res = "skeleton load error";
   
   return  env->NewStringUTF(res);
 }
 
 JNIEXPORT jstring JNICALL 
-Java_cstr_est_Skeliton_1save (JNIEnv *env, jobject self, jstring jfilename, jstring jformat)
+Java_cstr_est_Skeleton_1save (JNIEnv *env, jobject self, jstring jfilename, jstring jformat)
 {
-  const EST_Skeliton *skeliton = (EST_Skeliton *) env->GetLongField(self, handle_field);
+  const EST_Skeleton *skeleton = (EST_Skeleton *) env->GetLongField(self, handle_field);
 
   const char *filename = env->GetStringUTFChars(jfilename, 0);
   const char *format = env->GetStringUTFChars(jformat, 0);
   const char *res = "";
 
-  EST_write_status stat = skeliton->save(filename,format);
+  EST_write_status stat = skeleton->save(filename,format);
 
   env->ReleaseStringUTFChars(jfilename, filename);
   env->ReleaseStringUTFChars(jformat, format);
 
   if (stat == write_error) 
-    res = "skeliton save error";
+    res = "skeleton save error";
   
   return  env->NewStringUTF(res);
 }
