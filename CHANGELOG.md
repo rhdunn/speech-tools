@@ -18,6 +18,7 @@ Improved configure script:
   * Use the `configure` results for the compiler and flags to use.
   * `./configure --enable-shared` support.
   * `./configure --enable-debug` support.
+  * `./configure --disable-warn` support.
   * `./configure --with-nas-audio` support.
 
 ## [2.1]

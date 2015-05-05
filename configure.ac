@@ -106,6 +106,15 @@ AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug  Produce debugging informa
  ], [ DEBUG=0 ])
 AC_SUBST(DEBUG)
 
+AC_ARG_ENABLE([warn],[AS_HELP_STRING([--disable-warn  Disable warning flags])],
+ [ if test "x$enableval" = "xno"; then
+       WARN=0
+   else
+       WARN=1
+   fi
+ ], [ WARN=1 ])
+AC_SUBST(WARN)
+
 AC_ARG_WITH([nas_audio],[AS_HELP_STRING([--with-nas-audio],[Enable network audio system (NAS) support])],
             [if test "x$with_nas_audio" = "xyes"; then
                  NAS_AUDIO=NAS_AUDIO
