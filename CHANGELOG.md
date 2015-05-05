@@ -10,6 +10,7 @@ Build system improvements:
   * Support other Linux `OSTYPE` strings.
   * Remove the make.include files as part of the `clean` target.
   * Don't perform dependency calculations when running the `clean` target.
+  * Fix not building shared libraries when `SHARED` is 0.
 
 ## [2.1]
 
