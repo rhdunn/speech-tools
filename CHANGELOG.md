@@ -8,6 +8,7 @@ Build system improvements:
   * Use g++ in the gcc default flags to compile C++ sources.
   * Update configure.ac to comply with autoconf 2.69.
   * Support other Linux `OSTYPE` strings.
+  * Remove the make.include files as part of the `clean` target.
 
 ## [2.1]
 
