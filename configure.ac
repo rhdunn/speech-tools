@@ -30,23 +30,25 @@ dnl ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF       ##
 dnl THIS SOFTWARE.                                                       ##
 dnl                                                                      ##
 dnl########################################################################
-AC_INIT()
+AC_PREREQ([2.69])
+AC_INIT([speech-tools], [2.1-1], [festival-talk@festvox.org])
 AC_CONFIG_SRCDIR([include/EST.h])
 
-AC_CANONICAL_SYSTEM
+# Checks for programs.
+AC_PROG_AWK
+AC_PROG_CXX
 AC_PROG_CC
-if test "x$GCC" = "xyes"; then
-	CFLAGS="$CFLAGS -Wall"
-fi
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 AC_CHECK_TOOL(AR, ar)
 
+AC_CANONICAL_TARGET
 AC_C_BIGENDIAN
 
+# Checks for libraries.
 AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
-dnl if test "$TERMCAPLIB" != "-ltermcap"; then
-dnl    AC_CHECK_LIB(termcap, tputs, [TERMCAPLIB=-ltermcap], [TERMCAPLIB=-lncurses])
-dnl 
 AC_SUBST(TERMCAPLIB)
 
 dnl Which version of GCC do we have here
@@ -91,6 +93,23 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]],
                 #endif]])],
               [LINUXAUDIO="alsa"],[])
 AC_SUBST(LINUXAUDIO)
+
+# Checks for header files.
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h float.h limits.h netdb.h netinet/in.h sgtty.h stddef.h stdlib.h string.h sys/ioctl.h sys/socket.h sys/time.h termios.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
+AC_C_RESTRICT
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_FUNC_STRTOD
+AC_CHECK_FUNCS([dup2 floor getcwd gethostbyname gethostname gettimeofday inet_ntoa memmove memset pow putenv rint socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol])
 
 AC_CONFIG_FILES([config/config])
 AC_OUTPUT
