@@ -9,6 +9,7 @@ Build system improvements:
   * Update configure.ac to comply with autoconf 2.69.
   * Support other Linux `OSTYPE` strings.
   * Remove the make.include files as part of the `clean` target.
+  * Don't perform dependency calculations when running the `clean` target.
 
 ## [2.1]
 
