@@ -106,5 +106,14 @@ AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug  Produce debugging informa
  ], [ DEBUG=0 ])
 AC_SUBST(DEBUG)
 
+AC_ARG_WITH([nas_audio],[AS_HELP_STRING([--with-nas-audio],[Enable network audio system (NAS) support])],
+            [if test "x$with_nas_audio" = "xyes"; then
+                 NAS_AUDIO=NAS_AUDIO
+             else
+                 NAS_AUDIO=
+             fi],
+            [NAS_AUDIO=])
+AC_SUBST(NAS_AUDIO)
+
 AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
 AC_OUTPUT

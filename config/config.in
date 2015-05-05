@@ -77,7 +77,7 @@ OPTIMISE_sigpr = 3
 ## specify a program to play files in a desired format.
 
 ## NCD's network audio system.
-# INCLUDE_MODULES += NAS_AUDIO
+INCLUDE_MODULES += @NAS_AUDIO@
 
 ## Elightenment Sound Demon, for KDE etc.
 # INCLUDE_MODULES += ESD_AUDIO
