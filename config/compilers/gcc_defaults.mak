@@ -39,10 +39,7 @@
  ###########################################################################
 
 CC=gcc
-CXX=gcc
-ifeq ($(OSTYPE),Darwin)
 CXX=g++
-endif
 
 COMPILER_DESC=FSF gcc
 COMPILER_VERSION_COMMAND=$(CXX) -v 2>&1 | tail -1 | sed -e 's/^....//'
@@ -95,10 +92,7 @@ STATIC_LINKFLAGS = -static
 TEMPLATE_SPECIFIC = -DINSTANTIATE_TEMPLATES
 TEMPLATE_ARGS = 
 
-## The -lgcc here is redundant - gcc does this anyway - but it
-## helps java know what needs to be loaded.
-
-COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++ -lgcc
+COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%)
 
 ## special ways of doing things, blank means default
 
