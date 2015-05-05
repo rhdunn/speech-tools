@@ -106,6 +106,23 @@ AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug  Produce debugging informa
  ], [ DEBUG=0 ])
 AC_SUBST(DEBUG)
 
+AC_ARG_ENABLE([optimization],[ AS_HELP_STRING([--enable-optimization=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug.])],
+ [ if   test "x$enableval" = "x0"; then
+       OPTIMISE=0
+   elif test "x$enableval" = "xno"; then
+       OPTIMISE=0
+   elif test "x$enableval" = "x1"; then
+       OPTIMISE=1
+   elif test "x$enableval" = "x2"; then
+       OPTIMISE=2
+   elif test "x$enableval" = "x4"; then
+       OPTIMISE=4
+   else
+       OPTIMISE=3
+   fi
+  ], [ OPTIMISE=3 ])
+AC_SUBST(OPTIMISE)
+
 AC_ARG_ENABLE([warn],[AS_HELP_STRING([--disable-warn  Disable warning flags])],
  [ if test "x$enableval" = "xno"; then
        WARN=0

@@ -56,7 +56,7 @@ CONFIGURATION =
 ##
 ## OPTIMISE=4 will turn off DEBUG
 
-OPTIMISE=3
+OPTIMISE=@OPTIMISE@
 WARN=@WARN@
 # VERBOSE=1
 DEBUG=@DEBUG@
@@ -65,7 +65,7 @@ SHARED=@SHARED@
 
 ## Directory specific selections which override the above
 
-OPTIMISE_sigpr = 3
+# OPTIMISE_sigpr = 3
 
 ###########################################################################
 ## Feature selection.
