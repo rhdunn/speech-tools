@@ -51,38 +51,8 @@ AC_C_BIGENDIAN
 AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
 AC_SUBST(TERMCAPLIB)
 
-dnl Which version of GCC do we have here
-COMPILERTYPE=gcc
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-               [[int j= 
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 95
-                3;
-                #endif ]])],
-               [COMPILERTYPE=gcc295],[])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-               [[int j= 
-                #if __GNUC__ == 3 
-                3;
-                #endif ]])],
-               [COMPILERTYPE=gcc32],[])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-               [[int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 96
-                3;
-                #endif ]])],
-               [COMPILERTYPE=gcc296],[])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-               [[int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 91
-                3;
-                #endif ]])],
-               [COMPILERTYPE=egcs],[])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-               [[int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 8
-                3;
-                #endif ]])],
-               [COMPILERTYPE=gcc28],[])
+dnl Set compiler type in order to force honoring of CFLAGS, etc.
+COMPILERTYPE=from_autoconf
 AC_SUBST(COMPILERTYPE)
 
 LINUXAUDIO=none
@@ -111,5 +81,5 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([dup2 floor getcwd gethostbyname gethostname gettimeofday inet_ntoa memmove memset pow putenv rint socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol])
 
-AC_CONFIG_FILES([config/config])
+AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
 AC_OUTPUT

@@ -12,6 +12,7 @@ Build system improvements:
   * Don't perform dependency calculations when running the `clean` target.
   * Fix not building shared libraries when `SHARED` is 0.
   * Merge the output of `autoscan` into configure.ac.
+  * Use the `configure` results for the compiler and flags to use.
 
 ## [2.1]
 
