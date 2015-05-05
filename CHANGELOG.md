@@ -17,6 +17,7 @@ Improved configure script:
   * Merge the output of `autoscan` into configure.ac.
   * Use the `configure` results for the compiler and flags to use.
   * `./configure --enable-shared` support.
+  * `./configure --enable-debug` support.
 
 ## [2.1]
 

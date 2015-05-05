@@ -95,5 +95,16 @@ AC_ARG_ENABLE([shared],[AS_HELP_STRING([--enable-shared  Enable building shared 
  ], [ SHARED=0 ])
 AC_SUBST(SHARED)
 
+AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug  Produce debugging information])],
+ [ if   test "x$enableval" = "x0"; then
+       DEBUG=0
+   elif test "x$enableval" = "xno"; then
+       DEBUG=0
+   else
+       DEBUG=1
+   fi
+ ], [ DEBUG=0 ])
+AC_SUBST(DEBUG)
+
 AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
 AC_OUTPUT
