@@ -61,7 +61,7 @@ WARN=1
 # VERBOSE=1
 #DEBUG=1
 # PROFILE=gprof
-#SHARED=2
+SHARED=@SHARED@
 
 ## Directory specific selections which override the above
 

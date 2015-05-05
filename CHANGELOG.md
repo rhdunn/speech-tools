@@ -6,13 +6,17 @@ Build system improvements:
 
   * Build improvements from [1.2.1-1](#1.2.1-1) and [1.2.96-1](#1.2.96-1).
   * Use g++ in the gcc default flags to compile C++ sources.
-  * Update configure.ac to comply with autoconf 2.69.
   * Support other Linux `OSTYPE` strings.
   * Remove the make.include files as part of the `clean` target.
   * Don't perform dependency calculations when running the `clean` target.
   * Fix not building shared libraries when `SHARED` is 0.
+
+Improved configure script:
+
+  * Update configure.ac to comply with autoconf 2.69.
   * Merge the output of `autoscan` into configure.ac.
   * Use the `configure` results for the compiler and flags to use.
+  * `./configure --enable-shared` support.
 
 ## [2.1]
 

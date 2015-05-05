@@ -81,5 +81,19 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([dup2 floor getcwd gethostbyname gethostname gettimeofday inet_ntoa memmove memset pow putenv rint socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol])
 
+# Configuration options
+AC_ARG_ENABLE([shared],[AS_HELP_STRING([--enable-shared  Enable building shared libraries])],
+ [ if   test "x$enableval" = "x0"; then
+       SHARED=0
+   elif test "x$enableval" = "xno"; then
+       SHARED=0
+   elif test "x$enableval" = "x1"; then
+       SHARED=1
+   else
+       SHARED=2
+   fi
+ ], [ SHARED=0 ])
+AC_SUBST(SHARED)
+
 AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
 AC_OUTPUT
