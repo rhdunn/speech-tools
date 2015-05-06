@@ -52,6 +52,20 @@ can be built using the following commands:
     make
     sudo make install
 
+To build with `clang` you can run:
+
+    CXX=clang++ ./configure --prefix=/usr
+
+The following additional `configure` options are supported:
+
+| Option                        | Description |
+|-------------------------------|-------------|
+| `--enable-shared`             | Enable building shared libraries. |
+| `--enable-debug`              | Produce debugging information. |
+| `--enable-optimization[=NUM]` | Choose the optimization level from 0 to 4 (default: 3). Level 4 disables debugging information. |
+| `--disable-warn`              | Disable compiler warning flags. |
+| `--with-nas-audio`            | Enable network audio system (NAS) support. |
+
 ## Acknowledgements
 
 Most of the software was written by Paul Taylor, Alan W Black, Simon
