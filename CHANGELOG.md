@@ -25,6 +25,7 @@ Improved configure script:
   * `./configure --enable-optimization` support.
   * `./configure --disable-warn` support.
   * `./configure --with-nas-audio` support.
+  * `./configure --with-compiler` support.
 
 ## [2.1]
 

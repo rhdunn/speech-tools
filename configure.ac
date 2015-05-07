@@ -52,8 +52,17 @@ AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
 AC_SUBST(TERMCAPLIB)
 
 dnl Set compiler type in order to force honoring of CFLAGS, etc.
-COMPILERTYPE=from_autoconf
-AC_SUBST(COMPILERTYPE)
+AC_ARG_WITH([compiler],
+            [AS_HELP_STRING([--with-compiler],
+              [Explicitly set the compiler to use.])],
+            [ if   test "x$withval" = "x"; then
+                COMPILER=from_autoconf
+              else
+                COMPILER=$withval
+              fi
+            ],
+            [COMPILER=from_autoconf])
+AC_SUBST(COMPILER)
 
 LINUXAUDIO=none
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]],

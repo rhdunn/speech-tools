@@ -65,6 +65,7 @@ The following additional `configure` options are supported:
 | `--enable-optimization[=NUM]` | Choose the optimization level from 0 to 4 (default: 3). Level 4 disables debugging information. |
 | `--disable-warn`              | Disable compiler warning flags. |
 | `--with-nas-audio`            | Enable network audio system (NAS) support. |
+| `--with-compiler`             | Explicitly specify the compiler to use. |
 
 ## Acknowledgements
 

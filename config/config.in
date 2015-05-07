@@ -35,7 +35,7 @@ SYSTEM_TYPE=$(MACHINETYPE)_$(OSTYPE)$(OSREV)
 ## The definitions are in compilers/$(COMPILER).mak
 ## Examples: gcc suncc egcs gcc28
 
-COMPILER=@COMPILERTYPE@
+COMPILER=@COMPILER@
 
 ###########################################################################
 ## Java system to use if you include the Java interface.
