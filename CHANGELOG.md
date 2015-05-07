@@ -14,6 +14,7 @@ Build system improvements:
   * Remove the make.include files as part of the `clean` target.
   * Don't perform dependency calculations when running the `clean` target.
   * Fix not building shared libraries when `SHARED` is 0.
+  * Support using the `gcov` code coverage tool.
 
 Improved configure script:
 

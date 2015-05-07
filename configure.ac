@@ -135,6 +135,8 @@ AC_SUBST(OPTIMISE)
 AC_ARG_ENABLE([profile],[ AS_HELP_STRING([--enable-profile  Enable a profiled build])],
  [ if   test "x$enableval" = "xgprof"; then
        PROFILE=gprof
+   elif test "x$enableval" = "xgcov"; then
+       PROFILE=gcov
    elif test "x$enableval" = "xno"; then
        PROFILE=
    else
