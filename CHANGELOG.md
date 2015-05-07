@@ -20,12 +20,13 @@ Improved configure script:
   * Update configure.ac to comply with autoconf 2.69.
   * Merge the output of `autoscan` into configure.ac.
   * Use the `configure` results for the compiler and flags to use.
-  * `./configure --enable-shared` support.
+  * `./configure --disable-warn` support.
   * `./configure --enable-debug` support.
   * `./configure --enable-optimization` support.
-  * `./configure --disable-warn` support.
-  * `./configure --with-nas-audio` support.
+  * `./configure --enable-profile` support.
+  * `./configure --enable-shared` support.
   * `./configure --with-compiler` support.
+  * `./configure --with-nas-audio` support.
 
 ## [2.1]
 

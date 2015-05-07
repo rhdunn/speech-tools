@@ -132,6 +132,17 @@ AC_ARG_ENABLE([optimization],[ AS_HELP_STRING([--enable-optimization=NUM Choose 
   ], [ OPTIMISE=3 ])
 AC_SUBST(OPTIMISE)
 
+AC_ARG_ENABLE([profile],[ AS_HELP_STRING([--enable-profile  Enable a profiled build])],
+ [ if   test "x$enableval" = "xgprof"; then
+       PROFILE=gprof
+   elif test "x$enableval" = "xno"; then
+       PROFILE=
+   else
+       PROFILE=gprof
+   fi
+ ], [ PROFILE= ])
+AC_SUBST(PROFILE)
+
 AC_ARG_ENABLE([warn],[AS_HELP_STRING([--disable-warn  Disable warning flags])],
  [ if test "x$enableval" = "xno"; then
        WARN=0
