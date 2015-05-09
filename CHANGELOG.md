@@ -17,6 +17,7 @@ Build system improvements:
   * Support using the `gcov` code coverage tool.
   * Add a `clang.mak` configuration file for the clang compiler.
   * Use settings from `config/compilers` for the selected compiler.
+  * Honour user-set `CFLAGS`, `CXXFLAGS` and `LDFLAGS`.
 
 Improved configure script:
 
