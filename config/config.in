@@ -7,6 +7,9 @@
 ##  Specific config file for local installation
 ##
 
+USER_CC  = @CC@
+USER_CXX = @CXX@
+
 USER_CFLAGS    = @CFLAGS@
 USER_CXXFLAGS  = @CXXFLAGS@
 USER_LINKFLAGS = @LDFLAGS@
@@ -197,6 +200,14 @@ ALSO_INCLUDE=
 include $(EST)/config/systems/$(SYSTEM_TYPE).mak
 
 include $(EST)/config/compilers/$(COMPILER).mak
+
+ifneq ($(USER_CC),)
+    CC=$(USER_CC)
+endif
+
+ifneq ($(USER_CXX),)
+    CXX=$(USER_CXX)
+endif
 
 ifneq ($(JAVA_COMPILER),none)
     include $(EST)/config/compilers/$(JAVA_COMPILER).mak
