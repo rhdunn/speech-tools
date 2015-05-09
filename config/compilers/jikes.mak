@@ -38,7 +38,11 @@
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/compilers/jikes_defaults.mak
+ifndef JAVAC
+    JAVAC       = jikes
+endif
+
+include $(EST)/config/compilers/jdk_defaults.mak
 
 JAVA_COMPILER_DESC=Jikes
 
