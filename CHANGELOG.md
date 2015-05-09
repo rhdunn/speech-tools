@@ -16,6 +16,7 @@ Build system improvements:
   * Fix not building shared libraries when `SHARED` is 0.
   * Support using the `gcov` code coverage tool.
   * Add a `clang.mak` configuration file for the clang compiler.
+  * Use settings from `config/compilers` for the selected compiler.
 
 Improved configure script:
 

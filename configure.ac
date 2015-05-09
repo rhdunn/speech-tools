@@ -56,12 +56,15 @@ AC_ARG_WITH([compiler],
             [AS_HELP_STRING([--with-compiler],
               [Explicitly set the compiler to use.])],
             [ if   test "x$withval" = "x"; then
-                COMPILER=from_autoconf
+                COMPILER=`basename $CC`
               else
                 COMPILER=$withval
               fi
             ],
-            [COMPILER=from_autoconf])
+            [COMPILER=`basename $CC`])
+if ! test -f "config/compilers/$COMPILER.mak"; then
+   COMPILER="custom"
+fi
 AC_SUBST(COMPILER)
 
 LINUXAUDIO=none
@@ -163,5 +166,5 @@ AC_ARG_WITH([nas_audio],[AS_HELP_STRING([--with-nas-audio],[Enable network audio
             [NAS_AUDIO=])
 AC_SUBST(NAS_AUDIO)
 
-AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
+AC_CONFIG_FILES([config/config config/compilers/custom.mak])
 AC_OUTPUT

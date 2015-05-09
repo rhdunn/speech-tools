@@ -39,10 +39,9 @@
  ##                                                                       ##
  ###########################################################################
 
+COMPILER_DESC_custom= @CC@ compiler
 CC=@CC@
 CXX=@CXX@
-
-COMPILER_DESC=Compiler set by configure script
 
 CFLAGS    = @CFLAGS@
 CXXFLAGS  = @CXXFLAGS@

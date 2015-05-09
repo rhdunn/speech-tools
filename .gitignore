@@ -16,8 +16,8 @@ README
 autom4te.cache/
 configure
 
+config/compilers/custom.mak
 config/config
-config/compilers/from_autoconf.mak
 config/modincludes.inc
 config/system.mak
 
