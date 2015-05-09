@@ -18,6 +18,7 @@ Build system improvements:
   * Add a `clang.mak` configuration file for the clang compiler.
   * Use settings from `config/compilers` for the selected compiler.
   * Honour user-set `CFLAGS`, `CXXFLAGS` and `LDFLAGS`.
+  * Move `suncc_defaults.mak` to `suncc.mak`.
 
 Improved configure script:
 

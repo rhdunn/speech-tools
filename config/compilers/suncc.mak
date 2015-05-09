@@ -38,8 +38,60 @@
  ##                                                                       ##
  ###########################################################################
 
-ifdef SUNCC
-include $(EST)/config/compilers/$(SUNCC).mak
+CC = cc
+CXX = CC 
+
+COMPILER_DESC=Sun CC
+COMPILER_VERSION_COMMAND=$(CXX) -V 2>&1 | sed -e '/CC: /{s///;q;}'
+
+CFLAGS =$(suncc_system_options) $(CC_OTHER_FLAGS)
+CXXFLAGS = $(suncc_system_options) -D__svr4__ $(CC_OTHER_FLAGS)
+
+DEBUG_CCFLAGS  = -g
+DEBUG_CXXFLAGS =  -g
+DEBUG_LINKFLAGS =  -g
+
+WARN_CCFLAGS  = +w +w2
+WARN_CXXFLAGS = +w +w2
+WARN_LINKFLAGS = +w +w2
+
+VERBOSE_CCFLAGS  =
+VERBOSE_CXXFLAGS = -ptv
+VERBOSE_LINKFLAGS = -ptv
+
+OPTIMISE_CCFLAGS  = -xO$(OPTIMISE)
+OPTIMISE_CXXFLAGS = -O$(OPTIMISE)
+OPTIMISE_LINKFLAGS = -O$(OPTIMISE)
+
+PROFILE_DEFAULT = gprof
+
+PROFILE_prof_CCFLAGS   = -p
+PROFILE_prof_CXXFLAGS  = -p
+PROFILE_prof_LINKFLAGS = -p
+
+PROFILE_gprof_CCFLAGS   = -pg
+PROFILE_gprof_CXXFLAGS  = -pg
+PROFILE_gprof_LINKFLAGS = -pg
+
+SHARED_CCFLAGS  = -KPIC
+SHARED_CXXFLAGS = -KPIC
+
+ifndef SUNCC_MAKE_SHARED_LIB
+    MAKE_SHARED_LIB = $(CXX) $(TEMPLATES) -G -o XXX
 else
-include $(EST)/config/compilers/suncc_defaults.mak
+    MAKE_SHARED_LIB = $(SUNCC_MAKE_SHARED_LIB)
 endif
+
+TEMPLATE_SPECIFIC =
+TEMPLATE_ARGS = $(TEMPLATE_DIRS:%=-pti%) $(PROJECT_TEMPLATE_DBS:%=-ptr%) 
+
+## special ways of doing things, blank means default
+
+MAKE_DEPEND_C = $(CC) $(INCLUDES) $(TEMPLATES) -xM1
+MAKE_DEPEND_CXX = $(CXX) $(INCLUDES) $(TEMPLATES) -xM1
+BUILD_LIB   = $(CXX) $(TEMPLATES) -xar -o
+INDEX_LIB   = $(DO_NOTHING_ARGS)
+
+COMPILERLIBS=
+
+

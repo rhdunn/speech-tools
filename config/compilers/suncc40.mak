@@ -37,7 +37,7 @@
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/compilers/suncc_defaults.mak
+include $(EST)/config/compilers/suncc.mak
 
 COMPILER_DESC=Sun CC 4.0
 

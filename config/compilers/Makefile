@@ -44,7 +44,7 @@ COMPILERS = gcc.mak gcc27.mak gcc28.mak gcc295.mak \
 	jikes.mak gcc296.mak gcc30.mak gcc31.mak gcc32.mak \
 	clang.mak custom.mak
 
-FILES = Makefile $(COMPILERS) gcc_defaults.mak suncc_defaults.mak jdk_defaults.mak jikes_defaults.mak custom.mak.in
+FILES = Makefile $(COMPILERS) gcc_defaults.mak jdk_defaults.mak jikes_defaults.mak custom.mak.in
 
 include $(TOP)/config/common_make_rules
 
