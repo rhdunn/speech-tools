@@ -38,7 +38,7 @@
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/compilers/gcc_defaults.mak
+include $(EST)/config/compilers/gcc.mak
 
 ifndef GCC28
     GCC28 = gcc

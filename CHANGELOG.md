@@ -19,6 +19,7 @@ Build system improvements:
   * Use settings from `config/compilers` for the selected compiler.
   * Honour user-set `CFLAGS`, `CXXFLAGS` and `LDFLAGS`.
   * Move `suncc_defaults.mak` to `suncc.mak`.
+  * Move `gcc_defaults.mak` to `gcc.mak`.
 
 Improved configure script:
 

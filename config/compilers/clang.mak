@@ -38,7 +38,7 @@
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/compilers/gcc_defaults.mak
+include $(EST)/config/compilers/gcc.mak
 
 COMPILER_DESC_clang= clang compiler
 CC=clang
