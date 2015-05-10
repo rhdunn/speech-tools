@@ -91,6 +91,7 @@ important that the various agreements be properly understood.
 | Richard Tobin                               | RXP, XML parser. |
 | Arthur Toth                                 | Windows server code. |
 | [Pierre Lorenzon](mailto:devel@pollock-nageoire.net) | gcc-4.7 patches. |
+| Sergio Oller                                | For making the documentation work again. |
 
 ## File/Directory Structure
 
@@ -157,8 +158,9 @@ a recognition system.
 
     Centre for Speech Technology
     University of Edinburgh
-    2 Buccleuch Place
-    Edinburgh EH8 9LW, UK
+    Informatics Forum
+    10 Crichton Street 
+    Edinburgh EH8 9AB, UK
 
 ## License
 
@@ -167,7 +169,7 @@ with the following copyright:
 
     Centre for Speech Technology Research
     University of Edinburgh, UK
-    Copyright (c) 1994-2013
+    Copyright (c) 1994-2014
     All Rights Reserved.
 
 The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)
