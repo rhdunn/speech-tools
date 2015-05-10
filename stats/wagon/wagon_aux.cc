@@ -1031,7 +1031,7 @@ ostream & operator <<(ostream &s, WImpurity &imp)
                 s << wgn_VertexTrack.a(bestp,j);
                 //                s << " 0 "; // fake stddev
                 s << " ";
-                if (finite(cs[j].stddev()))
+                if (isfinite(cs[j].stddev()))
                     s << cs[j].stddev();
                 else
                     s << "0";

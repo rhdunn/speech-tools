@@ -141,7 +141,7 @@ void wgn_load_dataset(WDataSet &dataset,EST_String fname)
 	    {
 		// need to ensure this is not NaN or Infinity
 		float f = atof(ts.get().string());
-		if (finite(f))
+		if (isfinite(f))
 		    v->set_flt_val(i,f);
 		else
 		{

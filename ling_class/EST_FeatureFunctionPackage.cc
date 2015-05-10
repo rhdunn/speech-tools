@@ -69,6 +69,7 @@ int operator == (const EST_FeatureFunctionPackage::Entry &e1,
 return e1.func == e2.func;
 }
 
+
 EST_FeatureFunctionPackage::EST_FeatureFunctionPackage(const EST_String name, int n)
  : p_name(name), p_entries(n)
 {
