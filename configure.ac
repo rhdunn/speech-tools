@@ -47,11 +47,8 @@ AC_CHECK_TOOL(AR, ar)
 AC_CANONICAL_TARGET
 AC_C_BIGENDIAN
 
-# Checks for libraries.
-AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
-AC_SUBST(TERMCAPLIB)
-
 dnl Set compiler type in order to force honoring of CFLAGS, etc.
+AC_MSG_CHECKING([which C/C++ compiler configuration to use])
 AC_ARG_WITH([compiler],
             [AS_HELP_STRING([--with-compiler],
               [Explicitly set the compiler to use.])],
@@ -63,9 +60,19 @@ AC_ARG_WITH([compiler],
             ],
             [COMPILER=`basename $CC`])
 if ! test -f "config/compilers/$COMPILER.mak"; then
-   COMPILER="custom"
+    AS_CASE([x$CC],
+            [xclang*],[COMPILER=clang],
+            [xegcs*], [COMPILER=egcs],
+            [xgcc*],  [COMPILER=gcc],
+            [xicc*],  [COMPILER=intel80],
+            [COMPILER=custom])
 fi
+AC_MSG_RESULT([$COMPILER])
 AC_SUBST(COMPILER)
+
+# Checks for libraries.
+AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
+AC_SUBST(TERMCAPLIB)
 
 LINUXAUDIO=none
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]],
