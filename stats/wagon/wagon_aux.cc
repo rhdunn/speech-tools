@@ -452,7 +452,6 @@ float WImpurity::vector_impurity()
     double count = 1;
     
     a.reset();
-
 #if 1
     /* simple distance */
     for (j=0; j<wgn_VertexFeats.num_channels(); j++)
@@ -471,6 +470,56 @@ float WImpurity::vector_impurity()
             count = b.samples();
         }
     }
+#endif
+
+#if 0
+    EST_SuffStats *c;
+    float x, lshift, rshift, ushift;
+    /* Find base mean, then measure do fshift to find best match */
+    c = new EST_SuffStats[wgn_VertexTrack.num_channels()+1];
+    for (j=0; j<wgn_VertexFeats.num_channels(); j++)
+    {
+        if (wgn_VertexFeats.a(0,j) > 0.0)
+        {
+            c[j].reset();
+            for (pp=members.head(), countpp=member_counts.head(); pp != 0; 
+                 pp=pp->next(), countpp=countpp->next())
+            {
+                i = members.item(pp);
+		// Accumulate the value with count
+                c[j].cumulate(wgn_VertexTrack.a(i,j),member_counts.item(countpp));
+            }
+            count = c[j].samples();
+        }
+    }
+
+    /* Pass through again but vary the num_channels offset (hardcoded) */
+    for (pp=members.head(), countpp=member_counts.head(); pp != 0; 
+         pp=pp->next(), countpp=countpp->next())
+    {
+        int q;
+        float bshift, qshift;
+        /* For each sample */
+        i = members.item(pp);
+        /* Find the value left shifted, unshifted, and right shifted */
+        lshift = 0; ushift = 0; rshift = 0;
+        bshift = 0;
+        for (q=-20; q<=20; q++)
+        {
+            qshift = 0;
+            for (j=67+q; j<147+q/*hardcoded*/; j++)
+            {
+                x = c[j].mean() - wgn_VertexTrack(i,j);
+                qshift += sqrt(x*x);
+                if ((bshift > 0) && (qshift > bshift))
+                    break;
+            }
+            if ((bshift == 0) || (qshift < bshift))
+                bshift = qshift;
+        }
+        a += bshift;
+    }
+    
 #endif
 
 #if 0
