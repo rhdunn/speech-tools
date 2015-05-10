@@ -90,6 +90,7 @@ important that the various agreements be properly understood.
 | The Regents of the University of California | Some string comparison code. |
 | Richard Tobin                               | RXP, XML parser. |
 | Arthur Toth                                 | Windows server code. |
+| [Pierre Lorenzon](mailto:devel@pollock-nageoire.net) | gcc-4.7 patches. |
 
 ## File/Directory Structure
 
@@ -166,7 +167,7 @@ with the following copyright:
 
     Centre for Speech Technology Research
     University of Edinburgh, UK
-    Copyright (c) 1994-2010
+    Copyright (c) 1994-2013
     All Rights Reserved.
 
 The changes to the project are described in the [CHANGELOG.md](CHANGELOG.md)
