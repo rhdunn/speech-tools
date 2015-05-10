@@ -31,7 +31,7 @@ dnl THIS SOFTWARE.                                                       ##
 dnl                                                                      ##
 dnl########################################################################
 AC_PREREQ([2.69])
-AC_INIT([speech-tools], [2.1-1], [festival-talk@festvox.org])
+AC_INIT([speech-tools], [2.1.1-1], [festival-talk@festvox.org])
 AC_CONFIG_SRCDIR([include/EST.h])
 
 # Checks for programs.
