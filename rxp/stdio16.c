@@ -392,7 +392,7 @@ int Vsprintf(void *buf, CharacterEncoding enc, const char *format,
 	     va_list args)
 {
     int nchars;
-    FILE16 file = {0, 0, -1, StringRead, StringWrite, StringSeek, StringFlush, StringClose, FILE16_write};
+    FILE16 file = {0, 0, -1, StringRead, StringWrite, StringSeek, StringFlush, StringClose, FILE16_write, CE_unknown, 0};
 
     file.handle = buf;
     file.enc = enc;

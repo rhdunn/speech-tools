@@ -51,7 +51,7 @@ Declare_TSortable_T(Lattice::Node *, Lattice_Node_P)
 Declare_TList_T(Lattice::symbol_t, Lattice_symbol_t_P)
 Declare_TSortable_T(Lattice::symbol_t, Lattice_symbol_t_P)
 
-Declare_TVector_Base_T(Lattice::symbol_t, {0}, {0}, Lattice_symbol_t_P)
+Declare_TVector_Base_T(Lattice::symbol_t, Lattice::symbol_t(), Lattice::symbol_t(), Lattice_symbol_t_P)
 
 #if defined(INSTANTIATE_TEMPLATES)
 

@@ -560,7 +560,7 @@ EST_TValuedEnumDefinition<EST_WaveFileType, const char *, EST_WaveFile::Info> wa
     { FALSE,  EST_WaveFile::load_raw,  EST_WaveFile::save_raw, "Headerless File" } },
   { wff_ulaw,	{ "ulaw", "basic" }, 
     { FALSE,  EST_WaveFile::load_ulaw,  EST_WaveFile::save_ulaw, "Headerless 8K ulaw  File" } },
-  { wff_none,	{NULL} }
+  { wff_none,	{NULL}, { FALSE, NULL, NULL, NULL } }
 };
 
 EST_TNamedEnumI<EST_WaveFileType, EST_WaveFile::Info> EST_WaveFile::map(wavefile_names);

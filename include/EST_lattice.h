@@ -66,6 +66,8 @@ public:
 	int qmap_index;
 	int nmap_index;
 
+	symbol_t(): qmap_index(0), nmap_index(0) {}
+
 	symbol_t operator += (const symbol_t s2);
 	bool operator != (const symbol_t &s2) const;
     };
