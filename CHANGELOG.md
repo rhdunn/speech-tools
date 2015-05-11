@@ -9,6 +9,7 @@ Warning fixes:
   * Fixed the `-Wmaybe-uninitialized` gcc warnings.
   * Fixed the `-Wmissing-field-initializers` gcc warnings.
   * Fixed the `-Wnonnull` gcc warnings.
+  * Fixed the `-Wstrict-aliasing` gcc warnings.
 
 ## [2.4-1]
 
