@@ -4,7 +4,8 @@
 
 Warning fixes:
 
-  * Fix the `-Wempty-body` gcc warnings.
+  * Fixed the `-Wempty-body` gcc warnings.
+  * Fixed the `-Wignored-qualifiers` gcc warnings.
 
 ## [2.4-1]
 

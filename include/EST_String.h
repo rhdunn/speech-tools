@@ -450,13 +450,13 @@ public:
     //@}
 
 #if __FSF_COMPATIBILITY__
-    const char operator [] (int i) const { return memory[i]; }
+    char operator [] (int i) const { return memory[i]; }
     char &operator () (int i) { return memory(i); }
 #else
     /**@name Operators */
     //@{
     /// Function style access to constant strings.
-    const char operator () (int i) const { return memory[i]; }
+    char operator () (int i) const { return memory[i]; }
     /// Array style access to writable strings.
     char &operator [] (int i) { return memory(i); }
 #endif
