@@ -302,10 +302,6 @@ EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr
 	v = ts.get().string();
 	if (k == "Freq")
 	    sr = v.Int() * 1000;
-	else if (k == "YMin")
-	  /* tr.amin = atof(v) */;
-	else if (k == "YMax")
-	  /*tr.amax = atof(v) */;
     }
 
     if (ts.eof())

@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.4-2]
+
+Warning fixes:
+
+  * Fix the `-Wempty-body` gcc warnings.
+
 ## [2.4-1]
 
   * Build improvements from [1.2.1-1](#1.2.1-1), [1.2.96-1](#1.2.96-1) and
