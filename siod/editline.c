@@ -191,7 +191,7 @@ STATIC STATUS h_risearch();
 STATIC STATUS insert_char(int c);
 STATIC STATUS meta();
 STATIC STATUS emacs(unsigned int c);
-STATIC STATUS TTYspecial(unsigned int c);
+STATIC STATUS TTYspecial(int c);
 STATIC ECHAR *editinput();
 STATIC void hist_add(ECHAR *p);
 STATIC STATUS beg_line();
@@ -673,7 +673,7 @@ STATIC void ceol()
 
 STATIC void clear_line()
 {
-    int i;
+    size_t i;
     TTYputs(bol);
     for (i=screen_pos()/TTYwidth; i > 0; i--)
 	if (upline) TTYputs(upline);
@@ -1130,7 +1130,7 @@ STATIC STATUS insert_char(int c)
 
 STATIC STATUS meta()
 {
-    unsigned int	c;
+    int			c;
     KEYMAP		*kp;
 
     if ((c = TTYget()) == EOF)
@@ -1191,7 +1191,7 @@ STATIC STATUS emacs(unsigned int c)
     return s;
 }
 
-STATIC STATUS TTYspecial(unsigned int c)
+STATIC STATUS TTYspecial(int c)
 {
     int i;
     
@@ -1229,7 +1229,7 @@ STATIC STATUS TTYspecial(unsigned int c)
 
 STATIC ECHAR *editinput()
 {
-    unsigned int	c;
+    int			c;
 
     Repeat = NO_ARG;
     OldPoint = Point = Mark = End = 0;
@@ -1701,7 +1701,7 @@ STATIC STATUS transpose()
 
 STATIC STATUS quote()
 {
-    unsigned int	c;
+    int		c;
 
     return (c = TTYget()) == EOF ? CSeof : insert_char((int)c);
 }
@@ -1731,8 +1731,8 @@ STATIC STATUS mk_set()
 
 STATIC STATUS exchange()
 {
-    unsigned int	c;
-
+    int		c;
+	
     if ((c = TTYget()) != CTL('X'))
 	return c == EOF ? CSeof : ring_bell();
 
@@ -1766,7 +1766,7 @@ STATIC STATUS copy_region()
 
 STATIC STATUS move_to_char()
 {
-    unsigned int	c;
+    int			c;
     int			i;
     ECHAR		*p;
 

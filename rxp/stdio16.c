@@ -507,7 +507,7 @@ int Vfprintf(FILE16 *file, const char *format, va_list args)
 #endif
 	}
 
-	if(format - start + 1 > sizeof(fmt))
+	if(format - start + 1 > (int)sizeof(fmt))
 	{
 	  ERR("Printf: format specifier too long");
 	    errno = 0;
