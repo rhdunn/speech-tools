@@ -56,7 +56,6 @@ static void ltsrule_compile(LISP inalpha, LISP outalpha,
 static LISP analyse_rule(LISP rule);
 static LISP expand_sets(LISP l, LISP fp, LISP sets);
 static LISP expand_set(LISP p, LISP fp, LISP sets);
-static LISP find_notMAP(LISP MAP,LISP fp);
 
 void ltscompile(LISP lts_rules, EST_WFST &all_wfst)
 {
@@ -342,47 +341,3 @@ static LISP expand_set(LISP p, LISP fp, LISP sets)
 
     return reverse(r);
 }
-
-static LISP find_notMAP(LISP MAP,LISP fp)
-{
-    // Returns REGEX that matches everything except MAP,  this doesn't
-    // try all possible epsilons though 
-    LISP r,notrp=NIL,m,np;
-    EST_String s,l,p,sr,lr,rr;
-
-    for (m=MAP; m != NIL; m=cdr(m))
-    {
-	p = get_c_string(car(m));
-	if (p.contains("/"))
-	{
-	    s = p.before("/");
-	    l = p.after("/");
-	}
-	else
-	{
-	    s = p;
-	    l = p;
-	}
-
-	for (np=NIL,r=fp; r != NIL; r = cdr(r))
-	{
-	    rr = get_c_string(car(r));
-	    if (rr.contains("/"))
-	    {
-		sr = rr.before("/");
-		lr = rr.after("/");
-	    }
-	    else
-	    {
-		sr = rr;
-		lr = rr;
-	    }
-	    if ((s == sr) && (l != lr))
-		np = cons(car(r),np);
-	}
-	notrp = cons(cons(rintern("or"),np),notrp);
-    }
-
-    return reverse(notrp);
-}
-

@@ -14,6 +14,7 @@ Warning fixes:
   * Fixed the `-Wstrict-aliasing` gcc warnings.
   * Fixed the `-Wunused-but-set-parameter` gcc warnings.
   * Fixed the `-Wunused-but-set-variable` gcc warnings.
+  * Fixed the `-Wunused-function` clang warnings.
   * Fixed the `-Wunused-parameter` gcc and clang warnings.
   * Fixed the `-Wunused-variable` gcc warnings.
 
