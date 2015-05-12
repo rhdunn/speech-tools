@@ -73,7 +73,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
     EST_TokenStream ts;
     EST_String s;
     int i,j,k, order=0;
-    double occur,weight;
+    double weight;
     int this_num,this_order;
 
     if (ts.open(filename) == -1)
@@ -171,7 +171,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
 		return misc_read_error;
 	    }
 
-	    occur = atof(ts.get().string());
+	    ts.get().string();
 
 
 	    // can't for backoff grammars, need to set probs directly
@@ -656,7 +656,7 @@ save_ngram_arpa(const EST_String filename, EST_Ngrammar &n)
     // ARPA MIT-LL format - see HTK manual !!
     
     ostream *ost;
-    int i,num_n,o;
+    int i,o;
     
     if (filename == "-")
 	ost = &cout;
@@ -671,7 +671,6 @@ save_ngram_arpa(const EST_String filename, EST_Ngrammar &n)
     //*ost << *(n.vocab) << endl;
     
     // count number of ngrams
-    num_n = (int)n.samples();
     *ost << "\\data\\" << endl;
     
     double *count = new double;

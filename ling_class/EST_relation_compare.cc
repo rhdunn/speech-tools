@@ -447,7 +447,7 @@ and deletions are then calculated.  */
 EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int method,
 		       float t, int v)
 {
-    int i, j, pos;
+    int i, j;
     int num_ref, num_test;
     EST_Item *r_ptr, *t_ptr;
     EST_String fns;
@@ -495,17 +495,6 @@ EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int meth
     minimise_matrix_by_row(m);
     matrix_ceiling(m, t);
 
-    // for each ref label, find closest matching test label.
-    for (j = 0, r_ptr = reflab.head(); r_ptr != 0; r_ptr = r_ptr->next())
-    {
-	if (r_ptr->f("pos")==1)
-	{
-	    pos = lowest_pos(m, j);
-	    // REORG - temp comment
-//	    r_ptr->set_field_names(r_ptr->fields() +ftoString(m(pos, j)));
-	    ++j;
-	}
-    }
     return m;
 }
 

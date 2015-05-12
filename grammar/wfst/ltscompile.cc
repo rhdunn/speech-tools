@@ -233,7 +233,7 @@ static void ltsrule_compile(LISP inalpha, LISP outalpha,
 {
     // Return two regexs, one matching with rewrites and another
     // that matches things this rule doesn't match.
-    LISP LC,MAP,RC,notMAP,r;
+    LISP LC,MAP,RC,r;
 
     r = analyse_rule(rule);
     LC = siod_nth(0,r);
@@ -242,7 +242,6 @@ static void ltsrule_compile(LISP inalpha, LISP outalpha,
 
     LC = expand_sets(LC,fp,sets);
     RC = expand_sets(RC,fp,sets);
-    notMAP = find_notMAP(MAP,fp);
 
 
     LISP kk = cons(LC,cons(MAP,cons(RC,NIL)));
