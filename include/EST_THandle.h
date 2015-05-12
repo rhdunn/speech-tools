@@ -146,7 +146,7 @@ public:
     { return !( a==b ); }
 
   friend ostream & operator << (ostream &s, const EST_THandle< BoxT, ObjectT > &a)
-    { return s << "HANDLE"; }
+    { (void)a; return s << "HANDLE"; }
 };
 
 #endif

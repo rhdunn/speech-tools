@@ -722,6 +722,7 @@ if (result < 0)
 
 int play_linux_wave(EST_Wave &inwave, EST_Option &al)
 {
+    (void)al;
     int sample_rate;
     short *waveform;
     int num_samples;
