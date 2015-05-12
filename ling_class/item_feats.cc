@@ -109,11 +109,6 @@ void val_delete_featfunc(void *v)
     (void)v;
 }
 
-void val_copy_featfunc(void *v1,void *v2)
-{
-    v1 = v2;
-}
-
 EST_Val est_val(const EST_Item_featfunc f)
 {
     return EST_Val(val_type_featfunc,(void *)f,val_delete_featfunc);

@@ -339,8 +339,6 @@ enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
     EST_read_status r;
     EST_sample_type_t actual_sample_type;
     
-    offset = 0;
-    
     if ((r = read_est_header(ts, hinfo, ascii, t)) != format_ok)
 	return r;
     if (t != est_file_wave)
