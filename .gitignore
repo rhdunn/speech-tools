@@ -27,6 +27,9 @@ make.include
 
 testsuite/*_example
 testsuite/*_regression
+testsuite/.test_out
+testsuite/*.out
+testsuite/tmp/
 
 bin/
 lib/est_mainline
