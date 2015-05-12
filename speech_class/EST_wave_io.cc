@@ -329,6 +329,7 @@ enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
 				   EST_sample_type_t *sample_type, int *bo, 
 				   int offset, int length)
 {
+    (void)offset;
     int data_length, actual_bo;
     short *file_data;
     EST_String byte_order;

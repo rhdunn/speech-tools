@@ -752,6 +752,8 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
 
 int record_linux_wave(EST_Wave &inwave, EST_Option &al)
 {
+    (void)inwave;
+    (void)al;
 #if 0
     int sample_rate=16000;  // egcs needs the initialized for some reason
     short *waveform;

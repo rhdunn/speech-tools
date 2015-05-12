@@ -13,6 +13,7 @@ Warning fixes:
   * Fixed the `-Wsign-compare` gcc warnings.
   * Fixed the `-Wstrict-aliasing` gcc warnings.
   * Fixed the `-Wunused-but-set-parameter` gcc warnings.
+  * Fixed the `-Wunused-parameter` gcc warnings.
 
 ## [2.4-1]
 

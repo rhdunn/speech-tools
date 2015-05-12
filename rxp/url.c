@@ -680,6 +680,7 @@ static FILE16 *file_open(const char *url,
 			 const char *host, int port, const char *path, 
 			 const char *type)
 {
+    (void)port;
     FILE *f;
     FILE16 *f16;
     char *file;

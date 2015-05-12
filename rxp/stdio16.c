@@ -801,6 +801,7 @@ static int StringClose(FILE16 *file)
 
 static int StringFlush(FILE16 *file)
 {
+    (void)file;
     return 0;
 }
 
