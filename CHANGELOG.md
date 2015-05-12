@@ -5,6 +5,7 @@
 Warning fixes:
 
   * Fixed the `-Wempty-body` gcc warnings.
+  * Fixed the `-Wextra` gcc warnings.
   * Fixed the `-Wignored-qualifiers` gcc warnings.
   * Fixed the `-Wmaybe-uninitialized` gcc warnings.
   * Fixed the `-Wmissing-field-initializers` gcc warnings.

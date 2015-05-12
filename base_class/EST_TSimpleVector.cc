@@ -57,9 +57,8 @@ else
   ((EST_TVector<T> *)this)->copy(a);
 }
 
-template<class T> EST_TSimpleVector<T>::EST_TSimpleVector(const EST_TSimpleVector<T> &in)
+template<class T> EST_TSimpleVector<T>::EST_TSimpleVector(const EST_TSimpleVector<T> &in) : EST_TVector<T>()
 {
-    this->default_vals();
     copy(in);
 }
 

@@ -63,9 +63,8 @@ EST_Wave::EST_Wave()
     default_vals();
 }
 
-EST_Wave::EST_Wave(const EST_Wave &w)
+EST_Wave::EST_Wave(const EST_Wave &w) : EST_Featured()
 {
-    default_vals();
     copy(w);
 }
 

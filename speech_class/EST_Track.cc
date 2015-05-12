@@ -57,9 +57,8 @@ EST_Track::EST_Track()
     default_vals();
 }
 
-EST_Track::EST_Track(const EST_Track &a)
+EST_Track::EST_Track(const EST_Track &a) : EST_Featured()
 { 
-    default_vals();
     copy(a);
 }
 

@@ -65,9 +65,10 @@ EST_TMatrix<T>::EST_TMatrix()
 }
 
 template<class T>
-EST_TMatrix<T>::EST_TMatrix(const EST_TMatrix<T> &in)
+EST_TMatrix<T>::EST_TMatrix(const EST_TMatrix<T> &in) : EST_TVector<T>()
 {
-  default_vals();
+  p_num_rows = 0;
+  p_row_step = 0;
   copy(in);
 }
 
