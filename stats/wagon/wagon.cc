@@ -62,7 +62,9 @@ EST_Track wgn_VertexFeats;
 EST_Track wgn_UnitTrack;
 
 int wgn_min_cluster_size = 50;
+int wgn_max_questions = 2000000; /* not ideal, but adequate */
 int wgn_held_out = 0;
+int wgn_cos = 1;
 int wgn_prune = TRUE;
 int wgn_quiet = FALSE;
 int wgn_verbose = FALSE;
@@ -659,7 +661,7 @@ static float test_tree_ols(WNode &tree,WDataSet &dataset,ostream *output)
     {
 	leaf = tree.predict_node((*dataset(p)));
         // do ols to get predict;
-        predict = 0.0;
+        predict = 0.0;  // This is incomplete ! you need to use leaf
 	real = dataset(p)->get_flt_val(wgn_predictee);
 	if (wgn_count_field == -1)
 	    count = 1.0;
@@ -720,6 +722,9 @@ static int wagon_split(int margin, WNode &node)
     WNode *l,*r;
 
     node.set_impurity(WImpurity(node.get_data()));
+    if (wgn_max_questions < 1)
+        return FALSE;
+        
     q = find_best_question(node.get_data());
 
 /*    printf("q.score() %f impurity %f\n",
@@ -731,7 +736,6 @@ static int wagon_split(int margin, WNode &node)
 
     if ((question_score < WGN_HUGE_VAL) && 
         (question_score < impurity_measure))
-
     {
 	// Ok its worth a split
 	l = new WNode();
@@ -746,6 +750,7 @@ static int wagon_split(int margin, WNode &node)
 		cout << " ";
 	    cout << q << endl;
 	}
+        wgn_max_questions--;
 	margin++;
 	wagon_split(margin,*l);
 	margin++;
@@ -784,6 +789,68 @@ void wgn_find_split(WQuestion &q,WVectorVector &ds,
 
 }
 
+#ifdef OMP_WAGON
+static WQuestion find_best_question(WVectorVector &dset)
+{
+    //  Ask all possible questions and find the best one
+    int i;
+    float bscore,tscore;
+    WQuestion test_ques, best_ques;
+    WQuestion** questions=new WQuestion*[wgn_dataset.width()];
+    float* scores = new float[wgn_dataset.width()];
+    bscore = tscore = WGN_HUGE_VAL;
+    best_ques.set_score(bscore);
+#pragma omp parallel
+#pragma omp for
+    for (i=0;i < wgn_dataset.width(); i++)
+    {
+    	questions[i] = new WQuestion;
+	questions[i]->set_score(bscore);}
+#pragma omp parallel
+#pragma omp for
+    for (i=0;i < wgn_dataset.width(); i++)
+    {
+	if ((wgn_dataset.ignore(i) == TRUE) ||
+	    (i == wgn_predictee))
+	    scores[i] = WGN_HUGE_VAL;     // ignore this feature this time
+	else if (wgn_dataset.ftype(i) == wndt_binary)
+	{
+	    construct_binary_ques(i,*questions[i]);
+	    scores[i] = wgn_score_question(*questions[i],dset);
+	}
+	else if (wgn_dataset.ftype(i) == wndt_float)
+	{
+	    scores[i] = construct_float_ques(i,*questions[i],dset);
+	}
+	else if (wgn_dataset.ftype(i) == wndt_ignore)
+	    scores[i] = WGN_HUGE_VAL;    // always ignore this feature
+#if 0
+	// This doesn't work reasonably 
+	else if (wgn_csubset && (wgn_dataset.ftype(i) >= wndt_class))
+	{
+	    wagon_error("subset selection temporarily deleted");
+	    tscore = construct_class_ques_subset(i,test_ques,dset);
+	}
+#endif
+	else if (wgn_dataset.ftype(i) >= wndt_class)
+	    scores[i] = construct_class_ques(i,*questions[i],dset);
+    }
+    for (i=0;i < wgn_dataset.width(); i++)
+    {
+	if (scores[i] < bscore)
+	{
+	    memcpy(&best_ques,questions[i],sizeof(*questions[i]));
+	    best_ques.set_score(scores[i]);
+	    bscore = scores[i];
+	}
+        delete questions[i];
+    }
+    delete [] questions;
+    delete [] scores;
+    return best_ques;
+}
+#else
+// No OMP parallelism
 static WQuestion find_best_question(WVectorVector &dset)
 {
     //  Ask all possible questions and find the best one
@@ -830,6 +897,7 @@ static WQuestion find_best_question(WVectorVector &dset)
 
     return best_ques;
 }
+#endif
 
 static float construct_class_ques(int feat,WQuestion &ques,WVectorVector &ds)
 {
